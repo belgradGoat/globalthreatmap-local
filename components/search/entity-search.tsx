@@ -91,9 +91,9 @@ export function EntitySearch() {
   return (
     <div className="flex h-full flex-col">
       <div className="border-b border-border p-4">
-        <h2 className="text-lg font-semibold text-foreground">Entity Search</h2>
+        <h2 className="text-lg font-semibold text-foreground">Entity Research</h2>
         <p className="text-sm text-muted-foreground">
-          Research organizations, nations, and groups (tribes)
+          Deep intelligence on nations, armed groups, organizations, and key figures
         </p>
       </div>
 
@@ -102,7 +102,7 @@ export function EntitySearch() {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Enter entity name..."
+              placeholder="e.g. Wagner Group, Hezbollah, North Korea..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -125,8 +125,22 @@ export function EntitySearch() {
             onChange={(e) => setShowDeepResearch(e.target.checked)}
             className="rounded border-border"
           />
-          Include deep research (slower)
+          Enable deep research mode
         </label>
+
+        {isLoading && (
+          <div className="rounded-lg bg-muted/50 p-3 text-sm">
+            <div className="flex items-center gap-2 text-foreground font-medium mb-1">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              {showDeepResearch ? "Running deep research..." : "Analyzing entity..."}
+            </div>
+            <p className="text-muted-foreground text-xs">
+              {showDeepResearch
+                ? "This will take 5-10 minutes. Generating a comprehensive ~50 page intelligence report with sourced analysis, relationships, and recent activity."
+                : "This typically takes ~15 seconds. Gathering key intelligence and geographic data."}
+            </p>
+          </div>
+        )}
       </div>
 
       <ScrollArea className="flex-1 p-4">
@@ -266,11 +280,15 @@ export function EntitySearch() {
         )}
 
         {!entity && !isLoading && !error && (
-          <div className="py-12 text-center">
+          <div className="py-8 text-center">
             <Building2 className="mx-auto h-12 w-12 text-muted-foreground/50" />
             <p className="mt-4 text-sm text-muted-foreground">
-              Search for an organization, person, country, or group
+              Research any entity for intelligence analysis
             </p>
+            <div className="mt-3 space-y-1 text-xs text-muted-foreground/70">
+              <p>Try: "Wagner Group", "Houthis", "Hamas", "Iran"</p>
+              <p>Nations, militias, corporations, political figures</p>
+            </div>
             {requiresAuth && !isAuthenticated && (
               <div className="mt-4 flex items-center justify-center gap-2 text-sm text-amber-600 dark:text-amber-400">
                 <Lock className="h-4 w-4" />
