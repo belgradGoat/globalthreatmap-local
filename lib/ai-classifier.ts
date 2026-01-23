@@ -37,7 +37,7 @@ const EventClassificationSchema = z.object({
   primaryLocation: z.string().describe(
     "The main geographic location (city, region, or country) where the event is occurring. Use proper names."
   ),
-  country: z.string().optional().describe(
+  country: z.string().nullable().describe(
     "The country where the event is occurring, if identifiable"
   ),
 });

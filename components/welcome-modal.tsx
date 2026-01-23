@@ -51,9 +51,9 @@ const features: Feature[] = [
   },
   {
     icon: <Search className="h-6 w-6" />,
-    title: "Entity Research",
+    title: "Intel Dossiers",
     description:
-      "Search for organizations, people, or groups. Get detailed profiles and see their locations on the map.",
+      "Build intelligence dossiers on any actor. Enable full dossier mode for ~50 page reports with downloadable CSV data exports and PowerPoint briefings.",
     color: "text-purple-500",
   },
   {

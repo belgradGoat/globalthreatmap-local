@@ -602,12 +602,8 @@ export function ThreatMap() {
         clusterRadius={50}
       >
         {showHeatmap && <Layer {...heatmapLayer} />}
-        {showClusters && (
-          <>
-            <Layer {...clusterLayer} />
-            <Layer {...clusterCountLayer} />
-          </>
-        )}
+        {showClusters && <Layer {...clusterLayer} />}
+        {showClusters && <Layer {...clusterCountLayer} />}
         <Layer {...unclusteredPointLayer} />
       </Source>
 

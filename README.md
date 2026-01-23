@@ -13,7 +13,7 @@ A real-time global situational awareness platform that plots security events, ge
 - **Real-Time Event Mapping** - Plot breaking news events (conflicts, protests, natural disasters) on a world map with color-coded threat levels
 - **Interactive Mapbox Map** - Dark-themed map with clustering, heatmap visualization, and smooth navigation
 - **Event Feed** - Real-time filterable feed of global events with category and threat level filters
-- **Entity Search** - Research organizations, people, countries, and groups using Valyu's intelligence APIs
+- **Intel Dossiers** - Build intelligence dossiers on any actor with deep research reports, CSV data exports, and PowerPoint briefings
 - **Alert System** - Configure keyword and region-based alerts with real-time notifications
 
 ### Country Intelligence
@@ -151,13 +151,16 @@ The play/pause button in the bottom-left corner toggles automatic map panning:
 - **Play** - Map continuously pans eastward across the globe
 - **Pause** - Stops the auto-pan animation
 
-### Entity Search
+### Intel Dossiers (Deep Research)
 
-Search for any organization, country, or group to get:
-- Overview and description
-- Location markers on the map (headquarters, offices, operations)
-- Deep research analysis (optional)
-- Related data sources
+Build comprehensive intelligence dossiers on any actor using Valyu's Deep Research API. Enter any entity - nations, militias, PMCs, cartels, political figures - and receive:
+
+- **~50 Page Intelligence Report** - Extensively sourced analysis covering background, organizational structure, key figures, geographic presence, recent activities, threat assessment, and timeline of events
+- **CSV Data Export** - Structured data with locations, coordinates, key figures, related organizations, significant events with dates, and source URLs - ready for further analysis
+- **PowerPoint Briefing** - 8-slide executive intelligence briefing for presentations
+- **PDF Report** - Downloadable full report
+
+Reports take 5-10 minutes to generate but are extremely detailed and comprehensive, pulling from hundreds of sources across the web, academic papers, and proprietary databases. Perfect for OSINT analysts, researchers, and intelligence professionals who need exportable deliverables for briefings and further analysis.
 
 ### Country Conflicts
 
@@ -180,6 +183,8 @@ Create alert rules based on:
 | `/api/events` | GET | Fetch global events from Valyu |
 | `/api/events` | POST | Fetch events with custom queries |
 | `/api/entities` | GET/POST | Research entities and get locations |
+| `/api/deepresearch` | POST | Create async deep research task with deliverables |
+| `/api/deepresearch/[taskId]` | GET | Poll deep research task status and results |
 | `/api/reports` | POST | Generate deep research reports |
 | `/api/countries/conflicts` | GET | Get historical and current conflicts for a country |
 | `/api/military-bases` | GET | Get US and NATO military base locations (1hr cache) |

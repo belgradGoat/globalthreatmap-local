@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { EventFeed } from "@/components/feed/event-feed";
 import { EntitySearch } from "@/components/search/entity-search";
-import { Activity, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { Activity, FileText, ChevronLeft, ChevronRight } from "lucide-react";
 
 type Tab = "feed" | "search";
 
@@ -14,8 +14,8 @@ export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const tabs = [
-    { id: "feed" as Tab, label: "Feed", icon: Activity },
-    { id: "search" as Tab, label: "Search", icon: Search },
+    { id: "feed" as Tab, label: "Live Feed", icon: Activity },
+    { id: "search" as Tab, label: "Intel", icon: FileText },
   ];
 
   return (

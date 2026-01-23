@@ -3,6 +3,17 @@
 import { useState, useCallback } from "react";
 import type { EntityProfile } from "@/types";
 
+export interface Deliverables {
+  csv?: { url: string; title: string };
+  pptx?: { url: string; title: string };
+}
+
+export interface EntitySearchResult {
+  entity: EntityProfile;
+  deliverables?: Deliverables;
+  pdfUrl?: string;
+}
+
 interface SearchState {
   isLoading: boolean;
   error: string | null;
@@ -18,7 +29,7 @@ export function useValyuSearch() {
     async (
       name: string,
       includeDeepResearch = false
-    ): Promise<EntityProfile | null> => {
+    ): Promise<EntitySearchResult | null> => {
       setState({ isLoading: true, error: null });
 
       try {
@@ -34,7 +45,11 @@ export function useValyuSearch() {
 
         const data = await response.json();
         setState({ isLoading: false, error: null });
-        return data.entity;
+        return {
+          entity: data.entity,
+          deliverables: data.deliverables,
+          pdfUrl: data.pdfUrl,
+        };
       } catch (err) {
         const error =
           err instanceof Error ? err.message : "Unknown error occurred";
