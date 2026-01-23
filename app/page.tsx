@@ -8,6 +8,7 @@ import { ThreatMap } from "@/components/map/threat-map";
 import { TimelineScrubber } from "@/components/map/timeline-scrubber";
 import { WelcomeModal } from "@/components/welcome-modal";
 import { SignInPanel } from "@/components/auth";
+import { PolymarketTicker } from "@/components/polymarket-ticker";
 
 const WELCOME_DISMISSED_KEY = "globalthreatmap_welcome_dismissed";
 
@@ -41,6 +42,7 @@ export default function Home() {
       </div>
       <WelcomeModal open={showWelcome} onOpenChange={setShowWelcome} />
       <SignInPanel />
+      <PolymarketTicker category="geopolitics" />
     </div>
   );
 }
