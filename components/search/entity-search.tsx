@@ -91,9 +91,9 @@ export function EntitySearch() {
   return (
     <div className="flex h-full flex-col">
       <div className="border-b border-border p-4">
-        <h2 className="text-lg font-semibold text-foreground">Entity Research</h2>
+        <h2 className="text-lg font-semibold text-foreground">Build Dossier</h2>
         <p className="text-sm text-muted-foreground">
-          Deep intelligence on nations, armed groups, organizations, and key figures
+          Compile intel on any actor - mapped locations, relationships, and sourced analysis
         </p>
       </div>
 
@@ -125,19 +125,19 @@ export function EntitySearch() {
             onChange={(e) => setShowDeepResearch(e.target.checked)}
             className="rounded border-border"
           />
-          Enable deep research mode
+          Full dossier with deep research
         </label>
 
         {isLoading && (
           <div className="rounded-lg bg-muted/50 p-3 text-sm">
             <div className="flex items-center gap-2 text-foreground font-medium mb-1">
               <Loader2 className="h-4 w-4 animate-spin" />
-              {showDeepResearch ? "Running deep research..." : "Analyzing entity..."}
+              {showDeepResearch ? "Compiling full dossier..." : "Building profile..."}
             </div>
             <p className="text-muted-foreground text-xs">
               {showDeepResearch
-                ? "This will take 5-10 minutes. Generating a comprehensive ~50 page intelligence report with sourced analysis, relationships, and recent activity."
-                : "This typically takes ~15 seconds. Gathering key intelligence and geographic data."}
+                ? "5-10 minutes. Comprehensive ~50 page report with sourced analysis, network mapping, and recent activity."
+                : "~15 seconds. Quick profile with key intel and locations."}
             </p>
           </div>
         )}
@@ -281,18 +281,18 @@ export function EntitySearch() {
 
         {!entity && !isLoading && !error && (
           <div className="py-8 text-center">
-            <Building2 className="mx-auto h-12 w-12 text-muted-foreground/50" />
+            <FileText className="mx-auto h-12 w-12 text-muted-foreground/50" />
             <p className="mt-4 text-sm text-muted-foreground">
-              Research any entity for intelligence analysis
+              Enter any actor to compile a dossier
             </p>
             <div className="mt-3 space-y-1 text-xs text-muted-foreground/70">
-              <p>Try: "Wagner Group", "Houthis", "Hamas", "Iran"</p>
-              <p>Nations, militias, corporations, political figures</p>
+              <p>Wagner Group, Houthis, Hezbollah, North Korea</p>
+              <p>Nations, militias, PMCs, cartels, political figures</p>
             </div>
             {requiresAuth && !isAuthenticated && (
               <div className="mt-4 flex items-center justify-center gap-2 text-sm text-amber-600 dark:text-amber-400">
                 <Lock className="h-4 w-4" />
-                <span>Sign in required to search</span>
+                <span>Sign in required</span>
               </div>
             )}
           </div>
