@@ -71,7 +71,15 @@ export async function GET(
     const selfHosted = isSelfHostedMode();
     let statusData: any;
 
-    // Use OAuth proxy if user is signed in and not self-hosted
+    // Valyu mode requires auth
+    if (!selfHosted && !accessToken) {
+      return NextResponse.json(
+        { error: "Authentication required", requiresReauth: true },
+        { status: 401 }
+      );
+    }
+
+    // Use OAuth proxy in valyu mode
     if (!selfHosted && accessToken) {
       statusData = await getStatusViaProxy(taskId, accessToken);
       if (statusData.error) {

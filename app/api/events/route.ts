@@ -161,13 +161,32 @@ async function processSearchResults(
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get("q");
+  const accessToken = searchParams.get("accessToken");
+
+  // In valyu mode, require authentication
+  const selfHosted = isSelfHostedMode();
+  if (!selfHosted && !accessToken) {
+    return NextResponse.json(
+      { error: "Authentication required", requiresReauth: true },
+      { status: 401 }
+    );
+  }
 
   try {
     const searchQueries = query ? [query] : THREAT_QUERIES;
+    const tokenToUse = selfHosted ? undefined : accessToken;
 
     const searchResultsArrays = await Promise.all(
-      searchQueries.map((q) => searchEvents(q, { maxResults: 20 }))
+      searchQueries.map((q) => searchEvents(q, { maxResults: 20, accessToken: tokenToUse || undefined }))
     );
+
+    const requiresReauth = searchResultsArrays.some((r) => r.requiresReauth);
+    if (requiresReauth) {
+      return NextResponse.json(
+        { error: "auth_error", message: "Session expired. Please sign in again.", requiresReauth: true },
+        { status: 401 }
+      );
+    }
 
     const allResults = searchResultsArrays.flatMap((r) => r.results);
     const sortedEvents = await processSearchResults(allResults);
@@ -192,6 +211,15 @@ export async function POST(request: Request) {
     const { queries, accessToken } = body;
 
     const selfHosted = isSelfHostedMode();
+
+    // In valyu mode, require authentication
+    if (!selfHosted && !accessToken) {
+      return NextResponse.json(
+        { error: "Authentication required", requiresReauth: true },
+        { status: 401 }
+      );
+    }
+
     const tokenToUse = selfHosted ? undefined : accessToken;
 
     const searchQueries = queries && Array.isArray(queries) && queries.length > 0

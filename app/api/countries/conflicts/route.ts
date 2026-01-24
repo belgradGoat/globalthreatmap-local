@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCountryConflicts, streamCountryConflicts } from "@/lib/valyu";
+import { isSelfHostedMode } from "@/lib/app-mode";
 
 export const dynamic = "force-dynamic";
 
@@ -7,11 +8,21 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const country = searchParams.get("country");
   const stream = searchParams.get("stream") === "true";
+  const accessToken = searchParams.get("accessToken");
 
   if (!country) {
     return NextResponse.json(
       { error: "Country parameter is required" },
       { status: 400 }
+    );
+  }
+
+  // In valyu mode, require user token
+  const selfHosted = isSelfHostedMode();
+  if (!selfHosted && !accessToken) {
+    return NextResponse.json(
+      { error: "Authentication required", requiresReauth: true },
+      { status: 401 }
     );
   }
 
@@ -22,7 +33,7 @@ export async function GET(request: Request) {
     const readable = new ReadableStream({
       async start(controller) {
         try {
-          for await (const chunk of streamCountryConflicts(country)) {
+          for await (const chunk of streamCountryConflicts(country, { accessToken: accessToken || undefined })) {
             const data = `data: ${JSON.stringify(chunk)}\n\n`;
             controller.enqueue(encoder.encode(data));
           }
@@ -49,7 +60,7 @@ export async function GET(request: Request) {
 
   // Non-streaming mode - return full response
   try {
-    const result = await getCountryConflicts(country);
+    const result = await getCountryConflicts(country, { accessToken: accessToken || undefined });
 
     return NextResponse.json({
       country,

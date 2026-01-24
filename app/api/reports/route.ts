@@ -1,17 +1,27 @@
 import { NextResponse } from "next/server";
 import { deepResearch } from "@/lib/valyu";
+import { isSelfHostedMode } from "@/lib/app-mode";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { topic, type } = body;
+    const { topic, type, accessToken } = body;
 
     if (!topic) {
       return NextResponse.json(
         { error: "Research topic is required" },
         { status: 400 }
+      );
+    }
+
+    // In valyu mode, require authentication
+    const selfHosted = isSelfHostedMode();
+    if (!selfHosted && !accessToken) {
+      return NextResponse.json(
+        { error: "Authentication required", requiresReauth: true },
+        { status: 401 }
       );
     }
 
@@ -34,7 +44,7 @@ export async function POST(request: Request) {
         enhancedQuery = `comprehensive analysis ${topic}`;
     }
 
-    const research = await deepResearch(enhancedQuery);
+    const research = await deepResearch(enhancedQuery, { accessToken: accessToken || undefined });
 
     return NextResponse.json({
       report: {

@@ -338,10 +338,9 @@ interface EntityStreamChunk {
 }
 
 export async function* streamEntityResearch(
-  entityName: string
+  entityName: string,
+  options?: EntityOptions
 ): AsyncGenerator<EntityStreamChunk> {
-  const valyu = getValyuClient();
-
   const query = `Provide a comprehensive overview of ${entityName}. Include:
 - What/who they are and their background
 - Key facts, history, and significance
@@ -350,6 +349,52 @@ export async function* streamEntityResearch(
 - Geographic presence and areas of operation
 
 Be thorough but concise. Focus on verified facts from reliable sources.`;
+
+  // Use OAuth proxy if accessToken is provided
+  if (options?.accessToken) {
+    try {
+      const proxyResult = await callViaProxy(
+        "/v1/answer",
+        {
+          query,
+          excluded_sources: ["wikipedia.org"],
+        },
+        options.accessToken
+      );
+
+      if (!proxyResult.success) {
+        yield {
+          type: "error",
+          error: proxyResult.error || "Failed to get entity research",
+        };
+        return;
+      }
+
+      const data = proxyResult.data;
+      if (data.contents) {
+        yield { type: "content", content: data.contents };
+      }
+      if (data.search_results) {
+        yield {
+          type: "sources",
+          sources: data.search_results.map((s: { title?: string; url?: string }) => ({
+            title: s.title || "Source",
+            url: s.url || "",
+          })),
+        };
+      }
+      yield { type: "done" };
+    } catch (error) {
+      yield {
+        type: "error",
+        error: error instanceof Error ? error.message : "Unknown error occurred",
+      };
+    }
+    return;
+  }
+
+  // Self-hosted mode: use SDK with streaming
+  const valyu = getValyuClient();
 
   try {
     const stream = await valyu.answer(query, {
@@ -443,10 +488,117 @@ export interface DeepResearchResult {
   pdfUrl?: string;
 }
 
+async function deepResearchViaProxy(
+  topic: string,
+  accessToken: string
+): Promise<DeepResearchResult> {
+  const query = `Intelligence dossier on ${topic}. Include:
+- Background and overview
+- Key locations and geographic presence
+- Organizational structure and leadership
+- Related entities, allies, and adversaries
+- Recent activities and incidents
+- Threat assessment and capabilities
+- Timeline of significant events`;
+
+  // Create task via proxy
+  const createResult = await callViaProxy(
+    "/v1/deepresearch/tasks",
+    {
+      query,
+      mode: "fast",
+      output_formats: ["markdown", "pdf"],
+      deliverables: [
+        {
+          type: "csv",
+          description: `Intelligence data export for ${topic} with columns for locations, entities, relationships, events, and sources`,
+          columns: ["Category", "Name", "Description", "Location", "Coordinates", "Date", "Relationship", "Source URL"],
+          include_headers: true,
+        },
+        {
+          type: "pptx",
+          description: `Executive intelligence briefing on ${topic} with key findings, threat assessment, and recommendations`,
+          slides: 8,
+        },
+      ],
+    },
+    accessToken
+  );
+
+  if (!createResult.success || !createResult.data?.deepresearch_id) {
+    console.error("Failed to create deep research task via proxy:", createResult.error);
+    return { summary: "Research failed. Please try again.", sources: [] };
+  }
+
+  const taskId = createResult.data.deepresearch_id;
+
+  // Poll for completion
+  const maxAttempts = 120; // 10 minutes at 5 second intervals
+  for (let i = 0; i < maxAttempts; i++) {
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+
+    const statusResponse = await fetch(OAUTH_PROXY_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        path: `/v1/deepresearch/tasks/${taskId}/status`,
+        method: "GET",
+      }),
+    });
+
+    if (!statusResponse.ok) {
+      continue;
+    }
+
+    const statusData = await statusResponse.json();
+
+    if (statusData.status === "completed") {
+      const deliverables: DeepResearchResult["deliverables"] = {};
+      if (statusData.deliverables) {
+        for (const d of statusData.deliverables) {
+          if (d.status === "completed" && d.url) {
+            if (d.type === "csv") {
+              deliverables.csv = { url: d.url, title: d.title };
+            } else if (d.type === "pptx") {
+              deliverables.pptx = { url: d.url, title: d.title };
+            }
+          }
+        }
+      }
+
+      return {
+        summary: typeof statusData.output === "string" ? statusData.output : JSON.stringify(statusData.output),
+        sources: (statusData.sources || []).map((s: { title?: string; url?: string }) => ({
+          title: s.title || "Source",
+          url: s.url || "",
+        })),
+        deliverables: Object.keys(deliverables).length > 0 ? deliverables : undefined,
+        pdfUrl: statusData.pdf_url,
+      };
+    }
+
+    if (statusData.status === "failed") {
+      console.error("Deep research failed:", statusData.error);
+      return { summary: "Research did not complete successfully.", sources: [] };
+    }
+  }
+
+  return { summary: "Research timed out.", sources: [] };
+}
+
 export async function deepResearch(
   topic: string,
   options?: EntityOptions
 ): Promise<DeepResearchResult> {
+  // Use OAuth proxy if accessToken is provided
+  if (options?.accessToken) {
+    return deepResearchViaProxy(topic, options.accessToken);
+  }
+
+  // Self-hosted mode: use API key directly
   try {
     const valyu = getValyuClient();
 
@@ -938,26 +1090,48 @@ export async function getCountryConflicts(
   country: string,
   options?: EntityOptions
 ): Promise<{ past: ConflictResult; current: ConflictResult }> {
-  const valyu = getValyuClient();
+  const pastQuery = `List all major historical wars, conflicts, and military engagements that ${country} has been involved in throughout history (excluding any ongoing conflicts). Include the dates, opposing parties, and brief outcomes for each conflict. Focus on conflicts that have ended.`;
+  const currentQuery = `List all current, ongoing, or brewing conflicts, wars, military tensions, and security threats involving ${country} as of 2024-2026. Include active military operations, border disputes, civil unrest, terrorism threats, and geopolitical tensions. If there are no current conflicts, state that clearly.`;
 
   type AnswerResponse = {
     contents?: string;
     search_results?: Array<{ title?: string; url?: string }>;
   };
 
+  // Use OAuth proxy if accessToken is provided
+  if (options?.accessToken) {
+    const [pastResult, currentResult] = await Promise.all([
+      callViaProxy("/v1/answer", { query: pastQuery, excluded_sources: ["wikipedia.org"] }, options.accessToken),
+      callViaProxy("/v1/answer", { query: currentQuery, excluded_sources: ["wikipedia.org"] }, options.accessToken),
+    ]);
+
+    const pastData = pastResult.success ? pastResult.data : {};
+    const currentData = currentResult.success ? currentResult.data : {};
+
+    return {
+      past: {
+        answer: pastData.contents || "No historical conflict information found.",
+        sources: (pastData.search_results || []).map((s: { title?: string; url?: string }) => ({
+          title: s.title || "Source",
+          url: s.url || "",
+        })),
+      },
+      current: {
+        answer: currentData.contents || "No current conflict information found.",
+        sources: (currentData.search_results || []).map((s: { title?: string; url?: string }) => ({
+          title: s.title || "Source",
+          url: s.url || "",
+        })),
+      },
+    };
+  }
+
+  // Self-hosted mode: use SDK directly
+  const valyu = getValyuClient();
+
   const [pastResponse, currentResponse] = await Promise.all([
-    valyu.answer(
-      `List all major historical wars, conflicts, and military engagements that ${country} has been involved in throughout history (excluding any ongoing conflicts). Include the dates, opposing parties, and brief outcomes for each conflict. Focus on conflicts that have ended.`,
-      {
-        excludedSources: ["wikipedia.org"],
-      }
-    ),
-    valyu.answer(
-      `List all current, ongoing, or brewing conflicts, wars, military tensions, and security threats involving ${country} as of 2024-2026. Include active military operations, border disputes, civil unrest, terrorism threats, and geopolitical tensions. If there are no current conflicts, state that clearly.`,
-      {
-        excludedSources: ["wikipedia.org"],
-      }
-    ),
+    valyu.answer(pastQuery, { excludedSources: ["wikipedia.org"] }),
+    valyu.answer(currentQuery, { excludedSources: ["wikipedia.org"] }),
   ]);
 
   const pastData = pastResponse as AnswerResponse;
@@ -989,13 +1163,72 @@ export type ConflictStreamChunk = {
 };
 
 export async function* streamCountryConflicts(
-  country: string
+  country: string,
+  options?: EntityOptions
 ): AsyncGenerator<ConflictStreamChunk> {
-  const valyu = getValyuClient();
-
   const currentQuery = `List all current, ongoing, or brewing conflicts, wars, military tensions, and security threats involving ${country} as of 2024-2026. Include active military operations, border disputes, civil unrest, terrorism threats, and geopolitical tensions. If there are no current conflicts, state that clearly.`;
 
   const pastQuery = `List all major historical wars, conflicts, and military engagements that ${country} has been involved in throughout history (excluding any ongoing conflicts). Include the dates, opposing parties, and brief outcomes for each conflict. Focus on conflicts that have ended.`;
+
+  // Use OAuth proxy if accessToken is provided (non-streaming)
+  if (options?.accessToken) {
+    try {
+      // Current conflicts via proxy
+      const currentResult = await callViaProxy(
+        "/v1/answer",
+        { query: currentQuery, excluded_sources: ["wikipedia.org"] },
+        options.accessToken
+      );
+
+      if (currentResult.success && currentResult.data) {
+        if (currentResult.data.contents) {
+          yield { type: "current_content", content: currentResult.data.contents };
+        }
+        if (currentResult.data.search_results) {
+          yield {
+            type: "current_sources",
+            sources: currentResult.data.search_results.map((s: { title?: string; url?: string }) => ({
+              title: s.title || "Source",
+              url: s.url || "",
+            })),
+          };
+        }
+      }
+
+      // Past conflicts via proxy
+      const pastResult = await callViaProxy(
+        "/v1/answer",
+        { query: pastQuery, excluded_sources: ["wikipedia.org"] },
+        options.accessToken
+      );
+
+      if (pastResult.success && pastResult.data) {
+        if (pastResult.data.contents) {
+          yield { type: "past_content", content: pastResult.data.contents };
+        }
+        if (pastResult.data.search_results) {
+          yield {
+            type: "past_sources",
+            sources: pastResult.data.search_results.map((s: { title?: string; url?: string }) => ({
+              title: s.title || "Source",
+              url: s.url || "",
+            })),
+          };
+        }
+      }
+
+      yield { type: "done" };
+    } catch (error) {
+      yield {
+        type: "error",
+        error: error instanceof Error ? error.message : "Unknown error occurred",
+      };
+    }
+    return;
+  }
+
+  // Self-hosted mode: use SDK with streaming
+  const valyu = getValyuClient();
 
   try {
     const currentStream = await valyu.answer(currentQuery, {
