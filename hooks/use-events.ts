@@ -26,14 +26,12 @@ export function useEvents(options: UseEventsOptions = {}) {
     isLoading,
     error,
     setEvents,
-    addEvents,
     setLoading,
     setError,
   } = useEventsStore();
 
   const { getAccessToken, signOut, isAuthenticated } = useAuthStore();
   const [requiresSignIn, setRequiresSignIn] = useState(false);
-  const [hasFetched, setHasFetched] = useState(false);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -41,6 +39,13 @@ export function useEvents(options: UseEventsOptions = {}) {
 
   // Fetch events from API
   const fetchEvents = useCallback(async () => {
+    // In valyu mode, require sign-in for all event fetches
+    if (requiresAuth && !isAuthenticated) {
+      setRequiresSignIn(true);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -69,24 +74,19 @@ export function useEvents(options: UseEventsOptions = {}) {
 
       const newEvents: ThreatEvent[] = data.events || [];
       setEvents(newEvents);
-      setHasFetched(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error occurred");
     } finally {
       setLoading(false);
     }
-  }, [queries, setEvents, setLoading, setError, getAccessToken, signOut]);
+  }, [queries, setEvents, setLoading, setError, getAccessToken, signOut, requiresAuth, isAuthenticated]);
 
-  // Manual refresh - requires sign-in after first load
+  // Manual refresh
   const refresh = useCallback(() => {
-    if (requiresAuth && hasFetched && !isAuthenticated) {
-      setRequiresSignIn(true);
-      return;
-    }
     fetchEvents();
-  }, [fetchEvents, requiresAuth, hasFetched, isAuthenticated]);
+  }, [fetchEvents]);
 
-  // Initial fetch on mount
+  // Initial fetch on mount (or when auth changes)
   useEffect(() => {
     fetchEvents();
   }, [fetchEvents]);
