@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getEntityResearch, deepResearch, searchEntityLocations, streamEntityResearch } from "@/lib/valyu";
+import { isSelfHostedMode } from "@/lib/app-mode";
 
 export const dynamic = "force-dynamic";
 import { geocodeLocationsFromText } from "@/lib/geocoding";
@@ -9,11 +10,21 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const name = searchParams.get("name");
   const stream = searchParams.get("stream") === "true";
+  const accessToken = searchParams.get("accessToken");
 
   if (!name) {
     return NextResponse.json(
       { error: "Entity name is required" },
       { status: 400 }
+    );
+  }
+
+  // In valyu mode, require authentication
+  const selfHosted = isSelfHostedMode();
+  if (!selfHosted && !accessToken) {
+    return NextResponse.json(
+      { error: "Authentication required", requiresReauth: true },
+      { status: 401 }
     );
   }
 
@@ -24,7 +35,7 @@ export async function GET(request: Request) {
     const readable = new ReadableStream({
       async start(controller) {
         try {
-          for await (const chunk of streamEntityResearch(name)) {
+          for await (const chunk of streamEntityResearch(name, { accessToken: accessToken || undefined })) {
             const data = `data: ${JSON.stringify(chunk)}\n\n`;
             controller.enqueue(encoder.encode(data));
           }
@@ -53,7 +64,7 @@ export async function GET(request: Request) {
   const deep = searchParams.get("deep") === "true";
 
   try {
-    const entityData = await getEntityResearch(name);
+    const entityData = await getEntityResearch(name, { accessToken: accessToken || undefined });
 
     if (!entityData) {
       return NextResponse.json(
@@ -73,7 +84,7 @@ export async function GET(request: Request) {
     };
 
     if (deep) {
-      const research = await deepResearch(name);
+      const research = await deepResearch(name, { accessToken: accessToken || undefined });
       profile.researchSummary = research.summary;
     }
 
@@ -90,7 +101,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, includeDeepResearch } = body;
+    const { name, includeDeepResearch, accessToken } = body;
 
     if (!name) {
       return NextResponse.json(
@@ -99,9 +110,18 @@ export async function POST(request: Request) {
       );
     }
 
+    // In valyu mode, require authentication
+    const selfHosted = isSelfHostedMode();
+    if (!selfHosted && !accessToken) {
+      return NextResponse.json(
+        { error: "Authentication required", requiresReauth: true },
+        { status: 401 }
+      );
+    }
+
     const [entityData, locationContent] = await Promise.all([
-      getEntityResearch(name),
-      searchEntityLocations(name),
+      getEntityResearch(name, { accessToken: accessToken || undefined }),
+      searchEntityLocations(name, { accessToken: accessToken || undefined }),
     ]);
 
     if (!entityData) {
@@ -137,7 +157,7 @@ export async function POST(request: Request) {
     let pdfUrl = undefined;
 
     if (includeDeepResearch) {
-      const research = await deepResearch(name);
+      const research = await deepResearch(name, { accessToken: accessToken || undefined });
       profile.researchSummary = research.summary;
       deliverables = research.deliverables;
       pdfUrl = research.pdfUrl;

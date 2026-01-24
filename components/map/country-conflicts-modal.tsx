@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { Favicon } from "@/components/ui/favicon";
 import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/stores/auth-store";
 
 interface CountryConflictsModalProps {
   country: string | null;
@@ -102,6 +103,7 @@ export function CountryConflictsModal({
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabType>("current");
   const eventSourceRef = useRef<EventSource | null>(null);
+  const { accessToken } = useAuthStore();
 
   useEffect(() => {
     if (!country) {
@@ -130,9 +132,15 @@ export function CountryConflictsModal({
       past: { conflicts: "", sources: [] },
     });
 
-    const eventSource = new EventSource(
-      `/api/countries/conflicts?country=${encodeURIComponent(country)}&stream=true`
-    );
+    // Build URL with access token if available
+    const url = new URL(`/api/countries/conflicts`, window.location.origin);
+    url.searchParams.set("country", country);
+    url.searchParams.set("stream", "true");
+    if (accessToken) {
+      url.searchParams.set("accessToken", accessToken);
+    }
+
+    const eventSource = new EventSource(url.toString());
     eventSourceRef.current = eventSource;
 
     eventSource.onmessage = (event) => {
@@ -232,7 +240,7 @@ export function CountryConflictsModal({
     return () => {
       eventSource.close();
     };
-  }, [country, onLoadingChange]);
+  }, [country, onLoadingChange, accessToken]);
 
   const isStreaming =
     (activeTab === "current" && isStreamingCurrent) ||
