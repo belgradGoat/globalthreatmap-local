@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
-import { getCountryConflicts, streamCountryConflicts } from "@/lib/valyu";
+import { getCountryConflicts as valyuGetConflicts, streamCountryConflicts as valyuStreamConflicts } from "@/lib/valyu";
+import { getCountryConflicts as localGetConflicts, streamCountryConflicts as localStreamConflicts, isLocalIntelEnabled } from "@/lib/local-intel";
 import { isSelfHostedMode } from "@/lib/app-mode";
+
+// Use local intel or Valyu based on configuration
+const getCountryConflicts = isLocalIntelEnabled() ? localGetConflicts : valyuGetConflicts;
+const streamCountryConflicts = isLocalIntelEnabled() ? localStreamConflicts : valyuStreamConflicts;
 
 export const dynamic = "force-dynamic";
 

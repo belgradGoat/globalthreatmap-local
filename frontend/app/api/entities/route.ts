@@ -1,10 +1,29 @@
 import { NextResponse } from "next/server";
-import { getEntityResearch, deepResearch, searchEntityLocations, streamEntityResearch } from "@/lib/valyu";
+import {
+  getEntityResearch as valyuGetEntity,
+  deepResearch as valyuDeepResearch,
+  searchEntityLocations as valyuSearchLocations,
+  streamEntityResearch as valyuStreamEntity
+} from "@/lib/valyu";
+import {
+  getEntityResearch as localGetEntity,
+  deepResearch as localDeepResearch,
+  searchEntityLocations as localSearchLocations,
+  streamEntityResearch as localStreamEntity,
+  isLocalIntelEnabled
+} from "@/lib/local-intel";
 import { isSelfHostedMode } from "@/lib/app-mode";
 
 export const dynamic = "force-dynamic";
 import { geocodeLocationsFromText } from "@/lib/geocoding";
 import type { EntityProfile, GeoLocation } from "@/types";
+
+// Use local intel or Valyu based on configuration
+const useLocal = isLocalIntelEnabled();
+const getEntityResearch = useLocal ? localGetEntity : valyuGetEntity;
+const deepResearch = useLocal ? localDeepResearch : valyuDeepResearch;
+const searchEntityLocations = useLocal ? localSearchLocations : valyuSearchLocations;
+const streamEntityResearch = useLocal ? localStreamEntity : valyuStreamEntity;
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

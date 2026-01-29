@@ -1,0 +1,17 @@
+{
+  "name": "globalthreatmap-local-backend",
+  "version": "1.0.0",
+  "description": "News aggregation backend for GlobalThreatMap-Local",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "rss-parser": "^3.13.0"
+  }
+}

@@ -18,6 +18,7 @@ export const EventCategory = z.enum([
   "piracy",
   "infrastructure",
   "commodities",
+  "politics",
 ]);
 export type EventCategory = z.infer<typeof EventCategory>;
 
@@ -102,4 +103,5 @@ export const categoryIcons: Record<EventCategory, string> = {
   piracy: "Anchor",
   infrastructure: "Droplets",
   commodities: "ShoppingCart",
+  politics: "Vote",
 };

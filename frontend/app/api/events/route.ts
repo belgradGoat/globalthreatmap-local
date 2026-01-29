@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
-import { searchEvents } from "@/lib/valyu";
+import { searchEvents as valyuSearchEvents } from "@/lib/valyu";
+import { searchEvents as localSearchEvents, isLocalIntelEnabled } from "@/lib/local-intel";
 import { isSelfHostedMode } from "@/lib/app-mode";
 import { classifyEvent, isAIClassificationEnabled } from "@/lib/ai-classifier";
 import { generateEventId } from "@/lib/utils";
 import { extractKeywords, extractEntities } from "@/lib/event-classifier";
 import type { ThreatEvent } from "@/types";
+
+// Use local intel or Valyu based on configuration
+const searchEvents = isLocalIntelEnabled() ? localSearchEvents : valyuSearchEvents;
 
 export const dynamic = "force-dynamic";
 

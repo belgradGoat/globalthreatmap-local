@@ -24,9 +24,12 @@ import {
   Anchor,
   Droplets,
   ShoppingCart,
+  Vote,
 } from "lucide-react";
 
-const categoryIconMap = {
+import type { EventCategory } from "@/types";
+
+const categoryIconMap: Record<EventCategory, typeof Swords> = {
   conflict: Swords,
   protest: Users,
   disaster: CloudLightning,
@@ -41,6 +44,7 @@ const categoryIconMap = {
   piracy: Anchor,
   infrastructure: Droplets,
   commodities: ShoppingCart,
+  politics: Vote,
 };
 
 interface EventCardProps {

@@ -1,5 +1,5 @@
 # Dependencies
-/node_modules
+node_modules/
 /.pnp
 .pnp.js
 
@@ -7,11 +7,12 @@
 /coverage
 
 # Next.js
-/.next/
+.next/
 /out/
 
 # Production
 /build
+/dist
 
 # Misc
 .DS_Store
@@ -25,6 +26,7 @@ yarn-error.log*
 # Local env files
 .env*.local
 .env
+!.env.example
 
 # Vercel
 .vercel
@@ -34,6 +36,12 @@ yarn-error.log*
 next-env.d.ts
 
 # IDE
-.idea
-.vscode
-.claude
+.idea/
+.vscode/
+.claude/
+
+# Orchestrator state (development artifacts)
+orchestrator/state/
+
+# Docs (keep only essential docs in repo)
+Docs/

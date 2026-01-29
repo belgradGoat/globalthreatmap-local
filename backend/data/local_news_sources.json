@@ -1,0 +1,4207 @@
+{
+  "eastern_europe": {
+    "poland": [
+      {
+        "name": "Defence24",
+        "url": "https://defence24.pl/feed",
+        "language": "pl",
+        "bias": "center",
+        "focus": "military-security"
+      },
+      {
+        "name": "BiznesAlert.pl",
+        "url": "https://biznesalert.pl/feed/",
+        "language": "pl",
+        "bias": "center",
+        "focus": "energy-security"
+      },
+      {
+        "name": "Gazeta Wyborcza",
+        "url": "https://wiadomosci.gazeta.pl/pub/rss/wiadomosci.xml",
+        "language": "pl",
+        "bias": "liberal"
+      },
+      {
+        "name": "Polsat News",
+        "url": "https://www.polsatnews.pl/rss/wszystkie.xml",
+        "language": "pl",
+        "bias": "center"
+      },
+      {
+        "name": "RMF24",
+        "url": "https://www.rmf24.pl/feed",
+        "language": "pl",
+        "bias": "center"
+      },
+      {
+        "name": "Onet Wiadomości",
+        "url": "https://wiadomosci.onet.pl/rss",
+        "language": "pl",
+        "bias": "center"
+      },
+      {
+        "name": "Wirtualna Polska",
+        "url": "https://wiadomosci.wp.pl/rss.xml",
+        "language": "pl",
+        "bias": "center"
+      }
+    ],
+    "ukraine": [
+      {
+        "name": "Ukrainska Pravda",
+        "url": "https://www.pravda.com.ua/rss/",
+        "language": "uk",
+        "bias": "center"
+      },
+      {
+        "name": "Euromaidan Press",
+        "url": "https://euromaidanpress.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Unian",
+        "url": "https://rss.unian.net/site/news_ukr.rss",
+        "language": "uk",
+        "bias": "center"
+      },
+      {
+        "name": "Interfax Ukraine",
+        "url": "https://en.interfax.com.ua/news/last.rss",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Ukrinform",
+        "url": "https://www.ukrinform.ua/rss/block-lastnews",
+        "language": "uk",
+        "bias": "state"
+      },
+      {
+        "name": "TSN.ua",
+        "url": "https://tsn.ua/rss/full.rss",
+        "language": "uk",
+        "bias": "independent"
+      },
+      {
+        "name": "NV.ua",
+        "url": "https://nv.ua/rss/all.xml",
+        "language": "uk",
+        "bias": "independent"
+      }
+    ],
+    "russia": [
+      {
+        "name": "TASS",
+        "url": "https://tass.com/rss/v2.xml",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "RIA Novosti",
+        "url": "https://ria.ru/export/rss2/index.xml",
+        "language": "ru",
+        "bias": "state"
+      },
+      {
+        "name": "RT Russia",
+        "url": "https://www.rt.com/rss/",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Interfax Russia",
+        "url": "https://www.interfax.ru/rss.asp",
+        "language": "ru",
+        "bias": "center"
+      },
+      {
+        "name": "Meduza",
+        "url": "https://meduza.io/rss/en/all",
+        "language": "en",
+        "bias": "independent"
+      }
+    ],
+        "czech": [
+      {
+        "name": "iDNES.cz",
+        "url": "http://servis.idnes.cz/rss.aspx",
+        "language": "cs",
+        "bias": "center"
+      },
+      {
+        "name": "Novinky.cz",
+        "url": "https://www.novinky.cz/rss",
+        "language": "cs",
+        "bias": "center"
+      },
+      {
+        "name": "Aktuálně.cz",
+        "url": "https://www.aktualne.cz/rss/",
+        "language": "cs",
+        "bias": "center"
+      },
+      {
+        "name": "ČT24",
+        "url": "https://ct24.ceskatelevize.cz/rss/hlavni-zpravy",
+        "language": "cs",
+        "bias": "state"
+      }
+    ],
+    "hungary": [
+      {
+        "name": "Index.hu",
+        "url": "https://index.hu/24ora/rss/",
+        "language": "hu",
+        "bias": "center"
+      },
+      {
+        "name": "HVG",
+        "url": "https://hvg.hu/rss",
+        "language": "hu",
+        "bias": "liberal"
+      },
+      {
+        "name": "444.hu",
+        "url": "https://444.hu/feed",
+        "language": "hu",
+        "bias": "liberal"
+      },
+      {
+        "name": "Telex.hu",
+        "url": "https://telex.hu/rss",
+        "language": "hu",
+        "bias": "center"
+      }
+    ],
+    "estonia": [
+      {
+        "name": "ERR",
+        "url": "https://www.err.ee/rss",
+        "language": "et",
+        "bias": "state"
+      },
+      {
+        "name": "ERR News",
+        "url": "https://news.err.ee/rss",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "ERR Russian",
+        "url": "https://rus.err.ee/rss",
+        "language": "ru",
+        "bias": "state"
+      },
+      {
+        "name": "Postimees",
+        "url": "https://www.postimees.ee/rss",
+        "language": "et",
+        "bias": "center"
+      },
+      {
+        "name": "Õhtuleht",
+        "url": "https://www.ohtuleht.ee/rss",
+        "language": "et",
+        "bias": "center"
+      },
+      {
+        "name": "Äripäev",
+        "url": "https://www.aripaev.ee/rss",
+        "language": "et",
+        "bias": "center",
+        "focus": "business"
+      },
+      {
+        "name": "The Baltic Times",
+        "url": "https://www.baltictimes.com/rss/",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "latvia": [
+      {
+        "name": "LSM",
+        "url": "https://www.lsm.lv/rss/",
+        "language": "lv",
+        "bias": "state"
+      },
+      {
+        "name": "LSM English",
+        "url": "https://eng.lsm.lv/rss/",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Delfi Latvia",
+        "url": "https://www.delfi.lv/rss/index.xml",
+        "language": "lv",
+        "bias": "center"
+      },
+      {
+        "name": "Apollo",
+        "url": "https://www.apollo.lv/rss",
+        "language": "lv",
+        "bias": "center"
+      },
+      {
+        "name": "Diena",
+        "url": "https://www.diena.lv/rss/",
+        "language": "lv",
+        "bias": "center"
+      },
+      {
+        "name": "IR.lv",
+        "url": "https://ir.lv/rss",
+        "language": "lv",
+        "bias": "liberal"
+      },
+      {
+        "name": "LA.lv",
+        "url": "https://www.la.lv/feed",
+        "language": "lv",
+        "bias": "conservative"
+      },
+      {
+        "name": "Baltic News Network",
+        "url": "https://bnn-news.com/feed",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "lithuania": [
+      {
+        "name": "LRT",
+        "url": "https://www.lrt.lt/?rss",
+        "language": "lt",
+        "bias": "state"
+      },
+      {
+        "name": "Delfi Lithuania",
+        "url": "https://feed.delfi.lt/v2/channel/global-lt?format=rss",
+        "language": "lt",
+        "bias": "center"
+      },
+      {
+        "name": "15min.lt",
+        "url": "https://www.15min.lt/rss",
+        "language": "lt",
+        "bias": "center"
+      },
+      {
+        "name": "Lietuvos Rytas",
+        "url": "https://www.lrytas.lt/rss",
+        "language": "lt",
+        "bias": "center"
+      },
+      {
+        "name": "Verslo žinios",
+        "url": "https://www.vz.lt/rss",
+        "language": "lt",
+        "bias": "center",
+        "focus": "business"
+      },
+      {
+        "name": "Baltic Times",
+        "url": "https://www.baltictimes.com/rss/",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "romania": [
+      {
+        "name": "Digi24",
+        "url": "https://www.digi24.ro/rss",
+        "language": "ro",
+        "bias": "center"
+      },
+      {
+        "name": "Hotnews.ro",
+        "url": "https://hotnews.ro/feed",
+        "language": "ro",
+        "bias": "center"
+      },
+      {
+        "name": "Adevarul",
+        "url": "https://adevarul.ro/rss/index",
+        "language": "ro",
+        "bias": "center"
+      },
+      {
+        "name": "Stirile Pro TV",
+        "url": "https://stirileprotv.ro/rss",
+        "language": "ro",
+        "bias": "center"
+      },
+      {
+        "name": "Libertatea",
+        "url": "https://www.libertatea.ro/feed",
+        "language": "ro",
+        "bias": "center"
+      },
+      {
+        "name": "G4Media",
+        "url": "https://www.g4media.ro/feed",
+        "language": "ro",
+        "bias": "center-left"
+      },
+      {
+        "name": "News.ro",
+        "url": "https://www.news.ro/rss",
+        "language": "ro",
+        "bias": "center"
+      }
+    ],
+    "bulgaria": [
+      {
+        "name": "Mediapool.bg",
+        "url": "https://www.mediapool.bg/rss",
+        "language": "bg",
+        "bias": "independent"
+      },
+      {
+        "name": "24chasa.bg",
+        "url": "https://www.24chasa.bg/rss",
+        "language": "bg",
+        "bias": "center"
+      },
+      {
+        "name": "Standart News",
+        "url": "https://www.standartnews.com/rss",
+        "language": "bg",
+        "bias": "center"
+      },
+      {
+        "name": "BTA (Bulgarian News Agency)",
+        "url": "https://www.bta.bg/bg/rss/free",
+        "language": "bg",
+        "bias": "state"
+      },
+      {
+        "name": "Nova TV",
+        "url": "https://nova.bg/rss/latest",
+        "language": "bg",
+        "bias": "center"
+      }
+    ],
+    "slovakia": [
+      {
+        "name": "SME.sk",
+        "url": "https://www.sme.sk/rss",
+        "language": "sk",
+        "bias": "center"
+      },
+      {
+        "name": "Denník N",
+        "url": "https://dennikn.sk/feed/",
+        "language": "sk",
+        "bias": "liberal"
+      },
+      {
+        "name": "Aktuality.sk",
+        "url": "https://www.aktuality.sk/rss/",
+        "language": "sk",
+        "bias": "center"
+      },
+      {
+        "name": "TERAZ.sk",
+        "url": "https://www.teraz.sk/rss/slovensko.rss",
+        "language": "sk",
+        "bias": "center"
+      },
+      {
+        "name": "SITA.sk",
+        "url": "https://sita.sk/feed/",
+        "language": "sk",
+        "bias": "center"
+      },
+      {
+        "name": "Postoj.sk",
+        "url": "https://www.postoj.sk/rss",
+        "language": "sk",
+        "bias": "conservative"
+      },
+      {
+        "name": "Hlavné správy",
+        "url": "https://www.hlavnespravy.sk/rss",
+        "language": "sk",
+        "bias": "conservative"
+      }
+    ],
+    "moldova": [
+      {
+        "name": "Ziarul de Gardă",
+        "url": "https://www.zdg.md/feed/",
+        "language": "ro",
+        "bias": "center"
+      },
+      {
+        "name": "NewsMaker",
+        "url": "https://newsmaker.md/feed",
+        "language": "ru",
+        "bias": "center"
+      },
+      {
+        "name": "TV8",
+        "url": "https://tv8.md/feed",
+        "language": "ro",
+        "bias": "center"
+      },
+      {
+        "name": "Locals.md",
+        "url": "https://locals.md/feed/",
+        "language": "ru",
+        "bias": "center"
+      },
+      {
+        "name": "Diez",
+        "url": "https://diez.md/feed/",
+        "language": "ro",
+        "bias": "center"
+      },
+      {
+        "name": "Balti.md",
+        "url": "https://balti.md/feed/",
+        "language": "ro",
+        "bias": "state"
+      }
+    ],
+    "georgia": [
+      {
+        "name": "Civil Georgia",
+        "url": "https://civil.ge/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "JAMnews",
+        "url": "https://jam-news.net/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "OC Media",
+        "url": "https://oc-media.org/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Netgazeti",
+        "url": "https://netgazeti.ge/feed/",
+        "language": "ka",
+        "bias": "liberal"
+      },
+      {
+        "name": "Publika",
+        "url": "https://publika.ge/feed/",
+        "language": "ka",
+        "bias": "center"
+      }
+    ],
+    "serbia": [
+      {
+        "name": "N1 Serbia",
+        "url": "https://n1info.rs/feed/",
+        "language": "sr",
+        "bias": "center"
+      },
+      {
+        "name": "N1 Serbia English",
+        "url": "https://n1info.rs/english/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Blic",
+        "url": "https://www.blic.rs/rss/najnovije",
+        "language": "sr",
+        "bias": "center"
+      },
+      {
+        "name": "Danas",
+        "url": "https://www.danas.rs/feed/",
+        "language": "sr",
+        "bias": "liberal"
+      },
+      {
+        "name": "Kurir",
+        "url": "https://www.kurir.rs/rss",
+        "language": "sr",
+        "bias": "conservative"
+      },
+      {
+        "name": "Telegraf",
+        "url": "https://www.telegraf.rs/rss",
+        "language": "sr",
+        "bias": "center"
+      },
+      {
+        "name": "Politika",
+        "url": "https://www.politika.rs/rss/",
+        "language": "sr",
+        "bias": "center"
+      },
+      {
+        "name": "CINS",
+        "url": "https://www.cins.rs/feed/",
+        "language": "sr",
+        "bias": "liberal"
+      }
+    ],
+    "croatia": [
+      {
+        "name": "Index.hr",
+        "url": "https://www.index.hr/rss",
+        "language": "hr",
+        "bias": "center"
+      },
+      {
+        "name": "24sata",
+        "url": "https://www.24sata.hr/feeds/najnovije.xml",
+        "language": "hr",
+        "bias": "center"
+      },
+      {
+        "name": "N1 Croatia",
+        "url": "https://n1info.hr/feed/",
+        "language": "hr",
+        "bias": "center"
+      },
+      {
+        "name": "Telegram.hr",
+        "url": "https://www.telegram.hr/feed/",
+        "language": "hr",
+        "bias": "liberal"
+      },
+      {
+        "name": "Net.hr",
+        "url": "https://net.hr/najnovije/rss.xml",
+        "language": "hr",
+        "bias": "center"
+      },
+      {
+        "name": "Croatia Week",
+        "url": "https://www.croatiaweek.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Poslovni Dnevnik",
+        "url": "https://www.poslovni.hr/feed",
+        "language": "hr",
+        "bias": "center",
+        "focus": "business"
+      }
+    ],
+    "slovenia": [
+      {
+        "name": "24ur",
+        "url": "https://www.24ur.com/rss",
+        "language": "sl",
+        "bias": "center"
+      },
+      {
+        "name": "Delo",
+        "url": "https://www.delo.si/rss",
+        "language": "sl",
+        "bias": "liberal"
+      },
+      {
+        "name": "Slovenske Novice",
+        "url": "https://slovenskenovice.delo.si/rss",
+        "language": "sl",
+        "bias": "center"
+      },
+      {
+        "name": "N1 Slovenia",
+        "url": "https://n1info.si/feed/",
+        "language": "sl",
+        "bias": "center"
+      },
+      {
+        "name": "Nova24TV",
+        "url": "https://nova24tv.si/feed/",
+        "language": "sl",
+        "bias": "conservative"
+      },
+      {
+        "name": "Slovenia Times",
+        "url": "https://sloveniatimes.com/feed/",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "bosnia": [
+      {
+        "name": "Klix.ba",
+        "url": "https://www.klix.ba/rss",
+        "language": "bs",
+        "bias": "center"
+      },
+      {
+        "name": "Dnevni Avaz",
+        "url": "https://www.avaz.ba/rss",
+        "language": "bs",
+        "bias": "center"
+      },
+      {
+        "name": "Radio Sarajevo",
+        "url": "https://radiosarajevo.ba/rss",
+        "language": "bs",
+        "bias": "center"
+      },
+      {
+        "name": "Capital.ba",
+        "url": "https://capital.ba/feed/",
+        "language": "bs",
+        "bias": "center"
+      },
+      {
+        "name": "BH Index",
+        "url": "https://www.bh-index.com/feed/",
+        "language": "hr",
+        "bias": "center"
+      },
+      {
+        "name": "BiznisInfo.ba",
+        "url": "https://www.biznisinfo.ba/feed/",
+        "language": "bs",
+        "bias": "center",
+        "focus": "business"
+      },
+      {
+        "name": "Vijesti.ba",
+        "url": "https://www.vijesti.ba/rss/svevijesti",
+        "language": "hr",
+        "bias": "center"
+      }
+    ],
+    "kosovo": [
+      {
+        "name": "Indeksonline",
+        "url": "https://indeksonline.net/feed/",
+        "language": "sq",
+        "bias": "center"
+      },
+      {
+        "name": "Telegrafi",
+        "url": "https://telegrafi.com/feeds/feed.rss",
+        "language": "sq",
+        "bias": "center"
+      },
+      {
+        "name": "Lajmi.net",
+        "url": "https://lajmi.net/feed/",
+        "language": "sq",
+        "bias": "center"
+      },
+      {
+        "name": "Koha.net",
+        "url": "https://www.koha.net/rss/",
+        "language": "sq",
+        "bias": "center"
+      },
+      {
+        "name": "Gazeta Blic",
+        "url": "https://gazetablic.com/feed/",
+        "language": "sq",
+        "bias": "center"
+      },
+      {
+        "name": "Periskopi",
+        "url": "https://www.periskopi.com/feed/",
+        "language": "sq",
+        "bias": "center"
+      },
+      {
+        "name": "Balkan Insight",
+        "url": "https://balkaninsight.com/feed/",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "albania": [
+      {
+        "name": "RTSH",
+        "url": "https://rtsh.al/feed/",
+        "language": "sq",
+        "bias": "state"
+      },
+      {
+        "name": "News24",
+        "url": "https://www.news24.al/feed/",
+        "language": "sq",
+        "bias": "center"
+      },
+      {
+        "name": "Panorama",
+        "url": "https://www.panorama.com.al/feed/",
+        "language": "sq",
+        "bias": "center"
+      },
+      {
+        "name": "BalkanWeb",
+        "url": "https://www.balkanweb.com/feed/",
+        "language": "sq",
+        "bias": "center"
+      },
+      {
+        "name": "Reporter.al",
+        "url": "https://www.reporter.al/feed/",
+        "language": "sq",
+        "bias": "center"
+      },
+      {
+        "name": "Bota.al",
+        "url": "https://bota.al/feed/",
+        "language": "sq",
+        "bias": "center"
+      },
+      {
+        "name": "ABC News Albania",
+        "url": "https://abcnews.al/feed/",
+        "language": "sq",
+        "bias": "center"
+      }
+    ],
+    "north_macedonia": [
+      {
+        "name": "MIA",
+        "url": "https://mia.mk/feed/",
+        "language": "mk",
+        "bias": "state"
+      },
+      {
+        "name": "Meta.mk",
+        "url": "https://meta.mk/feed/",
+        "language": "mk",
+        "bias": "center"
+      },
+      {
+        "name": "Nova Makedonija",
+        "url": "https://novamakedonija.com.mk/feed/",
+        "language": "mk",
+        "bias": "center"
+      },
+      {
+        "name": "Telma",
+        "url": "https://telma.com.mk/feed/",
+        "language": "mk",
+        "bias": "center"
+      },
+      {
+        "name": "360 Stepeni",
+        "url": "https://360stepeni.mk/feed/",
+        "language": "mk",
+        "bias": "center"
+      },
+      {
+        "name": "Portalb",
+        "url": "https://portalb.mk/feed/",
+        "language": "sq",
+        "bias": "center"
+      },
+      {
+        "name": "Alsat",
+        "url": "https://alsat.mk/feed/",
+        "language": "sq",
+        "bias": "center"
+      }
+    ],
+    "montenegro": [
+      {
+        "name": "Vijesti",
+        "url": "https://www.vijesti.me/rss",
+        "language": "sr",
+        "bias": "center"
+      },
+      {
+        "name": "Monitor",
+        "url": "https://www.monitor.co.me/feed/",
+        "language": "sr",
+        "bias": "liberal"
+      },
+      {
+        "name": "IN4S",
+        "url": "https://www.in4s.net/feed/",
+        "language": "sr",
+        "bias": "center"
+      },
+      {
+        "name": "Dan",
+        "url": "https://www.dan.co.me/feed/",
+        "language": "sr",
+        "bias": "center"
+      },
+      {
+        "name": "Balkan Insight Montenegro",
+        "url": "https://balkaninsight.com/category/montenegro/feed/",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "belarus": [
+      {
+        "name": "BelTA English",
+        "url": "https://eng.belta.by/rss/all_news.rss",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Sputnik Belarus",
+        "url": "https://sputnik.by/export/rss2/archive/index.xml",
+        "language": "ru",
+        "bias": "state"
+      },
+      {
+        "name": "Gazetaby",
+        "url": "https://gazetaby.com/rss/",
+        "language": "ru",
+        "bias": "liberal"
+      },
+      {
+        "name": "Motolko Help",
+        "url": "https://motolko.help/feed/",
+        "language": "ru",
+        "bias": "liberal"
+      },
+      {
+        "name": "1863x",
+        "url": "https://1863x.com/feed/",
+        "language": "ru",
+        "bias": "liberal"
+      },
+      {
+        "name": "Probusiness.io",
+        "url": "https://probusiness.io/rss/all.rss",
+        "language": "ru",
+        "bias": "center",
+        "focus": "business"
+      }
+    ]
+  },
+  "middle_east": {
+    "iran": [
+      {
+        "name": "IRNA Persian",
+        "url": "https://www.irna.ir/rss",
+        "language": "fa",
+        "bias": "state"
+      },
+      {
+        "name": "IRNA English",
+        "url": "https://en.irna.ir/rss",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "PressTV",
+        "url": "https://www.presstv.ir/rss.xml",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "PressTV Iran",
+        "url": "https://www.presstv.ir/rss/rss-101.xml",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Kayhan International",
+        "url": "https://kayhan.ir/en/rss/allnews",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "ABNA",
+        "url": "https://en.abna24.com/rss",
+        "language": "en",
+        "bias": "state"
+      }
+    ],
+    "bahrain": [
+      {
+        "name": "Bahrain Mirror (مرآة البحرين)",
+        "url": "http://bahrainmirror.com/rss.xml",
+        "language": "ar",
+        "bias": "independent"
+      },
+      {
+        "name": "Al-Watan Bahrain (صحيفة الوطن)",
+        "url": "https://alwatannews.net/rssFeed/100/108",
+        "language": "ar",
+        "bias": "state"
+      },
+      {
+        "name": "Bahrain This Week",
+        "url": "https://www.bahrainthisweek.com/feed/",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "oman": [
+      {
+        "name": "Muscat Daily",
+        "url": "https://www.muscatdaily.com/feed/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Times of Oman",
+        "url": "https://timesofoman.com/feed",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Al-Roya (الرؤية)",
+        "url": "https://alroya.om/rss",
+        "language": "ar",
+        "bias": "independent"
+      },
+      {
+        "name": "Oman Daily (جريدة عمان)",
+        "url": "https://www.omandaily.om/rssFeed/0",
+        "language": "ar",
+        "bias": "state"
+      }
+    ],
+    "kuwait": [
+      {
+        "name": "Kuwait News (كويت نيوز)",
+        "url": "https://kuwaitnews.com/feed/",
+        "language": "ar",
+        "bias": "independent"
+      },
+      {
+        "name": "Times Kuwait",
+        "url": "https://timeskuwait.com/feed/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "248AM",
+        "url": "https://248am.com/feed/",
+        "language": "en",
+        "bias": "independent"
+      }
+    ],
+    "qatar": [
+      {
+        "name": "Qatar News Agency (QNA) - Arabic",
+        "url": "https://qna.org.qa/ar-QA/Pages/RSS-Feeds/Qatar",
+        "language": "ar",
+        "bias": "state"
+      },
+      {
+        "name": "Qatar News Agency (QNA) - English",
+        "url": "https://qna.org.qa/en/Pages/RSS-Feeds/Qatar",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Al Jazeera Arabic",
+        "url": "https://www.aljazeera.net/aljazeerarss/a7c186be-1baa-4bd4-9d80-a84db769f779/73d0e1b4-532f-45ef-b135-bfdff8b8cab9",
+        "language": "ar",
+        "bias": "center"
+      },
+      {
+        "name": "Marhaba Qatar",
+        "url": "https://marhaba.qa/feed/",
+        "language": "en",
+        "bias": "independent"
+      }
+    ],
+    "iraq": [
+      {
+        "name": "Iraqi News",
+        "url": "https://www.iraqinews.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Kurdistan24 English",
+        "url": "https://www.kurdistan24.net/en/rss.xml",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Kurdistan24 Arabic",
+        "url": "https://www.kurdistan24.net/ar/rss.xml",
+        "language": "ar",
+        "bias": "center"
+      },
+      {
+        "name": "Iraq Business News",
+        "url": "https://www.iraq-businessnews.com/feed/",
+        "language": "en",
+        "bias": "center",
+        "focus": "business"
+      },
+      {
+        "name": "Al-Mada Paper",
+        "url": "https://almadapaper.net/feed/",
+        "language": "ar",
+        "bias": "center"
+      },
+      {
+        "name": "Dijlah TV",
+        "url": "https://dijlah.tv/feed",
+        "language": "ar",
+        "bias": "center"
+      }
+    ],
+    "turkey": [
+      {
+        "name": "Daily Sabah",
+        "url": "https://www.dailysabah.com/rss/all",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Hurriyet Daily News",
+        "url": "https://www.hurriyetdailynews.com/rss/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Turkish Minute",
+        "url": "https://www.turkishminute.com/feed/",
+        "language": "en",
+        "bias": "opposition"
+      },
+      {
+        "name": "Anadolu Agency",
+        "url": "https://www.aa.com.tr/tr/rss/default?cat=guncel",
+        "language": "tr",
+        "bias": "state"
+      },
+      {
+        "name": "TRT Haber",
+        "url": "https://www.trthaber.com/sondakika.rss",
+        "language": "tr",
+        "bias": "state"
+      },
+      {
+        "name": "Hurriyet (Turkish)",
+        "url": "https://www.hurriyet.com.tr/rss/anasayfa",
+        "language": "tr",
+        "bias": "center"
+      },
+      {
+        "name": "Sabah",
+        "url": "https://www.sabah.com.tr/rss/anasayfa.xml",
+        "language": "tr",
+        "bias": "state"
+      },
+      {
+        "name": "Haberturk",
+        "url": "https://www.haberturk.com/rss",
+        "language": "tr",
+        "bias": "center"
+      }
+    ],
+    "yemen": [
+      {
+        "name": "Yemen News Agency",
+        "url": "https://yemennewsagency.com/feed/",
+        "language": "ar",
+        "bias": "state"
+      },
+      {
+        "name": "Aden Press",
+        "url": "http://www.adenpress.news/feed/",
+        "language": "ar",
+        "bias": "independent"
+      },
+      {
+        "name": "YemenExtra",
+        "url": "https://www.yemenextra.net/feed/",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "israel": [
+      {
+        "name": "The Jerusalem Post",
+        "url": "https://www.jpost.com/rss/rssfeedsheadlines.aspx",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Times of Israel",
+        "url": "https://www.timesofisrael.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Ynet English",
+        "url": "https://www.ynetnews.com/Integration/StoryRss2.xml",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Israel Hayom",
+        "url": "https://www.israelhayom.com/feed/",
+        "language": "en",
+        "bias": "conservative"
+      },
+      {
+        "name": "JNS",
+        "url": "https://www.jns.org/feed/",
+        "language": "en",
+        "bias": "conservative"
+      },
+      {
+        "name": "Ynet Hebrew",
+        "url": "https://www.ynet.co.il/Integration/StoryRss2.xml",
+        "language": "he",
+        "bias": "center"
+      },
+      {
+        "name": "Maariv",
+        "url": "https://www.maariv.co.il/rss/rssfeeds",
+        "language": "he",
+        "bias": "center"
+      }
+    ],
+    "uae": [
+      {
+        "name": "Gulf News",
+        "url": "https://gulfnews.com/feed",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Arabian Business",
+        "url": "https://www.arabianbusiness.com/feed",
+        "language": "en",
+        "bias": "center",
+        "focus": "business"
+      }
+    ],
+    "saudi_arabia": [
+      {
+        "name": "Asharq Al-Awsat (English)",
+        "url": "https://english.aawsat.com/feed",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Asharq Al-Awsat (Arabic)",
+        "url": "https://aawsat.com/feed",
+        "language": "ar",
+        "bias": "center"
+      },
+      {
+        "name": "Arab News",
+        "url": "https://www.arabnews.pk/rss.xml",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "lebanon": [
+      {
+        "name": "National News Agency (NNA)",
+        "url": "https://nna-leb.gov.lb/en/rss",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "The961",
+        "url": "https://the961.com/feed/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Al-Manar",
+        "url": "https://english.almanar.com.lb/rss",
+        "language": "en",
+        "bias": "left"
+      }
+    ],
+    "jordan": [
+      {
+        "name": "Jordan News",
+        "url": "https://www.jordannews.jo/rss",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Roya News",
+        "url": "https://royanews.tv/rss",
+        "language": "ar",
+        "bias": "independent"
+      },
+      {
+        "name": "Jafra News",
+        "url": "https://jfranews.com.jo/feed/",
+        "language": "ar",
+        "bias": "independent"
+      }
+    ],
+    "syria": [
+      {
+        "name": "Enab Baladi",
+        "url": "https://www.enabbaladi.net/feed/",
+        "language": "ar",
+        "bias": "opposition"
+      },
+      {
+        "name": "North Press Agency",
+        "url": "https://npasyria.com/en/feed/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Syria Direct",
+        "url": "https://syriadirect.org/feed/",
+        "language": "en",
+        "bias": "opposition"
+      },
+      {
+        "name": "Syria News",
+        "url": "https://syrianews.cc/feed/",
+        "language": "en",
+        "bias": "state"
+      }
+    ],
+    "palestine": [
+      {
+        "name": "Palestinian Information Center",
+        "url": "https://palinfo.com/feed/",
+        "language": "ar",
+        "bias": "resistance"
+      },
+      {
+        "name": "Middle East Monitor",
+        "url": "https://www.middleeastmonitor.com/feed/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "SAFA News Agency",
+        "url": "https://safa.ps/rss",
+        "language": "ar",
+        "bias": "resistance"
+      },
+      {
+        "name": "Mondoweiss",
+        "url": "https://mondoweiss.net/feed/",
+        "language": "en",
+        "bias": "independent"
+      }
+    ]
+  },
+  "western_europe": {
+    "germany": [
+      {
+        "name": "Tagesschau (ARD)",
+        "url": "https://www.tagesschau.de/infoservices/alle-meldungen-100~rss2.xml",
+        "language": "de",
+        "bias": "state"
+      },
+      {
+        "name": "ZDF heute",
+        "url": "https://www.zdfheute.de/rss/zdf/nachrichten",
+        "language": "de",
+        "bias": "state"
+      },
+      {
+        "name": "Deutsche Welle (English)",
+        "url": "https://rss.dw.com/rdf/rss-en-all",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Der Spiegel",
+        "url": "https://www.spiegel.de/schlagzeilen/index.rss",
+        "language": "de",
+        "bias": "liberal"
+      },
+      {
+        "name": "FAZ",
+        "url": "https://www.faz.net/rss/aktuell/",
+        "language": "de",
+        "bias": "conservative"
+      },
+      {
+        "name": "Die Zeit",
+        "url": "https://newsfeed.zeit.de/index",
+        "language": "de",
+        "bias": "liberal"
+      },
+      {
+        "name": "Die Welt",
+        "url": "https://www.welt.de/feeds/latest.rss",
+        "language": "de",
+        "bias": "conservative"
+      }
+    ],
+    "france": [
+      {
+        "name": "Le Monde",
+        "url": "https://www.lemonde.fr/rss/en_continu.xml",
+        "language": "fr",
+        "bias": "liberal"
+      },
+      {
+        "name": "Le Figaro",
+        "url": "https://www.lefigaro.fr/rss/figaro_actualites.xml",
+        "language": "fr",
+        "bias": "conservative"
+      },
+      {
+        "name": "Libération",
+        "url": "https://www.liberation.fr/arc/outboundfeeds/rss/",
+        "language": "fr",
+        "bias": "left"
+      },
+      {
+        "name": "France 24 (English)",
+        "url": "https://www.france24.com/en/rss",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "RFI (English)",
+        "url": "https://www.rfi.fr/en/rss",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Mediapart",
+        "url": "https://www.mediapart.fr/articles/feed",
+        "language": "fr",
+        "bias": "left"
+      },
+      {
+        "name": "Franceinfo",
+        "url": "https://www.franceinfo.fr/titres.rss",
+        "language": "fr",
+        "bias": "state"
+      }
+    ],
+    "uk": [
+      {
+        "name": "BBC News UK",
+        "url": "https://feeds.bbci.co.uk/news/uk/rss.xml",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "BBC Politics",
+        "url": "https://feeds.bbci.co.uk/news/politics/rss.xml",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "The Guardian UK",
+        "url": "https://www.theguardian.com/uk-news/rss",
+        "language": "en",
+        "bias": "liberal"
+      },
+      {
+        "name": "The Telegraph",
+        "url": "https://www.telegraph.co.uk/rss.xml",
+        "language": "en",
+        "bias": "conservative"
+      },
+      {
+        "name": "Sky News UK",
+        "url": "https://feeds.skynews.com/feeds/rss/uk.xml",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Financial Times UK",
+        "url": "https://www.ft.com/rss/home/uk",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "The Independent",
+        "url": "https://www.independent.co.uk/rss",
+        "language": "en",
+        "bias": "liberal"
+      }
+    ],
+    "spain": [
+      {
+        "name": "El País",
+        "url": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada",
+        "language": "es",
+        "bias": "liberal"
+      },
+      {
+        "name": "El Mundo",
+        "url": "https://e00-elmundo.uecdn.es/elmundo/rss/portada.xml",
+        "language": "es",
+        "bias": "center"
+      },
+      {
+        "name": "ABC",
+        "url": "https://www.abc.es/rss/2.0/portada/",
+        "language": "es",
+        "bias": "conservative"
+      },
+      {
+        "name": "20 Minutos",
+        "url": "https://www.20minutos.es/rss",
+        "language": "es",
+        "bias": "center"
+      },
+      {
+        "name": "Europa Press",
+        "url": "https://www.europapress.es/rss/rss.aspx",
+        "language": "es",
+        "bias": "center"
+      },
+      {
+        "name": "elDiario.es",
+        "url": "https://www.eldiario.es/rss/",
+        "language": "es",
+        "bias": "liberal"
+      }
+    ],
+    "netherlands": [
+      {
+        "name": "NOS General News",
+        "url": "https://feeds.nos.nl/nosnieuwsalgemeen",
+        "language": "nl",
+        "bias": "state"
+      },
+      {
+        "name": "NOS Politics",
+        "url": "https://feeds.nos.nl/nosnieuwspolitiek",
+        "language": "nl",
+        "bias": "state"
+      },
+      {
+        "name": "Dutch News",
+        "url": "https://www.dutchnews.nl/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "NU.nl",
+        "url": "https://www.nu.nl/rss",
+        "language": "nl",
+        "bias": "center"
+      },
+      {
+        "name": "NRC Handelsblad",
+        "url": "https://www.nrc.nl/rss/",
+        "language": "nl",
+        "bias": "liberal"
+      },
+      {
+        "name": "Volkskrant",
+        "url": "https://www.volkskrant.nl/voorpagina/rss.xml",
+        "language": "nl",
+        "bias": "liberal"
+      }
+    ],
+    "belgium": [
+      {
+        "name": "VRT NWS",
+        "url": "https://www.vrt.be/vrtnws/nl.rss.articles.xml",
+        "language": "nl",
+        "bias": "state"
+      },
+      {
+        "name": "RTBF Info",
+        "url": "https://rss.rtbf.be/article/rss/highlight_rtbf_info.xml",
+        "language": "fr",
+        "bias": "state"
+      },
+      {
+        "name": "Het Laatste Nieuws",
+        "url": "https://www.hln.be/home/rss.xml",
+        "language": "nl",
+        "bias": "center"
+      },
+      {
+        "name": "La Libre Belgique",
+        "url": "https://www.lalibre.be/arc/outboundfeeds/rss/?outputType=xml",
+        "language": "fr",
+        "bias": "center"
+      },
+      {
+        "name": "De Morgen",
+        "url": "https://www.demorgen.be/rss.xml",
+        "language": "nl",
+        "bias": "liberal"
+      },
+      {
+        "name": "7sur7",
+        "url": "https://www.7sur7.be/home/rss.xml",
+        "language": "fr",
+        "bias": "center"
+      },
+      {
+        "name": "Bruzz",
+        "url": "https://www.bruzz.be/rss.xml",
+        "language": "nl",
+        "bias": "center"
+      }
+    ],
+    "austria": [
+      {
+        "name": "ORF News",
+        "url": "https://rss.orf.at/news.xml",
+        "language": "de",
+        "bias": "state"
+      },
+      {
+        "name": "Der Standard",
+        "url": "https://www.derstandard.at/rss",
+        "language": "de",
+        "bias": "liberal"
+      },
+      {
+        "name": "Die Presse",
+        "url": "https://www.diepresse.com/rss",
+        "language": "de",
+        "bias": "conservative"
+      },
+      {
+        "name": "Kurier",
+        "url": "https://kurier.at/xml/rss",
+        "language": "de",
+        "bias": "center"
+      },
+      {
+        "name": "Nachrichten.at",
+        "url": "https://www.nachrichten.at/storage/rss/rss/nachrichten.xml",
+        "language": "de",
+        "bias": "center"
+      },
+      {
+        "name": "Kleine Zeitung",
+        "url": "https://www.kleinezeitung.at/rss/hp_stmk",
+        "language": "de",
+        "bias": "center"
+      },
+      {
+        "name": "NÖN",
+        "url": "https://www.noen.at/xml/rss",
+        "language": "de",
+        "bias": "center"
+      }
+    ],
+    "switzerland": [
+      {
+        "name": "SRF News",
+        "url": "https://www.srf.ch/news/bnf/rss/1646",
+        "language": "de",
+        "bias": "state"
+      },
+      {
+        "name": "SRF News Switzerland",
+        "url": "https://www.srf.ch/news/bnf/rss/1890",
+        "language": "de",
+        "bias": "state"
+      },
+      {
+        "name": "Neue Zürcher Zeitung",
+        "url": "https://www.nzz.ch/recent.rss",
+        "language": "de",
+        "bias": "center"
+      },
+      {
+        "name": "NZZ Switzerland",
+        "url": "https://www.nzz.ch/schweiz.rss",
+        "language": "de",
+        "bias": "center"
+      },
+      {
+        "name": "Blick",
+        "url": "https://www.blick.ch/schweiz/rss.xml",
+        "language": "de",
+        "bias": "center"
+      }
+    ],
+    "portugal": [
+      {
+        "name": "RTP Notícias",
+        "url": "https://www.rtp.pt/noticias/rss",
+        "language": "pt",
+        "bias": "state"
+      },
+      {
+        "name": "Observador",
+        "url": "https://observador.pt/feed/",
+        "language": "pt",
+        "bias": "center"
+      },
+      {
+        "name": "TVI",
+        "url": "https://tvi.iol.pt/rss.xml",
+        "language": "pt",
+        "bias": "center"
+      },
+      {
+        "name": "Notícias ao Minuto",
+        "url": "https://www.noticiasaominuto.com/rss/ultima-hora",
+        "language": "pt",
+        "bias": "center"
+      },
+      {
+        "name": "ECO",
+        "url": "https://eco.sapo.pt/feed/",
+        "language": "pt",
+        "bias": "center",
+        "focus": "business"
+      },
+      {
+        "name": "Diário de Notícias",
+        "url": "https://prod-qt-images.s3.amazonaws.com/production/dn/feed.xml",
+        "language": "pt",
+        "bias": "center"
+      },
+      {
+        "name": "Visão",
+        "url": "https://visao.pt/feed/",
+        "language": "pt",
+        "bias": "center"
+      }
+    ],
+    "greece": [
+      {
+        "name": "ERT",
+        "url": "https://www.ert.gr/feed/",
+        "language": "el",
+        "bias": "state"
+      },
+      {
+        "name": "Ta Nea",
+        "url": "https://www.tanea.gr/feed/",
+        "language": "el",
+        "bias": "liberal"
+      },
+      {
+        "name": "To Vima",
+        "url": "https://www.tovima.gr/feed/",
+        "language": "el",
+        "bias": "liberal"
+      },
+      {
+        "name": "Proto Thema",
+        "url": "https://www.protothema.gr/rss/",
+        "language": "el",
+        "bias": "conservative"
+      },
+      {
+        "name": "in.gr",
+        "url": "https://www.in.gr/feed/",
+        "language": "el",
+        "bias": "center"
+      },
+      {
+        "name": "Naftemporiki",
+        "url": "https://www.naftemporiki.gr/feed/",
+        "language": "el",
+        "bias": "center",
+        "focus": "business"
+      },
+      {
+        "name": "Ethnos",
+        "url": "https://www.ethnos.gr/rss",
+        "language": "el",
+        "bias": "liberal"
+      }
+    ],
+    "ireland": [
+      {
+        "name": "RTÉ News",
+        "url": "https://www.rte.ie/feeds/rss/?index=/news/&limit=20",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "The Irish Times",
+        "url": "https://www.irishtimes.com/arc/outboundfeeds/feed-irish-news/?from=0&size=20",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "The Journal",
+        "url": "https://www.thejournal.ie/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Tuairisc.ie",
+        "url": "https://tuairisc.ie/feed/",
+        "language": "ga",
+        "bias": "center"
+      },
+      {
+        "name": "Extra.ie",
+        "url": "https://extra.ie/feed",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "The Irish Post",
+        "url": "https://www.irishpost.com/feed",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "iceland": [
+      {
+        "name": "RÚV - Fréttir",
+        "url": "https://www.ruv.is/rss/frettir",
+        "language": "is",
+        "bias": "state"
+      },
+      {
+        "name": "Morgunblaðið - Innlent",
+        "url": "https://www.mbl.is/feeds/innlent/",
+        "language": "is",
+        "bias": "center"
+      },
+      {
+        "name": "Morgunblaðið - English",
+        "url": "https://www.mbl.is/feeds/english/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Vísir",
+        "url": "https://www.visir.is/rss/allt",
+        "language": "is",
+        "bias": "independent"
+      },
+      {
+        "name": "The Reykjavík Grapevine",
+        "url": "https://grapevine.is/feed/",
+        "language": "en",
+        "bias": "independent"
+      }
+    ],
+    "norway": [
+      {
+        "name": "NRK",
+        "url": "https://www.nrk.no/toppsaker.rss",
+        "language": "no",
+        "bias": "state"
+      },
+      {
+        "name": "VG",
+        "url": "https://www.vg.no/rss/feed/?format=rss",
+        "language": "no",
+        "bias": "independent"
+      },
+      {
+        "name": "Aftenposten",
+        "url": "https://www.aftenposten.no/rss",
+        "language": "no",
+        "bias": "center"
+      },
+      {
+        "name": "E24",
+        "url": "https://e24.no/rss",
+        "language": "no",
+        "bias": "independent"
+      }
+    ],
+    "sweden": [
+      {
+        "name": "SVT Nyheter",
+        "url": "https://www.svt.se/rss.xml",
+        "language": "sv",
+        "bias": "state"
+      },
+      {
+        "name": "Sveriges Radio Ekot",
+        "url": "http://api.sr.se/api/rss/program/83",
+        "language": "sv",
+        "bias": "state"
+      },
+      {
+        "name": "Aftonbladet",
+        "url": "https://rss.aftonbladet.se/rss2/small/pages/sections/senastenytt/",
+        "language": "sv",
+        "bias": "independent"
+      },
+      {
+        "name": "Dagens Nyheter",
+        "url": "https://www.dn.se/rss/",
+        "language": "sv",
+        "bias": "center"
+      },
+      {
+        "name": "Expressen",
+        "url": "https://feeds.expressen.se/nyheter",
+        "language": "sv",
+        "bias": "independent"
+      }
+    ],
+    "finland": [
+      {
+        "name": "Yle Uutiset",
+        "url": "https://feeds.yle.fi/uutiset/v1/recent.rss?publisherIds=YLE_UUTISET",
+        "language": "fi",
+        "bias": "state"
+      },
+      {
+        "name": "Iltalehti",
+        "url": "https://www.iltalehti.fi/rss/rss.xml",
+        "language": "fi",
+        "bias": "independent"
+      },
+      {
+        "name": "Ilta-Sanomat",
+        "url": "https://www.is.fi/rss/tuoreimmat.xml",
+        "language": "fi",
+        "bias": "independent"
+      },
+      {
+        "name": "Kaleva",
+        "url": "https://www.kaleva.fi/feedit/rss/managed-listing/kotimaa/",
+        "language": "fi",
+        "bias": "independent"
+      }
+    ],
+    "denmark": [
+      {
+        "name": "DR Nyheder",
+        "url": "https://www.dr.dk/nyheder/service/feeds/allenyheder",
+        "language": "da",
+        "bias": "state"
+      },
+      {
+        "name": "DR Indland",
+        "url": "https://www.dr.dk/nyheder/service/feeds/indland",
+        "language": "da",
+        "bias": "state"
+      },
+      {
+        "name": "Nordjyske",
+        "url": "https://nordjyske.dk/rss/nyheder",
+        "language": "da",
+        "bias": "independent"
+      },
+      {
+        "name": "Fyens Stiftstidende",
+        "url": "https://fyens.dk/feed/danmark",
+        "language": "da",
+        "bias": "independent"
+      },
+      {
+        "name": "JydskeVestkysten",
+        "url": "https://jv.dk/feed/danmark",
+        "language": "da",
+        "bias": "independent"
+      }
+    ],
+    "nordic": [
+      {
+        "name": "The Local Sweden",
+        "url": "https://www.thelocal.se/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "The Local Norway",
+        "url": "https://www.thelocal.no/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "The Local Denmark",
+        "url": "https://www.thelocal.dk/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Yle News Finland",
+        "url": "https://feeds.yle.fi/uutiset/v1/recent.rss?publisherIds=YLE_NEWS",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Iceland Review",
+        "url": "https://www.icelandreview.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "High North News",
+        "url": "https://www.highnorthnews.com/en/rss.xml",
+        "language": "en",
+        "bias": "center",
+        "focus": "arctic-security"
+      }
+    ],
+    "european_economy": [
+      {
+        "name": "Financial Times",
+        "url": "https://www.ft.com/rss/home",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Les Echos - Économie",
+        "url": "https://services.lesechos.fr/rss/les-echos-economie.xml?_gl=1*1c09oq6*_gcl_au*MTYyMDcxNjkxMC4xNzYyMTQzMjYy",
+        "language": "fr",
+        "bias": "center"
+      },
+      {
+        "name": "Handelsblatt",
+        "url": "https://www.handelsblatt.com/contentexport/feed/wirtschaft",
+        "language": "de",
+        "bias": "center"
+      },
+      {
+        "name": "Il Sole 24 Ore - Economia",
+        "url": "https://www.ilsole24ore.com/rss/economia.xml",
+        "language": "it",
+        "bias": "center"
+      },
+      {
+        "name": "Expansión - Economía",
+        "url": "https://www.expansion.com/rss/portada.xml",
+        "language": "es",
+        "bias": "liberal"
+      }
+    ],
+    "italy": [
+      {
+        "name": "La Repubblica",
+        "url": "https://www.repubblica.it/rss/homepage/rss2.0.xml",
+        "language": "it",
+        "bias": "liberal"
+      },
+      {
+        "name": "ANSA",
+        "url": "https://www.ansa.it/sito/ansait_rss.xml",
+        "language": "it",
+        "bias": "center"
+      },
+      {
+        "name": "AGI",
+        "url": "https://www.agi.it/cronaca/rss",
+        "language": "it",
+        "bias": "center"
+      },
+      {
+        "name": "Il Sole 24 Ore",
+        "url": "https://www.ilsole24ore.com/rss/mondo.xml",
+        "language": "it",
+        "bias": "center",
+        "focus": "business"
+      },
+      {
+        "name": "Il Fatto Quotidiano",
+        "url": "https://www.ilfattoquotidiano.it/feed/",
+        "language": "it",
+        "bias": "liberal"
+      },
+      {
+        "name": "Libero Quotidiano",
+        "url": "https://www.liberoquotidiano.it/rss.xml",
+        "language": "it",
+        "bias": "conservative"
+      }
+    ]
+  },
+  "south_america": {
+    "brazil": [
+      {
+        "name": "G1 (Globo)",
+        "url": "http://g1.globo.com/dynamo/rss2.xml",
+        "language": "pt",
+        "bias": "center"
+      },
+      {
+        "name": "CNN Brasil",
+        "url": "https://www.cnnbrasil.com.br/feed/",
+        "language": "pt",
+        "bias": "center"
+      },
+      {
+        "name": "UOL Notícias",
+        "url": "https://rss.uol.com.br/feed/noticias.xml",
+        "language": "pt",
+        "bias": "center"
+      },
+      {
+        "name": "BBC Brasil",
+        "url": "https://feeds.bbci.co.uk/portuguese/rss.xml",
+        "language": "pt",
+        "bias": "independent"
+      },
+      {
+        "name": "Poder360",
+        "url": "https://www.poder360.com.br/feed/",
+        "language": "pt",
+        "bias": "center"
+      },
+      {
+        "name": "Exame",
+        "url": "https://exame.com/feed/",
+        "language": "pt",
+        "bias": "center",
+        "focus": "business"
+      }
+    ],
+    "argentina": [
+      {
+        "name": "La Nación",
+        "url": "https://www.lanacion.com.ar/arc/outboundfeeds/rss/",
+        "language": "es",
+        "bias": "center"
+      },
+      {
+        "name": "Clarín",
+        "url": "https://www.clarin.com/rss/lo-ultimo/",
+        "language": "es",
+        "bias": "center"
+      },
+      {
+        "name": "Clarín Política",
+        "url": "https://www.clarin.com/rss/politica/",
+        "language": "es",
+        "bias": "center"
+      },
+      {
+        "name": "Perfil",
+        "url": "https://www.perfil.com/feed",
+        "language": "es",
+        "bias": "independent"
+      },
+      {
+        "name": "Tiempo Argentino",
+        "url": "https://www.tiempoar.com.ar/feed/",
+        "language": "es",
+        "bias": "liberal"
+      },
+      {
+        "name": "Chequeado",
+        "url": "https://chequeado.com/feed/",
+        "language": "es",
+        "bias": "independent"
+      }
+    ],
+    "venezuela": [
+      {
+        "name": "El Nacional",
+        "url": "https://www.elnacional.com/feed/",
+        "language": "es",
+        "bias": "independent"
+      },
+      {
+        "name": "Últimas Noticias",
+        "url": "https://ultimasnoticias.com.ve/feed/",
+        "language": "es",
+        "bias": "center"
+      },
+      {
+        "name": "Correo del Orinoco",
+        "url": "https://www.correodelorinoco.gob.ve/feed/",
+        "language": "es",
+        "bias": "state"
+      },
+      {
+        "name": "El Carabobeño",
+        "url": "https://www.el-carabobeno.com/feed/",
+        "language": "es",
+        "bias": "independent"
+      },
+      {
+        "name": "Runrun.es",
+        "url": "https://runrun.es/feed/",
+        "language": "es",
+        "bias": "independent"
+      }
+    ],
+    "cuba": [
+      {
+        "name": "Granma (English)",
+        "url": "https://en.granma.cu/feed",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Prensa Latina (Spanish)",
+        "url": "https://www.prensa-latina.cu/feed/",
+        "language": "es",
+        "bias": "state"
+      },
+      {
+        "name": "14ymedio",
+        "url": "https://www.14ymedio.com/rss/",
+        "language": "es",
+        "bias": "independent"
+      },
+      {
+        "name": "Diario de Cuba",
+        "url": "https://diariodecuba.com/rss.xml",
+        "language": "es",
+        "bias": "opposition"
+      }
+    ],
+    "chile": [
+      {
+        "name": "Cooperativa.cl",
+        "url": "https://www.cooperativa.cl/noticias/site/tax/port/all/rss____1.xml",
+        "language": "es",
+        "bias": "center"
+      },
+      {
+        "name": "BioBioChile",
+        "url": "https://www.biobiochile.cl/static/feed-rss",
+        "language": "es",
+        "bias": "independent"
+      },
+      {
+        "name": "The Clinic",
+        "url": "https://www.theclinic.cl/feed/",
+        "language": "es",
+        "bias": "center-left"
+      },
+      {
+        "name": "El Ciudadano",
+        "url": "https://www.elciudadano.com/feed/",
+        "language": "es",
+        "bias": "independent"
+      }
+    ],
+    "peru": [
+      {
+        "name": "RPP Noticias",
+        "url": "https://rpp.pe/rss",
+        "language": "es",
+        "bias": "independent"
+      },
+      {
+        "name": "El Comercio",
+        "url": "https://elcomercio.pe/arc/outboundfeeds/rss/?outputType=xml",
+        "language": "es",
+        "bias": "center"
+      },
+      {
+        "name": "Andina (Agencia Peruana de Noticias)",
+        "url": "https://andina.pe/agencia/rss.aspx",
+        "language": "es",
+        "bias": "state"
+      },
+      {
+        "name": "Gestión",
+        "url": "https://gestion.pe/arc/outboundfeeds/rss/?outputType=xml",
+        "language": "es",
+        "bias": "center"
+      }
+    ],
+    "colombia": [
+      {
+        "name": "El Tiempo - Colombia",
+        "url": "https://www.eltiempo.com/rss/colombia.xml",
+        "language": "es",
+        "bias": "center"
+      },
+      {
+        "name": "Portafolio - Economía",
+        "url": "https://www.portafolio.co/rss/economia.xml",
+        "language": "es",
+        "bias": "center"
+      },
+      {
+        "name": "Minuto30",
+        "url": "https://www.minuto30.com/feed/",
+        "language": "es",
+        "bias": "independent"
+      },
+      {
+        "name": "El Espectador",
+        "url": "https://www.elespectador.com/arc/outboundfeeds/discover/?outputType=xml",
+        "language": "es",
+        "bias": "center"
+      }
+    ]
+  },
+  "north_america": {
+    "usa": [
+      {
+        "name": "NPR News",
+        "url": "https://feeds.npr.org/1001/rss.xml",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "New York Times",
+        "url": "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
+        "language": "en",
+        "bias": "liberal"
+      },
+      {
+        "name": "Washington Post",
+        "url": "https://feeds.washingtonpost.com/rss/national",
+        "language": "en",
+        "bias": "liberal"
+      },
+      {
+        "name": "Fox News",
+        "url": "https://moxie.foxnews.com/google-publisher/latest.xml",
+        "language": "en",
+        "bias": "conservative"
+      },
+      {
+        "name": "Wall Street Journal",
+        "url": "https://feeds.a.dj.com/rss/RSSWorldNews.xml",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Politico",
+        "url": "https://rss.politico.com/congress.xml",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "The Hill",
+        "url": "https://thehill.com/feed/",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "mexico": [
+      {
+        "name": "Milenio",
+        "url": "https://www.milenio.com/rss",
+        "language": "es",
+        "bias": "center"
+      },
+      {
+        "name": "La Jornada",
+        "url": "https://www.jornada.com.mx/rss/edicion.xml",
+        "language": "es",
+        "bias": "liberal"
+      },
+      {
+        "name": "Sin Embargo",
+        "url": "https://www.sinembargo.mx/feed/",
+        "language": "es",
+        "bias": "independent"
+      },
+      {
+        "name": "Forbes México",
+        "url": "https://forbes.com.mx/feed/",
+        "language": "es",
+        "bias": "center",
+        "focus": "business"
+      }
+    ],
+    "us": [
+      {
+        "name": "New York Times",
+        "url": "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
+        "language": "en",
+        "bias": "liberal"
+      },
+      {
+        "name": "Washington Post",
+        "url": "https://feeds.washingtonpost.com/rss/politics",
+        "language": "en",
+        "bias": "liberal"
+      },
+      {
+        "name": "Fox News",
+        "url": "https://moxie.foxnews.com/google-publisher/latest.xml",
+        "language": "en",
+        "bias": "conservative"
+      }
+    ],
+      "us_liberal_politics": [
+        {
+          "name": "CNN Politics",
+          "url": "http://rss.cnn.com/rss/cnn_allpolitics.rss",
+          "language": "en",
+          "bias": "liberal"
+        },
+        {
+          "name": "MSNBC Politics",
+          "url": "https://feeds.nbcnews.com/nbcnews/public/politics",
+          "language": "en",
+          "bias": "liberal"
+        },
+        {
+          "name": "New York Times Politics",
+          "url": "https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+          "language": "en",
+          "bias": "liberal"
+        },
+        {
+          "name": "Democracy Now",
+          "url": "https://www.democracynow.org/democracynow.rss",
+          "language": "en",
+          "bias": "liberal"
+        },
+        {
+          "name": "Mother Jones",
+          "url": "https://www.motherjones.com/feed/",
+          "language": "en",
+          "bias": "liberal"
+        }
+      ],
+      "us_conservative_politics": [
+        {
+          "name": "Fox News Politics",
+          "url": "https://moxie.foxnews.com/google-publisher/politics.xml",
+          "language": "en",
+          "bias": "conservative"
+        },
+        {
+          "name": "Ny Post Politics",
+          "url": "https://nypost.com/politics/feed/",
+          "language": "en",
+          "bias": "conservative"
+        },
+        {
+          "name": "The Washington Times Politics",
+          "url": "https://www.washingtontimes.com/rss/headlines/news/politics/",
+          "language": "en",
+          "bias": "conservative"
+        },
+        {
+          "name": "National Review",
+          "url": "https://www.nationalreview.com/feed/",
+          "language": "en",
+          "bias": "conservative"
+        },
+        {
+          "name": "Breitbart News",
+          "url": "http://feeds.feedburner.com/BreitbartFeed",
+          "language": "en",
+          "bias": "conservative"
+        }
+      ],
+      "california": [
+        {
+          "name": "Los Angeles Times",
+          "url": "https://www.latimes.com/local/rss2.0.xml",
+          "language": "en",
+          "bias": "center"
+        },
+        {
+          "name": "Los Angeles Times - California Politics",
+          "url": "https://www.latimes.com/politics/rss2.0.xml",
+          "language": "en",
+          "bias": "center"
+        },
+        {
+          "name": "San Francisco Standard",
+          "url": "https://sfstandard.com/feed",
+          "language": "en",
+          "bias": "center"
+        },
+        {
+          "name": "Sacramento Bee",
+          "url": "https://www.sacbee.com/?widgetName=rssfeed&widgetContentId=6199&getXmlFeed=true",
+          "language": "en",
+          "bias": "center"
+        },
+        {
+          "name": "laopinion.com",
+          "url": "https://laopinion.com/feed/",
+          "language": "es",
+          "bias": "center"
+        },
+        {
+          "name": "El Tecolote",
+          "url": "https://eltecolote.org/content/en/feed/",
+          "language": "es",
+          "bias": "center"
+        }
+      ],
+      "us_judicial": [
+        {
+          "name": "SCOTUSblog",
+          "url": "https://www.scotusblog.com/feed/",
+          "language": "en",
+          "bias": "government"
+        },
+        {
+          "name": "Law360 - Supreme Court",
+          "url": "https://www.law360.com/access-to-justice/rss",
+          "language": "en",
+          "bias": "center"
+        },
+        {
+          "name": "Justice Department News",
+          "url": "https://www.justice.gov/news/rss?m=1",
+          "language": "en",
+          "bias": "government"
+        },
+        {
+          "name": "California DOJ News",
+          "url": "https://oag.ca.gov/news/feed",
+          "language": "en",
+          "bias": "government"
+        }
+      ],
+      "us_democratic_politics": [
+        {
+          "name": "Democratic National Committee",
+          "url": "https://democrats.org/feed/",
+          "language": "en",
+          "bias": "government"
+       },
+       {
+          "name": "Political Wire",
+          "url": "https://politicalwire.com/feed/",
+          "language": "en",
+          "bias": "center"
+        },
+        {
+            "name": "Daily Kos",
+            "url": "https://www.dailykos.com/blogs/main/feed",
+            "language": "en",
+            "bias": "liberal"
+        }
+      ],
+      "us_republican_politics": [
+        {
+          "name": "Republican National Committee",
+          "url": "https://www.gop.com/feed/",
+          "language": "en",
+          "bias": "government"
+        },
+        {
+          "name": "The Federalist",
+          "url": "https://thefederalist.com/feed/",
+          "language": "en",
+          "bias": "conservative"
+        },
+        {
+          "name": "RedState",
+          "url": "https://redstate.com/feed",
+          "language": "en",
+          "bias": "conservative"
+        },
+        {
+          "name": "The Heritage Foundation",
+          "url": "https://www.dailysignal.com/feed/",
+          "language": "en",
+          "bias": "conservative"
+        },
+        {
+          "name": "The Dispatch",
+          "url": "https://thedispatch.com/feed/",
+          "language": "en",
+          "bias": "conservative"
+        }
+      ],
+      "usa_european_relations": [
+        {
+          "name": "European Parliament External Relations",
+          "url": "https://www.europarl.europa.eu/rss/topic/903/en.xml",
+          "language": "en",
+          "bias": "government"
+        },
+        {
+          "name": "US Mission to the EU",
+          "url": "https://useu.usmission.gov/feed/",
+          "language": "en",
+          "bias": "government"
+        },
+        {
+          "name": "Bureau of European and Eurasian Affairs - US State Department",
+          "url": "https://www.state.gov/bureaus-offices/under-secretary-for-political-affairs/bureau-of-european-and-eurasian-affairs/feed/",
+          "language": "en",
+          "bias": "government"
+        },
+        {
+          "name": "Atlantic Council - European Union",
+          "url": "https://www.atlanticcouncil.org/region/european-union/feed/",
+          "language": "en",
+          "bias": "conservative"
+        },
+        {
+          "name": "Politico Europe",
+          "url": "https://www.politico.eu/feed/",
+          "language": "en",
+          "bias": "center"
+        },
+        {
+          "name": "Department of state - Europe and Eurasia",
+          "url": "https://www.state.gov/rss-feed/europe-and-eurasia/feed/",
+          "language": "en",
+          "bias": "government"
+        },
+        {
+          "name": "Google News - US EU Relations",
+          "url": "https://news.google.com/rss/search?q=US+EU+relations+OR+%22transatlantic+trade%22+OR+%22US+EU+tariffs%22+when:2d&hl=en-US&gl=US&ceid=US:en",
+          "language": "en",
+          "bias": "center"
+        }
+      ],
+      "us_russia_relations": [
+        {
+          "name": "Meduza - Russia News in English",
+          "url": "https://meduza.io/rss/en/all",
+          "language": "en",
+          "bias": "center"
+        },
+        {
+          "name": "The Moscow Times- Amsterdam",
+          "url": "https://www.themoscowtimes.com/rss/news",
+          "language": "en",
+          "bias": "center"
+        },
+        {
+          "name": "Russia Matters- US keyword",
+          "url": "https://news.google.com/rss/search?q=site:russiamatters.org+US+ukraine+when:7d&hl=en-US&gl=US&ceid=US:en",
+          "language": "en",
+          "bias": "center"
+        },
+        {
+          "name": "Radio Free Europe/Radio Liberty - Ukraine News",
+          "url": "https://news.google.com/rss/search?q=site:rferl.org+US+Ukraine+when:7d&hl=en-US&gl=US&ceid=US:en",
+          "language": "en",
+          "bias": "center"
+        },
+        {
+          "name": "US Department of State - Russia",
+          "url": "https://news.google.com/rss/search?q=site:www.csis.org+US+Ukraine+when:7d&hl=en-US&gl=US&ceid=US:en",
+          "language": "en",
+          "bias": "government"
+        },
+        {
+          "name": "Google News - US Russia Relations",
+          "url": "https://news.google.com/rss/search?q=US+Russia+when:7d&hl=en-US&gl=US&ceid=US:en",
+          "language": "en",
+          "bias": "center"
+        },
+        {
+          "name": "Google News- American Envoys to Russia",
+          "url": "https://news.google.com/rss/search?q=Witkoff+Driscoll+Kelogg+when:7d&hl=en-US&gl=US&ceid=US:en",
+          "language": "en",
+          "bias": "center"
+        },
+        {
+          "name": "Google News - Sanctions on Russia",
+          "url": "https://news.google.com/rss/search?q=site:https://ofac.treasury.gov/recent-actions+Russia+when:7d&hl=en-US&gl=US&ceid=US:en",
+          "language": "en",
+          "bias": "center"
+        }
+      ],
+      "us_china_relations": [
+        {
+          "name": "South China Morning Post - US China Relations",
+          "url": "https://www.scmp.com/rss/91/feed",
+          "language": "en",
+          "bias": "center"
+        },
+        {
+          "name": "China US Focus",
+          "url": "https://news.google.com/rss/search?q=site:chinausfocus.com+US+China+when:7d&hl=en-US&gl=US&ceid=US:en",
+          "language": "en",
+          "bias": "government"
+        },
+        {
+          "name": "Center for Strategic and International Studies - China US Relations",
+          "url": "https://news.google.com/rss/search?q=site:www.csis.org+US+China+when:7d&hl=en-US&gl=US&ceid=US:en",
+          "language": "en",
+          "bias": "center"
+        },
+        {
+          "name": "Sinocism China Newsletter",
+          "url": "https://sinocism.com/feed",
+          "language": "en",
+          "bias": "government"
+        },
+        {
+          "name": "Google News - US China Relations",
+          "url": "https://news.google.com/rss/search?q=site:thewirechina.com+China+US+when:7d&hl=en-US&gl=US&ceid=US:en",
+          "language": "en",
+          "bias": "center"
+        },
+        {
+          "name": "Google News- Select Committee on the CCP",
+          "url": "https://news.google.com/rss/search?q=site:selectcommitteeontheccp.house.gov+China+when:7d&hl=en-US&gl=US&ceid=US:en",
+          "language": "en",
+          "bias": "government"
+        },
+        {
+          "name": "Google News - China Foreign Ministry Readouts",
+          "url": "https://news.google.com/rss/search?q=%22Ministry+of+Foreign+Affairs%22+China+OR+%22Wang+Yi%22+readout&hl=en-US&gl=US&ceid=US:en",
+          "language": "en",
+          "bias": "center"
+        }
+      ],
+      "us_indopacific_relations": [
+        {
+          "name": "US Indo-Pacific Command News",
+          "url": "https://news.google.com/rss/search?q=site:pacom.mil+China+US+when:7d&hl=en-US&gl=US&ceid=US:en",
+          "language": "en",
+          "bias": "government"
+        },
+        {
+          "name": "Japan Times - China US Relations",
+          "url": "https://news.google.com/rss/search?q=site:japantimes.co.jp+China+US+when:7d&hl=en-US&gl=US&ceid=US:en",
+          "language": "en",
+          "bias": "center"
+        },
+        {
+          "name": "Focus Taiwan - China US Relations",
+          "url": "https://news.google.com/rss/search?q=site:focustaiwan.tw+china+us+when:7d&hl=en-US&gl=US&ceid=US:en",
+          "language": "en",
+          "bias": "center"
+        },
+        {
+          "name": "Google News - US Indo-Pacific Relations",
+          "url": "https://news.google.com/rss/search?q=US+Indo-Pacific+when:7d&hl=en-US&gl=US&ceid=US:en",
+          "language": "en",
+          "bias": "center"
+        },
+        {
+          "name": "Google News - Philippines Taiwan",
+          "url": "https://news.google.com/rss/search?q=site:www.csis.org+philippines+taiwan+when:7d&hl=en-US&gl=US&ceid=US:en",
+          "language": "en",
+          "bias": "center"
+        }
+      ]
+    },
+  "oceania": {
+      "australia": [
+      {
+        "name": "ABC News Australia",
+        "url": "https://www.abc.net.au/news/feed/51120/rss.xml",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Sydney Morning Herald",
+        "url": "https://www.smh.com.au/rss/feed.xml",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "The Age",
+        "url": "https://www.theage.com.au/rss/feed.xml",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "The Guardian Australia",
+        "url": "https://www.theguardian.com/australia-news/rss",
+        "language": "en",
+        "bias": "liberal"
+      },
+      {
+        "name": "Nine News",
+        "url": "https://www.9news.com.au/rss",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "SBS News",
+        "url": "https://www.sbs.com.au/news/feed",
+        "language": "en",
+        "bias": "state"
+      }
+    ],
+    "new_zealand": [
+      {
+        "name": "RNZ National",
+        "url": "https://www.rnz.co.nz/rss/national.xml",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "RNZ Political",
+        "url": "https://www.rnz.co.nz/rss/political.xml",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Stuff.co.nz",
+        "url": "https://www.stuff.co.nz/rss",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "NZ Herald",
+        "url": "https://www.nzherald.co.nz/arc/outboundfeeds/rss/section/nz/?outputType=xml",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "The Spinoff",
+        "url": "https://thespinoff.co.nz/feed",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Newsroom",
+        "url": "https://newsroom.co.nz/feed/",
+        "language": "en",
+        "bias": "independent"
+      }
+    ]
+  },
+  "east_asia": {
+    "china": [
+      {
+        "name": "South China Morning Post",
+        "url": "https://www.scmp.com/rss/91/feed",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Sixth Tone",
+        "url": "https://api.sixthtone.com/cont/output/rssApi",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "People's Daily",
+        "url": "http://www.people.com.cn/rss/politics.xml",
+        "language": "zh",
+        "bias": "state"
+      },
+      {
+        "name": "China Digital Times",
+        "url": "https://chinadigitaltimes.net/feed/",
+        "language": "en",
+        "bias": "independent"
+      }
+    ],
+    "japan": [
+      {
+        "name": "Japan Times",
+        "url": "https://www.japantimes.co.jp/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "NHK News",
+        "url": "https://www3.nhk.or.jp/rss/news/cat0.xml",
+        "language": "ja",
+        "bias": "state"
+      },
+      {
+        "name": "Nikkei Asia",
+        "url": "https://asia.nikkei.com/rss/feed/nar",
+        "language": "en",
+        "bias": "center",
+        "focus": "business"
+      },
+      {
+        "name": "Kyodo News",
+        "url": "https://english.kyodonews.net/list/feed/rss4kyodonews-fzone",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Asahi Shimbun",
+        "url": "https://www.asahi.com/rss/asahi/newsheadlines.rdf",
+        "language": "ja",
+        "bias": "liberal"
+      },
+      {
+        "name": "Japan Today",
+        "url": "https://japantoday.com/feed",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "south_korea": [
+      {
+        "name": "Korea Times",
+        "url": "https://feed.koreatimes.co.kr/k/southkorea.xml",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Yonhap News Agency",
+        "url": "https://en.yna.co.kr/RSS/news.xml",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Chosun Ilbo",
+        "url": "https://www.chosun.com/arc/outboundfeeds/rss/?outputType=xml",
+        "language": "ko",
+        "bias": "conservative"
+      },
+      {
+        "name": "Hankyoreh",
+        "url": "http://www.hani.co.kr/rss/",
+        "language": "ko",
+        "bias": "liberal"
+      }
+    ],
+    "taiwan": [
+      {
+        "name": "Taipei Times",
+        "url": "https://www.taipeitimes.com/xml/index.rss",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "The News Lens International",
+        "url": "https://international.thenewslens.com/rss",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Taiwan Insight",
+        "url": "https://taiwaninsight.org/feed/",
+        "language": "en",
+        "bias": "independent",
+        "focus": "analysis"
+      },
+      {
+        "name": "Radio Taiwan International",
+        "url": "https://www.rti.org.tw/rss",
+        "language": "zh",
+        "bias": "state"
+      }
+    ],
+    "north_korea": [
+      {
+        "name": "NK News",
+        "url": "https://www.nknews.org/feed/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "38 North",
+        "url": "https://www.38north.org/feed/",
+        "language": "en",
+        "bias": "independent",
+        "focus": "analysis"
+      },
+      {
+        "name": "Daily NK",
+        "url": "https://www.dailynk.com/english/feed/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "KCNA Watch",
+        "url": "https://kcnawatch.org/feed/",
+        "language": "en",
+        "bias": "state",
+        "focus": "state-media-proxy"
+      }
+    ]
+  },
+  "central_asia": {
+    "kazakhstan": [
+      {
+        "name": "Kazinform English",
+        "url": "https://www.inform.kz/rss/eng.xml",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Kazinform Russian",
+        "url": "https://www.inform.kz/rss/rus.xml",
+        "language": "ru",
+        "bias": "state"
+      },
+      {
+        "name": "Tengrinews English",
+        "url": "https://en.tengrinews.kz/news.rss",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Kazakhstan Today",
+        "url": "https://www.kt.kz/eng/rss.xml",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Time.kz",
+        "url": "https://time.kz/rss",
+        "language": "ru",
+        "bias": "center"
+      },
+      {
+        "name": "Qazaqstan Monitor",
+        "url": "https://qazmonitor.com/rss",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "uzbekistan": [
+      {
+        "name": "UzA English",
+        "url": "https://uza.uz/en/rss",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "UzA Russian",
+        "url": "https://uza.uz/ru/rss",
+        "language": "ru",
+        "bias": "state"
+      },
+      {
+        "name": "Gazeta.uz English",
+        "url": "https://www.gazeta.uz/en/rss",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Gazeta.uz Russian",
+        "url": "https://www.gazeta.uz/ru/rss",
+        "language": "ru",
+        "bias": "center"
+      },
+      {
+        "name": "UzDaily",
+        "url": "https://www.uzdaily.uz/en/rss",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Podrobno.uz",
+        "url": "https://podrobno.uz/rss/",
+        "language": "ru",
+        "bias": "center"
+      }
+    ],
+    "turkmenistan": [
+      {
+        "name": "Chronicles of Turkmenistan (Хроника Туркменистана)",
+        "url": "https://www.hronikatm.com/feed/",
+        "language": "ru",
+        "bias": "independent"
+      },
+      {
+        "name": "Turkmen.News",
+        "url": "https://turkmen.news/feed/",
+        "language": "ru",
+        "bias": "independent"
+      },
+      {
+        "name": "RFE/RL Turkmenistan Service",
+        "url": "https://www.rferl.org/api/zyiiil-vomx-tpetgmp",
+        "language": "en",
+        "bias": "independent"
+      }
+    ],
+    "kyrgyzstan": [
+      {
+        "name": "24.kg",
+        "url": "https://24.kg/rss/",
+        "language": "ru",
+        "bias": "independent"
+      },
+      {
+        "name": "Kloop.kg",
+        "url": "https://kloop.kg/feed/",
+        "language": "ru",
+        "bias": "independent"
+      },
+      {
+        "name": "Vesti.kg",
+        "url": "https://vesti.kg/?format=feed&type=rss",
+        "language": "ru",
+        "bias": "independent"
+      },
+      {
+        "name": "AKIpress News Agency",
+        "url": "https://akipress.com/rss/",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "tajikistan": [
+      {
+        "name": "Asia-Plus (Russian)",
+        "url": "https://asiaplustj.info/rss.xml",
+        "language": "ru",
+        "bias": "independent"
+      },
+      {
+        "name": "Sputnik Tajikistan",
+        "url": "https://tj.sputniknews.ru/export/rss2/archive/index.xml",
+        "language": "ru",
+        "bias": "state"
+      },
+      {
+        "name": "Radio Ozodi (RFE/RL Tajik)",
+        "url": "https://www.ozodi.org/api/zmkovl-vomx-tpeypmr",
+        "language": "tg",
+        "bias": "independent"
+      },
+      {
+        "name": "RFE/RL Tajikistan (English)",
+        "url": "https://www.rferl.org/api/z_iiol-vomx-tpevgmi",
+        "language": "en",
+        "bias": "independent"
+      }
+    ],
+    "afghanistan": [
+      {
+        "name": "Pajhwok Afghan News",
+        "url": "https://pajhwok.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Khaama Press",
+        "url": "https://www.khaama.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Ariana News",
+        "url": "https://www.ariananews.af/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Etilaat Roz",
+        "url": "https://www.etilaatroz.com/feed/",
+        "language": "fa",
+        "bias": "liberal"
+      },
+      {
+        "name": "Rukhshana Media",
+        "url": "https://rukhshana.com/feed/",
+        "language": "fa",
+        "bias": "liberal"
+      },
+      {
+        "name": "8am Media",
+        "url": "https://8am.media/fa/feed/",
+        "language": "fa",
+        "bias": "center"
+      },
+      {
+        "name": "Pajhwok Pashto",
+        "url": "https://pajhwok.com/ps/feed/",
+        "language": "ps",
+        "bias": "center"
+      }
+    ]
+  },
+  "southeast_asia": {
+    "vietnam": [
+      {
+        "name": "VnExpress International",
+        "url": "https://e.vnexpress.net/rss/news.rss",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Tuoi Tre News",
+        "url": "https://news.tuoitre.vn/rss/home.rss",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "VNA English",
+        "url": "https://en.vietnamplus.vn/rss/home.rss",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "VietnamNet",
+        "url": "https://vietnamnet.vn/thoi-su.rss",
+        "language": "vi",
+        "bias": "state"
+      }
+    ],
+    "myanmar": [
+      {
+        "name": "The Irrawaddy",
+        "url": "https://www.irrawaddy.com/feed",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Burma News International",
+        "url": "https://www.bnionline.net/en/rss.xml",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Radio Free Asia Burmese",
+        "url": "https://www.rfa.org/arc/outboundfeeds/burmese/rss/",
+        "language": "my",
+        "bias": "external"
+      },
+      {
+        "name": "Karen News",
+        "url": "https://karennews.org/feed/",
+        "language": "en",
+        "bias": "independent"
+      }
+    ],
+    "cambodia": [
+      {
+        "name": "Cambodia Daily",
+        "url": "https://english.cambodiadaily.com/feed/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "VOD Khmer",
+        "url": "https://www.vodkhmer.news/feed/",
+        "language": "km",
+        "bias": "independent"
+      }
+    ],
+    "laos": [
+      {
+        "name": "Laotian Times",
+        "url": "https://laotiantimes.com/feed/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Vientiane Times Lao",
+        "url": "https://www.vientianetimeslao.la/feed/",
+        "language": "lo",
+        "bias": "state"
+      },
+      {
+        "name": "The Lao Times",
+        "url": "https://laotimes.com/feed/",
+        "language": "en",
+        "bias": "independent"
+      }
+    ],
+    "singapore": [
+      {
+        "name": "The Straits Times",
+        "url": "https://www.straitstimes.com/news/singapore/rss.xml",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Channel NewsAsia",
+        "url": "https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Mothership",
+        "url": "https://mothership.sg/feed/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "The Online Citizen",
+        "url": "https://www.theonlinecitizen.com/feed/",
+        "language": "en",
+        "bias": "independent"
+      }
+    ],
+    "thailand": [
+      {
+        "name": "Bangkok Post",
+        "url": "https://www.bangkokpost.com/rss/data/world.xml",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Khaosod English",
+        "url": "https://www.khaosodenglish.com/feed/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Thai Rath",
+        "url": "https://www.thairath.co.th/rss/news",
+        "language": "th",
+        "bias": "center"
+      },
+      {
+        "name": "Matichon",
+        "url": "https://www.matichon.co.th/feed",
+        "language": "th",
+        "bias": "center"
+      }
+    ],
+    "malaysia": [
+      {
+        "name": "The Star",
+        "url": "https://www.thestar.com.my/rss/news",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "MalaysiaNow",
+        "url": "https://www.malaysianow.com/feed",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "The Malaysian Insight",
+        "url": "https://www.themalaysianinsight.com/feed",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Focus Malaysia",
+        "url": "https://focusmalaysia.my/feed/",
+        "language": "en",
+        "bias": "independent"
+      }
+    ],
+    "indonesia": [
+      {
+        "name": "Antara News",
+        "url": "https://www.antaranews.com/rss/terkini.xml",
+        "language": "id",
+        "bias": "state"
+      },
+      {
+        "name": "Antara News English",
+        "url": "https://en.antaranews.com/rss/news.xml",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Detik News",
+        "url": "https://news.detik.com/rss",
+        "language": "id",
+        "bias": "center"
+      },
+      {
+        "name": "CNBC Indonesia",
+        "url": "https://www.cnbcindonesia.com/rss",
+        "language": "id",
+        "bias": "center",
+        "focus": "business"
+      },
+      {
+        "name": "Republika",
+        "url": "https://republika.co.id/rss",
+        "language": "id",
+        "bias": "conservative"
+      }
+    ],
+    "philippines": [
+      {
+        "name": "Philippine Daily Inquirer",
+        "url": "https://www.inquirer.net/fullfeed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Rappler",
+        "url": "https://www.rappler.com/feed/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Philippine Star",
+        "url": "https://www.philstar.com/rss/headlines",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "MindaNews",
+        "url": "https://mindanews.com/feed/",
+        "language": "en",
+        "bias": "independent",
+        "focus": "mindanao"
+      }
+    ]
+  },
+  "south_asia": {
+    "india": [
+      {
+        "name": "The Hindu",
+        "url": "https://www.thehindu.com/feeder/default.rss",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Times of India",
+        "url": "https://timesofindia.indiatimes.com/rssfeedstopstories.cms",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Indian Express",
+        "url": "https://indianexpress.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "NDTV",
+        "url": "https://feeds.feedburner.com/ndtvnews-top-stories",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Hindustan Times",
+        "url": "https://www.hindustantimes.com/feeds/rss/india-news/rssfeed.xml",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Economic Times",
+        "url": "https://economictimes.indiatimes.com/rssfeedstopstories.cms",
+        "language": "en",
+        "bias": "center",
+        "focus": "business"
+      }
+    ],
+    "pakistan": [
+      {
+        "name": "Dawn",
+        "url": "https://www.dawn.com/feeds/home",
+        "language": "en",
+        "bias": "liberal"
+      },
+      {
+        "name": "The Express Tribune",
+        "url": "https://tribune.com.pk/feed/home",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Geo News",
+        "url": "https://www.geo.tv/rss/1/1",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "The News International",
+        "url": "https://www.thenews.com.pk/rss/1/1",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Jang",
+        "url": "https://jang.com.pk/rss/1/1",
+        "language": "ur",
+        "bias": "center"
+      },
+      {
+        "name": "APP",
+        "url": "https://www.app.com.pk/feed/",
+        "language": "en",
+        "bias": "state"
+      }
+    ],
+    "bangladesh": [
+      {
+        "name": "Prothom Alo",
+        "url": "https://www.prothomalo.com/feed",
+        "language": "bn",
+        "bias": "independent"
+      },
+      {
+        "name": "Kaler Kantho",
+        "url": "https://www.kalerkantho.com/rss.xml",
+        "language": "bn",
+        "bias": "center"
+      },
+      {
+        "name": "BBC Bengali",
+        "url": "https://feeds.bbci.co.uk/bengali/rss.xml",
+        "language": "bn",
+        "bias": "center"
+      }
+    ],
+    "nepal": [
+      {
+        "name": "Online Khabar (Nepali)",
+        "url": "https://www.onlinekhabar.com/feed",
+        "language": "ne",
+        "bias": "independent"
+      },
+      {
+        "name": "OnlineKhabar English",
+        "url": "https://english.onlinekhabar.com/feed",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Nagarik News",
+        "url": "https://nagariknews.nagariknetwork.com/feed",
+        "language": "ne",
+        "bias": "independent"
+      },
+      {
+        "name": "Republica",
+        "url": "https://myrepublica.nagariknetwork.com/feeds",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Setopati",
+        "url": "https://www.setopati.com/feed",
+        "language": "ne",
+        "bias": "independent"
+      }
+    ],
+    "sri_lanka": [
+      {
+        "name": "Ada Derana",
+        "url": "http://www.adaderana.lk/rss.php",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "EconomyNext",
+        "url": "https://economynext.com/feed/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Newswire.lk",
+        "url": "https://www.newswire.lk/feed/",
+        "language": "en",
+        "bias": "independent"
+      }
+    ]
+  },
+  "africa": {
+    "egypt": [
+      {
+        "name": "Egypt Independent",
+        "url": "https://www.egyptindependent.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Mada Masr (English)",
+        "url": "https://www.madamasr.com/en/feed/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Mada Masr (Arabic)",
+        "url": "https://www.madamasr.com/feed/",
+        "language": "ar",
+        "bias": "independent"
+      }
+    ],
+    "kenya": [
+      {
+        "name": "NTV Kenya",
+        "url": "https://ntvkenya.co.ke/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "KBC Digital",
+        "url": "https://www.kbc.co.ke/feed/",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Kenya News Agency",
+        "url": "https://www.kenyanews.go.ke/feed/",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "Business Today Kenya",
+        "url": "https://businesstoday.co.ke/feed/",
+        "language": "en",
+        "bias": "center",
+        "focus": "business"
+      }
+    ],
+    "ethiopia": [
+      {
+        "name": "Ethiopian Reporter",
+        "url": "https://ethiopianreporter.com/feed/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Borkena",
+        "url": "https://borkena.com/feed/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "The Reporter Ethiopia",
+        "url": "https://www.thereporterethiopia.com/feed/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Fana Media",
+        "url": "https://www.fanamc.com/english/feed/",
+        "language": "en",
+        "bias": "state"
+      }
+    ],
+    "nigeria": [
+      {
+        "name": "Premium Times",
+        "url": "https://www.premiumtimesng.com/feed",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Channels TV",
+        "url": "https://www.channelstv.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Daily Trust",
+        "url": "https://dailytrust.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Sahara Reporters",
+        "url": "https://saharareporters.com/rss.xml",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "Vanguard",
+        "url": "https://www.vanguardngr.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "BusinessDay Nigeria",
+        "url": "https://businessday.ng/feed/",
+        "language": "en",
+        "bias": "center",
+        "focus": "business"
+      }
+    ],
+    "south_africa": [
+      {
+        "name": "Daily Maverick",
+        "url": "https://www.dailymaverick.co.za/dmrss/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "SABC News",
+        "url": "https://www.sabcnews.com/sabcnews/feed/",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "News24 South Africa",
+        "url": "https://feeds.capi24.com/v1/Search/articles/news24/southafrica/rss",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "The Citizen",
+        "url": "https://www.citizen.co.za/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Moneyweb",
+        "url": "https://www.moneyweb.co.za/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "The South African",
+        "url": "https://www.thesouthafrican.com/feed/",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "Western_Coast_Africa": [
+      {
+        "name": "Shafaqna Senegal",
+        "url": "https://senegal.shafaqna.com/rss.xml",
+        "language": "fr",
+        "bias": "center"
+      },
+      {
+        "name": "Guinee Live",
+        "url": "https://guineelive.com/feed/",
+        "language": "fr",
+        "bias": "center"
+      },
+      {
+        "name": "Sierra Leone Times",
+        "url": "https://feeds.sierraleonetimes.com/rss/8fcd2bb0346b8627",
+        "language": "en",
+        "bias": "state"
+      },
+      {
+        "name": "The Echo Critique",
+        "url": "https://www.critiqueecho.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Sierra Leone Telegraph",
+        "url": "https://www.thesierraleonetelegraph.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "KNews Nigeria",
+        "url": "https://knewsonline.com/rss/category/nwes",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "subsaharan_west_africa": [
+      {
+        "name": "Pulse Ghana",
+        "url": "https://www.pulse.com.gh/news/rss",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "AllAfrica - West Africa",
+        "url": "https://allafrica.com/tools/headlines/rdf/westafrica/headlines.rdf",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Ghanaian Times",
+        "url": "https://ghanaiantimes.com.gh/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "The News Guru Nigeria",
+        "url": "https://thenewsguru.ng/category/nigeria-news/feed/",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "sahel": [
+      {
+        "name": "Journal du Niger",
+        "url": "https://www.journalduniger.com/feed/",
+        "language": "fr",
+        "bias": "center"
+      },
+      {
+        "name": "Bamada Net",
+        "url": "https://bamada.net/feed",
+        "language": "fr",
+        "bias": "center"
+      },
+      {
+        "name": "Le Sahel",
+        "url": "https://lesahel.org/feed/",
+        "language": "fr",
+        "bias": "state"
+      },
+      {
+        "name": "Burkina Info",
+        "url": "https://burkinainfo.com/feed/",
+        "language": "fr",
+        "bias": "center"
+      }
+    ],
+    "kenya": [
+      {
+        "name": "Kenyans.co.ke",
+        "url": "https://www.kenyans.co.ke/feeds/news?_wrapper_format=html",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Nairobi Wire",
+        "url": "https://nairobiwire.com/feed",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Capital FM News Kenya",
+        "url": "https://www.capitalfm.co.ke/news/feed/",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "Somalia": [
+      {
+        "name": "Shabelle Media Network",
+        "url": "https://shabellemedia.com/feed/",
+        "language": "en",
+        "bias": "government"
+      },
+      {
+        "name": "Somali National News Agency",
+        "url": "https://sonna.so/en/feed/",
+        "language": "en",
+        "bias": "government"
+      },
+      {
+        "name": "Puntland Post",
+        "url": "https://puntlandpost.net/feed/",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "Ethiopia": [
+      {
+        "name": "Ethiopia Insight",
+        "url": "https://www.ethiopia-insight.com/feed/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "EthSat News",
+        "url": "https://ethsat.com/feed/",
+        "language": "am",
+        "bias": "center"
+      },
+      {
+        "name": "VOA Amharic",
+        "url": "https://amharic.voanews.com/api/zt%24gteitjt",
+        "language": "am",
+        "bias": "center"
+      },
+      {
+        "name": "Global Voices - Eritrea",
+        "url": "https://globalvoices.org/-/world/sub-saharan-africa/eritrea/",
+        "language": "en",
+        "bias": "independent"
+      }
+    ],
+    "sudan": [
+      {
+        "name": "Radio Dabanga",
+        "url": "https://www.dabangasudan.org/en/feed",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Radio Dabanga Arabic",
+        "url": "https://www.dabangasudan.org/ar/feed",
+        "language": "ar",
+        "bias": "center"
+      },
+      {
+        "name": "Radio Tamazuj",
+        "url": "https://www.radiotamazuj.org/en/feed",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Al Rakoba",
+        "url": "https://www.alrakoba.net/feed/",
+        "language": "ar",
+        "bias": "center"
+      },
+      {
+        "name": "Al Tagyheer",
+        "url": "https://www.altaghyeer.info/en/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Middle East Monitor Sudan",
+        "url": "https://www.middleeastmonitor.com/category/region/africa-2/sudan/feed/",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "dr_congo": [
+      {
+        "name": "Radio Okapi",
+        "url": "https://www.radiookapi.net/feed",
+        "language": "fr",
+        "bias": "state"
+      },
+      {
+        "name": "Actualite.cd",
+        "url": "https://actualite.cd/feed",
+        "language": "fr",
+        "bias": "center"
+      },
+      {
+        "name": "ADIAC Congo",
+        "url": "https://www.adiac-congo.com/rss.xml",
+        "language": "fr",
+        "bias": "center"
+      },
+      {
+        "name": "Zoom Eco",
+        "url": "https://zoom-eco.net/feed/",
+        "language": "fr",
+        "bias": "center",
+        "focus": "business"
+      },
+      {
+        "name": "L'Interview",
+        "url": "https://linterview.cd/feed/",
+        "language": "fr",
+        "bias": "center"
+      },
+      {
+        "name": "Congo Indépendant",
+        "url": "https://www.congoindependant.com/feed/",
+        "language": "fr",
+        "bias": "center"
+      }
+    ],
+    "Chad": [
+      {
+        "name": "AllAfrica - Chad",
+        "url": "https://allafrica.com/tools/headlines/rdf/chad/headlines.rdf",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "watchdoguganda.com",
+        "url": "https://www.watchdoguganda.com/feed",
+        "language": "fr",
+        "bias": "center"
+      }
+    ],
+    "East_Africa": [
+      {
+        "name": "O País Mozambique",
+        "url": "https://opais.co.mz/feed/",
+        "language": "pt",
+        "bias": "center"
+      },
+      {
+        "name": "Verdade Mozambique",
+        "url": "https://verdade.co.mz/feed/",
+        "language": "pt",
+        "bias": "center"
+      },
+      {
+        "name": "Jornal Domingo Mozambique",
+        "url": "https://www.jornaldomingo.co.mz/feed/",
+        "language": "pt",
+        "bias": "center"
+      },
+      {
+        "name": "The Citizen Tanzania",
+        "url": "https://www.thecitizen.co.tz/service/rss/tanzania/2486554/feed.rss",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "libya": [
+      {
+        "name": "Libya Herald",
+        "url": "https://libyaherald.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Libyan Express",
+        "url": "https://www.libyanexpress.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Libya Update News",
+        "url": "https://libyaupdate.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Libya Review",
+        "url": "https://libyareview.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Al-Marsad",
+        "url": "https://almarsad.co/feed/",
+        "language": "ar",
+        "bias": "center"
+      },
+      {
+        "name": "Ean Libya",
+        "url": "https://www.eanlibya.com/feed/",
+        "language": "ar",
+        "bias": "center"
+      },
+      {
+        "name": "Libya Al-Ahrar",
+        "url": "https://libyaalahrar.tv/feed/",
+        "language": "ar",
+        "bias": "conservative"
+      }
+    ],
+    "somalia": [
+      {
+        "name": "Goobjoog News",
+        "url": "https://goobjoog.com/feed/",
+        "language": "so",
+        "bias": "center"
+      },
+      {
+        "name": "Somali Guardian",
+        "url": "https://www.somaliguardian.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Puntland Post",
+        "url": "https://puntlandpost.net/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Horseed Media",
+        "url": "https://horseedmedia.net/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Mareeg Media",
+        "url": "https://mareeg.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Caasimada Online",
+        "url": "https://www.caasimada.net/feed/",
+        "language": "so",
+        "bias": "center"
+      },
+      {
+        "name": "WardheerNews",
+        "url": "https://wardheernews.com/feed/",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "morocco": [
+      {
+        "name": "TelQuel",
+        "url": "https://telquel.ma/feed",
+        "language": "fr",
+        "bias": "center"
+      },
+      {
+        "name": "Aujourd'hui le Maroc",
+        "url": "https://aujourdhui.ma/feed",
+        "language": "fr",
+        "bias": "center"
+      },
+      {
+        "name": "Agadir24",
+        "url": "https://agadir24.info/feed",
+        "language": "ar",
+        "bias": "center"
+      },
+      {
+        "name": "Al-Sabah",
+        "url": "https://assabah.ma/feed",
+        "language": "ar",
+        "bias": "center"
+      },
+      {
+        "name": "Al Maghrib Today",
+        "url": "https://www.almaghribtoday.net/home/rss.xml",
+        "language": "ar",
+        "bias": "center"
+      },
+      {
+        "name": "Le12.ma",
+        "url": "https://le12.ma/feed/",
+        "language": "ar",
+        "bias": "center"
+      },
+      {
+        "name": "Rue20",
+        "url": "https://rue20.com/feed",
+        "language": "ar",
+        "bias": "center"
+      }
+    ],
+    "algeria": [
+      {
+        "name": "TSA",
+        "url": "https://www.tsa-algerie.com/feed/",
+        "language": "fr",
+        "bias": "center"
+      },
+      {
+        "name": "Ennahar Online",
+        "url": "https://www.ennaharonline.com/feed/",
+        "language": "ar",
+        "bias": "conservative"
+      },
+      {
+        "name": "Algérie Eco",
+        "url": "https://algerie-eco.com/feed/",
+        "language": "fr",
+        "bias": "center",
+        "focus": "business"
+      },
+      {
+        "name": "Algérie Patriotique",
+        "url": "https://algeriepatriotique.com/feed/",
+        "language": "fr",
+        "bias": "center"
+      },
+      {
+        "name": "Maghreb Emergent",
+        "url": "https://www.maghrebemergent.com/feed/",
+        "language": "fr",
+        "bias": "center"
+      },
+      {
+        "name": "Algerie360",
+        "url": "https://www.algerie360.com/feed/",
+        "language": "fr",
+        "bias": "center"
+      },
+      {
+        "name": "ObservAlgerie",
+        "url": "https://observalgerie.com/feed/",
+        "language": "fr",
+        "bias": "center"
+      }
+    ],
+    "tunisia": [
+      {
+        "name": "La Presse de Tunisie",
+        "url": "https://www.lapresse.tn/feed/",
+        "language": "fr",
+        "bias": "center"
+      },
+      {
+        "name": "Business News Tunisia",
+        "url": "https://businessnews.com.tn/feed/",
+        "language": "fr",
+        "bias": "center",
+        "focus": "business"
+      },
+      {
+        "name": "Nawaat",
+        "url": "https://nawaat.org/feed/",
+        "language": "en",
+        "bias": "liberal"
+      },
+      {
+        "name": "Webdo Tunisia",
+        "url": "https://webdo.tn/en/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "African Manager",
+        "url": "https://africanmanager.com/feed/",
+        "language": "fr",
+        "bias": "center"
+      },
+      {
+        "name": "African Manager English",
+        "url": "https://en.africanmanager.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Turess",
+        "url": "https://www.turess.com/rss",
+        "language": "ar",
+        "bias": "center"
+      }
+    ],
+    "South_africa": [
+      {
+        "name": "Mail & Guardian",
+        "url": "https://mg.co.za/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Daily Maverick",
+        "url": "https://www.dailymaverick.co.za/dmrss/",
+        "language": "en",
+        "bias": "liberal"
+      },
+      {
+        "name": "Sowetan Live",
+        "url": "https://www.sowetan.co.za/arc/outboundfeeds/rss/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "IOL News",
+        "url": "https://rss.iol.io/iol/news",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "The Citizen",
+        "url": "https://www.citizen.co.za/feed/",
+        "language": "en",
+        "bias": "center"
+      }
+    ]
+  },
+  "technology": {
+    "global": [
+      {
+        "name": "TechCrunch",
+        "url": "https://techcrunch.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Ars Technica",
+        "url": "https://feeds.arstechnica.com/arstechnica/index",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "The Verge",
+        "url": "https://www.theverge.com/rss/index.xml",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Wired",
+        "url": "https://www.wired.com/feed/rss",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "MIT Technology Review",
+        "url": "https://www.technologyreview.com/feed/",
+        "language": "en",
+        "bias": "center"
+      }
+    ]
+  },
+  "business": {
+    "global": [
+      {
+        "name": "Financial Times",
+        "url": "https://www.ft.com/?format=rss",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Bloomberg",
+        "url": "https://feeds.bloomberg.com/markets/news.rss",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Al Jazeera Business",
+        "url": "https://www.aljazeera.com/xml/rss/all.xml",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Wall Street Journal",
+        "url": "https://feeds.a.dj.com/rss/RSSWorldNews.xml",
+        "language": "en",
+        "bias": "conservative"
+      }
+    ]
+  }
+}
