@@ -28,7 +28,7 @@ export function Header({ onRefresh, isLoading, onShowHelp }: HeaderProps) {
         <div className="flex items-center gap-2">
           <Globe className="h-6 w-6 text-primary" />
           <h1 className="text-lg font-bold text-foreground">
-            Global Threat Map
+            Global Threat Map <span className="text-primary">Local</span>
           </h1>
         </div>
         <Badge variant="outline" className="hidden md:flex">

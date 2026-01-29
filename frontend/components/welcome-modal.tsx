@@ -92,7 +92,7 @@ export function WelcomeModal({ open, onOpenChange }: WelcomeModalProps) {
       <DialogHeader onClose={handleClose}>
         <DialogTitle className="flex items-center gap-2">
           <Globe className="h-5 w-5 text-primary" />
-          Welcome to Global Threat Map
+          Welcome to Global Threat Map Local
         </DialogTitle>
       </DialogHeader>
 

@@ -5,7 +5,7 @@ import "./globals.css";
 import { AuthInitializer } from "@/components/auth/auth-initializer";
 
 export const metadata: Metadata = {
-  title: "Global Threat Map | Intelligence Platform",
+  title: "Global Threat Map Local | Intelligence Platform",
   description: "Real-time global situational awareness platform for security events, geopolitical developments, and threat indicators",
 };
 
