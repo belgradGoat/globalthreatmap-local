@@ -1,12 +1,29 @@
 /**
  * Local Intelligence Integration Layer
- * Replaces Valyu with WebScrapper (Eagle Watchtower) + LM Studio
+ * Replaces Valyu with WebScrapper (Eagle Watchtower) + LM Studio/Ollama/OpenAI
  */
 
 // WebScrapper API configuration
 const WEBSCRAPPER_URL = process.env.WEBSCRAPPER_URL || "http://localhost:3001";
-const LM_STUDIO_URL = process.env.LM_STUDIO_URL || "http://localhost:1234/v1";
 const RAG_SERVICE_URL = process.env.RAG_SERVICE_URL || "http://localhost:8001";
+
+// LLM Provider Types
+export type LLMProvider = "lmstudio" | "ollama" | "openai-compatible" | "openai";
+
+export interface LLMSettings {
+  provider: LLMProvider;
+  serverUrl: string;
+  model: string;
+  apiKey: string;
+}
+
+// Default LLM settings (from environment or sensible defaults)
+const DEFAULT_LLM_SETTINGS: LLMSettings = {
+  provider: (process.env.LLM_PROVIDER as LLMProvider) || "lmstudio",
+  serverUrl: process.env.LM_STUDIO_URL || "http://localhost:1234/v1",
+  model: process.env.LLM_MODEL || "",
+  apiKey: process.env.OPENAI_API_KEY || "",
+};
 
 // Check if local services are enabled
 export function isLocalIntelEnabled(): boolean {
@@ -704,19 +721,95 @@ export async function searchSocialMedia(
 }
 
 // ============================================================================
-// LLM ANALYSIS - Replaces valyu.answer()
+// LLM ANALYSIS - Supports LM Studio, Ollama, OpenAI-compatible, OpenAI Cloud
 // ============================================================================
 
-interface LMStudioResponse {
-  choices: Array<{
-    message: {
-      content: string;
-    };
-  }>;
+/**
+ * Get the chat completions endpoint for a provider
+ */
+function getLLMEndpoint(settings: LLMSettings): string {
+  const baseUrl = settings.serverUrl.replace(/\/$/, "");
+
+  switch (settings.provider) {
+    case "ollama":
+      return `${baseUrl}/api/chat`;
+    case "lmstudio":
+    case "openai-compatible":
+    case "openai":
+    default:
+      return `${baseUrl}/chat/completions`;
+  }
 }
 
 /**
- * Generate AI response using LM Studio (local LLM)
+ * Format request body for different LLM providers
+ */
+function formatLLMRequest(
+  settings: LLMSettings,
+  messages: { role: string; content: string }[],
+  options: { temperature?: number; maxTokens?: number; stream?: boolean }
+): object {
+  const baseRequest = {
+    messages,
+    temperature: options.temperature ?? 0.7,
+    stream: options.stream ?? false,
+  };
+
+  switch (settings.provider) {
+    case "ollama":
+      return {
+        ...baseRequest,
+        model: settings.model || "llama3.2",
+        options: {
+          num_predict: options.maxTokens ?? 2000,
+        },
+      };
+
+    case "lmstudio":
+    case "openai-compatible":
+    case "openai":
+    default:
+      return {
+        ...baseRequest,
+        model: settings.model || undefined,
+        max_tokens: options.maxTokens ?? 2000,
+      };
+  }
+}
+
+/**
+ * Get headers for LLM API request
+ */
+function getLLMHeaders(settings: LLMSettings): Record<string, string> {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+
+  if (settings.provider === "openai" && settings.apiKey) {
+    headers["Authorization"] = `Bearer ${settings.apiKey}`;
+  }
+
+  return headers;
+}
+
+/**
+ * Parse response from different LLM providers
+ */
+function parseLLMResponse(settings: LLMSettings, data: any): string {
+  switch (settings.provider) {
+    case "ollama":
+      return data.message?.content || "";
+    case "lmstudio":
+    case "openai-compatible":
+    case "openai":
+    default:
+      return data.choices?.[0]?.message?.content || "";
+  }
+}
+
+/**
+ * Generate AI response using configured LLM provider
+ * Supports: LM Studio, Ollama, OpenAI-compatible servers, OpenAI Cloud
  */
 export async function generateLLMResponse(
   prompt: string,
@@ -725,10 +818,12 @@ export async function generateLLMResponse(
     temperature?: number;
     maxTokens?: number;
     timeout?: number;
+    llmSettings?: LLMSettings;
   }
 ): Promise<string> {
   try {
-    const messages = [];
+    const settings = options?.llmSettings || DEFAULT_LLM_SETTINGS;
+    const messages: { role: string; content: string }[] = [];
 
     if (systemMessage) {
       messages.push({ role: "system", content: systemMessage });
@@ -736,41 +831,45 @@ export async function generateLLMResponse(
     messages.push({ role: "user", content: prompt });
 
     const controller = new AbortController();
-    const timeout = options?.timeout || 120000; // 2 min default
+    const timeout = options?.timeout || 120000;
     const timeoutId = setTimeout(() => controller.abort(), timeout);
 
-    const response = await fetch(`${LM_STUDIO_URL}/chat/completions`, {
+    const endpoint = getLLMEndpoint(settings);
+    const body = formatLLMRequest(settings, messages, {
+      temperature: options?.temperature,
+      maxTokens: options?.maxTokens,
+      stream: false,
+    });
+    const headers = getLLMHeaders(settings);
+
+    const response = await fetch(endpoint, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        messages,
-        temperature: options?.temperature || 0.7,
-        max_tokens: options?.maxTokens || 2000,
-        stream: false,
-      }),
+      headers,
+      body: JSON.stringify(body),
       signal: controller.signal,
     });
 
     clearTimeout(timeoutId);
 
     if (!response.ok) {
-      throw new Error(`LM Studio error: ${response.status}`);
+      throw new Error(`LLM error: ${response.status}`);
     }
 
-    const data: LMStudioResponse = await response.json();
-    return data.choices[0]?.message?.content || "";
+    const data = await response.json();
+    return parseLLMResponse(settings, data);
   } catch (error) {
     if (error instanceof Error && error.name === "AbortError") {
-      console.error("LM Studio request timed out");
+      console.error("LLM request timed out");
     } else {
-      console.error("LM Studio error:", error);
+      console.error("LLM error:", error);
     }
     return "";
   }
 }
 
 /**
- * Stream AI response using LM Studio
+ * Stream AI response using configured LLM provider
+ * Supports: LM Studio, Ollama, OpenAI-compatible servers, OpenAI Cloud
  */
 export async function* streamLLMResponse(
   prompt: string,
@@ -778,58 +877,86 @@ export async function* streamLLMResponse(
   options?: {
     temperature?: number;
     maxTokens?: number;
+    llmSettings?: LLMSettings;
   }
 ): AsyncGenerator<string> {
   try {
-    const messages = [];
+    const settings = options?.llmSettings || DEFAULT_LLM_SETTINGS;
+    const messages: { role: string; content: string }[] = [];
 
     if (systemMessage) {
       messages.push({ role: "system", content: systemMessage });
     }
     messages.push({ role: "user", content: prompt });
 
-    const response = await fetch(`${LM_STUDIO_URL}/chat/completions`, {
+    const endpoint = getLLMEndpoint(settings);
+    const body = formatLLMRequest(settings, messages, {
+      temperature: options?.temperature,
+      maxTokens: options?.maxTokens,
+      stream: true,
+    });
+    const headers = getLLMHeaders(settings);
+
+    const response = await fetch(endpoint, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        messages,
-        temperature: options?.temperature || 0.7,
-        max_tokens: options?.maxTokens || 2000,
-        stream: true,
-      }),
+      headers,
+      body: JSON.stringify(body),
     });
 
     if (!response.ok || !response.body) {
-      throw new Error(`LM Studio stream error: ${response.status}`);
+      throw new Error(`LLM stream error: ${response.status}`);
     }
 
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
+    if (settings.provider === "ollama") {
+      // Ollama streams JSON objects, one per line
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
 
-      const chunk = decoder.decode(value);
-      const lines = chunk.split("\n").filter((line) => line.startsWith("data: "));
+        const chunk = decoder.decode(value);
+        const lines = chunk.split("\n").filter(Boolean);
 
-      for (const line of lines) {
-        const data = line.slice(6);
-        if (data === "[DONE]") continue;
-
-        try {
-          const parsed = JSON.parse(data);
-          const content = parsed.choices?.[0]?.delta?.content;
-          if (content) {
-            yield content;
+        for (const line of lines) {
+          try {
+            const parsed = JSON.parse(line);
+            if (parsed.message?.content) {
+              yield parsed.message.content;
+            }
+          } catch {
+            // Skip malformed JSON
           }
-        } catch {
-          // Skip malformed JSON
+        }
+      }
+    } else {
+      // OpenAI-compatible SSE format
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value);
+        const lines = chunk.split("\n").filter((line) => line.startsWith("data: "));
+
+        for (const line of lines) {
+          const data = line.slice(6);
+          if (data === "[DONE]") continue;
+
+          try {
+            const parsed = JSON.parse(data);
+            const content = parsed.choices?.[0]?.delta?.content;
+            if (content) {
+              yield content;
+            }
+          } catch {
+            // Skip malformed JSON
+          }
         }
       }
     }
   } catch (error) {
-    console.error("LM Studio stream error:", error);
+    console.error("LLM stream error:", error);
   }
 }
 
@@ -918,6 +1045,7 @@ function classifyEntityType(name: string, content: string): EntityType {
 
 interface EntityOptions {
   accessToken?: string; // Ignored in local mode, kept for API compatibility
+  llmSettings?: LLMSettings; // Custom LLM provider settings
 }
 
 /**
@@ -952,6 +1080,7 @@ export async function getEntityResearch(entityName: string, options?: EntityOpti
     const summary = await generateLLMResponse(prompt, systemPrompt, {
       temperature: 0.3,
       maxTokens: 1000,
+      llmSettings: options?.llmSettings,
     });
 
     return {
@@ -1017,7 +1146,9 @@ ${combinedContent.slice(0, 4000)}`;
 
     // Stream the LLM response
     let fullContent = "";
-    for await (const chunk of streamLLMResponse(prompt, systemPrompt)) {
+    for await (const chunk of streamLLMResponse(prompt, systemPrompt, {
+      llmSettings: options?.llmSettings,
+    })) {
       fullContent += chunk;
       yield { type: "content", content: chunk };
     }
@@ -1180,8 +1311,8 @@ ${historicalContent.slice(0, 4000)}`
       : `No historical conflict information was found in the news sources for ${country}. Please respond with: "No historical conflict information available from current sources."`;
 
     const [currentAnswer, pastAnswer] = await Promise.all([
-      generateLLMResponse(currentPrompt, systemPrompt, { temperature: 0.3 }),
-      generateLLMResponse(pastPrompt, systemPrompt, { temperature: 0.3 }),
+      generateLLMResponse(currentPrompt, systemPrompt, { temperature: 0.3, llmSettings: options?.llmSettings }),
+      generateLLMResponse(pastPrompt, systemPrompt, { temperature: 0.3, llmSettings: options?.llmSettings }),
     ]);
 
     // Combine all current sources (conflict + political + economic)
@@ -1321,7 +1452,9 @@ ECONOMIC NEWS (${economicNews.results.length} articles):
 ${economicContent.slice(0, 1200) || "No economic news."}`
       : `No current news articles found for ${country}. Please respond: "No current news available from local sources for ${country}."`;
 
-    for await (const chunk of streamLLMResponse(currentPrompt, systemPrompt)) {
+    for await (const chunk of streamLLMResponse(currentPrompt, systemPrompt, {
+      llmSettings: options?.llmSettings,
+    })) {
       yield { type: "current_content", content: chunk };
     }
 
@@ -1349,7 +1482,9 @@ ${economicContent.slice(0, 1200) || "No economic news."}`
 ${historicalContent.slice(0, 4000)}`
       : `No historical information found. Please respond: "No historical conflict information available from current sources."`;
 
-    for await (const chunk of streamLLMResponse(pastPrompt, systemPrompt)) {
+    for await (const chunk of streamLLMResponse(pastPrompt, systemPrompt, {
+      llmSettings: options?.llmSettings,
+    })) {
       yield { type: "past_content", content: chunk };
     }
 
@@ -1417,6 +1552,7 @@ ${allContent.slice(0, 8000)}`;
       temperature: 0.3,
       maxTokens: 4000,
       timeout: 300000, // 5 minutes for comprehensive analysis
+      llmSettings: options?.llmSettings,
     });
 
     return {
@@ -1486,17 +1622,23 @@ export { getMilitaryBases } from "./valyu";
 
 interface ServiceStatus {
   webscrapper: boolean;
-  lmStudio: boolean;
+  llm: boolean;
+  llmProvider?: string;
+  llmModels?: string[];
   ragService: boolean;
 }
 
 /**
  * Check if local services are running
+ * @param llmSettings - Optional LLM settings to check (uses defaults if not provided)
  */
-export async function checkLocalServices(): Promise<ServiceStatus> {
+export async function checkLocalServices(llmSettings?: LLMSettings): Promise<ServiceStatus> {
+  const settings = llmSettings || DEFAULT_LLM_SETTINGS;
+
   const status: ServiceStatus = {
     webscrapper: false,
-    lmStudio: false,
+    llm: false,
+    llmProvider: settings.provider,
     ragService: false,
   };
 
@@ -1511,15 +1653,43 @@ export async function checkLocalServices(): Promise<ServiceStatus> {
     status.webscrapper = false;
   }
 
-  // Check LM Studio
+  // Check LLM Provider
   try {
-    const lmResponse = await fetch(`${LM_STUDIO_URL}/models`, {
+    const baseUrl = settings.serverUrl.replace(/\/$/, "");
+    let modelsEndpoint: string;
+
+    switch (settings.provider) {
+      case "ollama":
+        modelsEndpoint = `${baseUrl}/api/tags`;
+        break;
+      default:
+        modelsEndpoint = `${baseUrl}/models`;
+        break;
+    }
+
+    const headers: Record<string, string> = { "Content-Type": "application/json" };
+    if (settings.provider === "openai" && settings.apiKey) {
+      headers["Authorization"] = `Bearer ${settings.apiKey}`;
+    }
+
+    const llmResponse = await fetch(modelsEndpoint, {
       method: "GET",
+      headers,
       signal: AbortSignal.timeout(5000),
     });
-    status.lmStudio = lmResponse.ok;
+
+    if (llmResponse.ok) {
+      status.llm = true;
+      const data = await llmResponse.json();
+
+      if (settings.provider === "ollama") {
+        status.llmModels = (data.models || []).map((m: any) => m.name);
+      } else {
+        status.llmModels = (data.data || []).map((m: any) => m.id);
+      }
+    }
   } catch {
-    status.lmStudio = false;
+    status.llm = false;
   }
 
   // Check RAG Service

@@ -21,6 +21,7 @@ import {
 import { Favicon } from "@/components/ui/favicon";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth-store";
+import { useLLMStore } from "@/stores/llm-store";
 
 interface CountryConflictsModalProps {
   country: string | null;
@@ -104,6 +105,7 @@ export function CountryConflictsModal({
   const [activeTab, setActiveTab] = useState<TabType>("current");
   const eventSourceRef = useRef<EventSource | null>(null);
   const { accessToken } = useAuthStore();
+  const { settings: llmSettings } = useLLMStore();
 
   useEffect(() => {
     if (!country) {
@@ -132,12 +134,16 @@ export function CountryConflictsModal({
       past: { conflicts: "", sources: [] },
     });
 
-    // Build URL with access token if available
+    // Build URL with access token and LLM settings
     const url = new URL(`/api/countries/conflicts`, window.location.origin);
     url.searchParams.set("country", country);
     url.searchParams.set("stream", "true");
     if (accessToken) {
       url.searchParams.set("accessToken", accessToken);
+    }
+    // Pass LLM settings for server-side processing
+    if (llmSettings) {
+      url.searchParams.set("llmSettings", JSON.stringify(llmSettings));
     }
 
     const eventSource = new EventSource(url.toString());
@@ -240,7 +246,7 @@ export function CountryConflictsModal({
     return () => {
       eventSource.close();
     };
-  }, [country, onLoadingChange, accessToken]);
+  }, [country, onLoadingChange, accessToken, llmSettings]);
 
   const isStreaming =
     (activeTab === "current" && isStreamingCurrent) ||

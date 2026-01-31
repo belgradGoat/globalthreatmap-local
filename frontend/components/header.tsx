@@ -1,18 +1,21 @@
 "use client";
 
 import { useEventsStore } from "@/stores/events-store";
+import { useLLMStore } from "@/stores/llm-store";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Globe, RefreshCw, Activity, HelpCircle } from "lucide-react";
+import { Globe, RefreshCw, Activity, HelpCircle, Settings, Cpu } from "lucide-react";
 
 interface HeaderProps {
   onRefresh: () => void;
   isLoading: boolean;
   onShowHelp?: () => void;
+  onShowSettings?: () => void;
 }
 
-export function Header({ onRefresh, isLoading, onShowHelp }: HeaderProps) {
+export function Header({ onRefresh, isLoading, onShowHelp, onShowSettings }: HeaderProps) {
   const { filteredEvents } = useEventsStore();
+  const { settings, isConnected } = useLLMStore();
 
   const threatCounts = filteredEvents.reduce(
     (acc, event) => {
@@ -47,6 +50,21 @@ export function Header({ onRefresh, isLoading, onShowHelp }: HeaderProps) {
           )}
           <Badge variant="outline">{filteredEvents.length} Events</Badge>
         </div>
+
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onShowSettings}
+          title={`LLM Settings (${settings.provider}${isConnected ? " - Connected" : ""})`}
+          className="relative"
+        >
+          <Settings className="h-4 w-4" />
+          <span
+            className={`absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full ${
+              isConnected ? "bg-green-500" : "bg-yellow-500"
+            }`}
+          />
+        </Button>
 
         <Button
           variant="ghost"

@@ -10,7 +10,8 @@ import {
   deepResearch as localDeepResearch,
   searchEntityLocations as localSearchLocations,
   streamEntityResearch as localStreamEntity,
-  isLocalIntelEnabled
+  isLocalIntelEnabled,
+  type LLMSettings
 } from "@/lib/local-intel";
 import { isSelfHostedMode } from "@/lib/app-mode";
 
@@ -30,6 +31,17 @@ export async function GET(request: Request) {
   const name = searchParams.get("name");
   const stream = searchParams.get("stream") === "true";
   const accessToken = searchParams.get("accessToken");
+
+  // Parse LLM settings from query params
+  let llmSettings: LLMSettings | undefined;
+  const llmSettingsParam = searchParams.get("llmSettings");
+  if (llmSettingsParam) {
+    try {
+      llmSettings = JSON.parse(llmSettingsParam);
+    } catch {
+      // Ignore parse errors, use default settings
+    }
+  }
 
   if (!name) {
     return NextResponse.json(
@@ -54,7 +66,10 @@ export async function GET(request: Request) {
     const readable = new ReadableStream({
       async start(controller) {
         try {
-          for await (const chunk of streamEntityResearch(name, { accessToken: accessToken || undefined })) {
+          for await (const chunk of streamEntityResearch(name, {
+            accessToken: accessToken || undefined,
+            llmSettings,
+          })) {
             const data = `data: ${JSON.stringify(chunk)}\n\n`;
             controller.enqueue(encoder.encode(data));
           }
@@ -83,7 +98,10 @@ export async function GET(request: Request) {
   const deep = searchParams.get("deep") === "true";
 
   try {
-    const entityData = await getEntityResearch(name, { accessToken: accessToken || undefined });
+    const entityData = await getEntityResearch(name, {
+      accessToken: accessToken || undefined,
+      llmSettings,
+    });
 
     if (!entityData) {
       return NextResponse.json(
@@ -103,7 +121,10 @@ export async function GET(request: Request) {
     };
 
     if (deep) {
-      const research = await deepResearch(name, { accessToken: accessToken || undefined });
+      const research = await deepResearch(name, {
+        accessToken: accessToken || undefined,
+        llmSettings,
+      });
       profile.researchSummary = research.summary;
     }
 
@@ -120,7 +141,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, includeDeepResearch, accessToken } = body;
+    const { name, includeDeepResearch, accessToken, llmSettings } = body;
 
     if (!name) {
       return NextResponse.json(
@@ -139,8 +160,8 @@ export async function POST(request: Request) {
     }
 
     const [entityData, locationContent] = await Promise.all([
-      getEntityResearch(name, { accessToken: accessToken || undefined }),
-      searchEntityLocations(name, { accessToken: accessToken || undefined }),
+      getEntityResearch(name, { accessToken: accessToken || undefined, llmSettings }),
+      searchEntityLocations(name, { accessToken: accessToken || undefined, llmSettings }),
     ]);
 
     if (!entityData) {
@@ -176,7 +197,7 @@ export async function POST(request: Request) {
     let pdfUrl = undefined;
 
     if (includeDeepResearch) {
-      const research = await deepResearch(name, { accessToken: accessToken || undefined });
+      const research = await deepResearch(name, { accessToken: accessToken || undefined, llmSettings });
       profile.researchSummary = research.summary;
       deliverables = research.deliverables;
       pdfUrl = research.pdfUrl;

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCountryConflicts as valyuGetConflicts, streamCountryConflicts as valyuStreamConflicts } from "@/lib/valyu";
-import { getCountryConflicts as localGetConflicts, streamCountryConflicts as localStreamConflicts, isLocalIntelEnabled } from "@/lib/local-intel";
+import { getCountryConflicts as localGetConflicts, streamCountryConflicts as localStreamConflicts, isLocalIntelEnabled, type LLMSettings } from "@/lib/local-intel";
 import { isSelfHostedMode } from "@/lib/app-mode";
 
 // Use local intel or Valyu based on configuration
@@ -14,6 +14,17 @@ export async function GET(request: Request) {
   const country = searchParams.get("country");
   const stream = searchParams.get("stream") === "true";
   const accessToken = searchParams.get("accessToken");
+
+  // Parse LLM settings from query params
+  let llmSettings: LLMSettings | undefined;
+  const llmSettingsParam = searchParams.get("llmSettings");
+  if (llmSettingsParam) {
+    try {
+      llmSettings = JSON.parse(llmSettingsParam);
+    } catch {
+      // Ignore parse errors, use default settings
+    }
+  }
 
   if (!country) {
     return NextResponse.json(
@@ -38,7 +49,10 @@ export async function GET(request: Request) {
     const readable = new ReadableStream({
       async start(controller) {
         try {
-          for await (const chunk of streamCountryConflicts(country, { accessToken: accessToken || undefined })) {
+          for await (const chunk of streamCountryConflicts(country, {
+            accessToken: accessToken || undefined,
+            llmSettings,
+          })) {
             const data = `data: ${JSON.stringify(chunk)}\n\n`;
             controller.enqueue(encoder.encode(data));
           }
@@ -65,7 +79,10 @@ export async function GET(request: Request) {
 
   // Non-streaming mode - return full response
   try {
-    const result = await getCountryConflicts(country, { accessToken: accessToken || undefined });
+    const result = await getCountryConflicts(country, {
+      accessToken: accessToken || undefined,
+      llmSettings,
+    });
 
     return NextResponse.json({
       country,

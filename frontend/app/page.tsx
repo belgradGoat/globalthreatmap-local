@@ -8,12 +8,14 @@ import { ThreatMap } from "@/components/map/threat-map";
 import { TimelineScrubber } from "@/components/map/timeline-scrubber";
 import { MapControls } from "@/components/map/map-controls";
 import { WelcomeModal } from "@/components/welcome-modal";
+import { SettingsModal } from "@/components/settings-modal";
 import { SignInPanel } from "@/components/auth";
 
 const WELCOME_DISMISSED_KEY = "globalthreatmap_welcome_dismissed";
 
 export default function Home() {
   const [showWelcome, setShowWelcome] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const { isLoading, refresh } = useEvents({
     autoRefresh: true,
     refreshInterval: 300000, // 5 minutes
@@ -32,6 +34,7 @@ export default function Home() {
         onRefresh={refresh}
         isLoading={isLoading}
         onShowHelp={() => setShowWelcome(true)}
+        onShowSettings={() => setShowSettings(true)}
       />
       <div className="flex flex-1 overflow-hidden">
         <div className="relative flex-1">
@@ -42,6 +45,7 @@ export default function Home() {
         <Sidebar />
       </div>
       <WelcomeModal open={showWelcome} onOpenChange={setShowWelcome} />
+      <SettingsModal open={showSettings} onOpenChange={setShowSettings} />
       <SignInPanel />
     </div>
   );
