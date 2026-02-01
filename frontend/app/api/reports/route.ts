@@ -1,13 +1,30 @@
+/**
+ * Reports API
+ * Generates research reports using local LLM
+ */
+
 import { NextResponse } from "next/server";
-import { deepResearch } from "@/lib/valyu";
-import { isSelfHostedMode } from "@/lib/app-mode";
+import { deepResearch, type LLMSettings } from "@/lib/local-intel";
 
 export const dynamic = "force-dynamic";
+
+// Parse LLM settings from request body
+function parseLLMSettings(body: any): LLMSettings | undefined {
+  if (body.llmSettings) {
+    return {
+      provider: body.llmSettings.provider || "lmstudio",
+      serverUrl: body.llmSettings.serverUrl || "http://localhost:1234/v1",
+      model: body.llmSettings.model || "",
+      apiKey: body.llmSettings.apiKey || "",
+    };
+  }
+  return undefined;
+}
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { topic, type, accessToken } = body;
+    const { topic, type } = body;
 
     if (!topic) {
       return NextResponse.json(
@@ -16,14 +33,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // In valyu mode, require authentication
-    const selfHosted = isSelfHostedMode();
-    if (!selfHosted && !accessToken) {
-      return NextResponse.json(
-        { error: "Authentication required", requiresReauth: true },
-        { status: 401 }
-      );
-    }
+    const llmSettings = parseLLMSettings(body);
 
     let enhancedQuery = topic;
 
@@ -44,7 +54,7 @@ export async function POST(request: Request) {
         enhancedQuery = `comprehensive analysis ${topic}`;
     }
 
-    const research = await deepResearch(enhancedQuery, { accessToken: accessToken || undefined });
+    const research = await deepResearch(enhancedQuery, { llmSettings });
 
     return NextResponse.json({
       report: {

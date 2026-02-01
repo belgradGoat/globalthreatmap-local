@@ -1,97 +1,129 @@
+/**
+ * Comprehensive Deep Research API (Non-streaming)
+ * Searches ALL 600+ RSS feeds across all regions
+ * Uses local LLM for analysis
+ *
+ * For streaming responses, use /api/deepresearch/stream instead
+ */
+
 import { NextResponse } from "next/server";
-import { Valyu } from "valyu-js";
-import { isSelfHostedMode } from "@/lib/app-mode";
+import { generateLLMResponse, type LLMSettings } from "@/lib/local-intel";
 
 export const dynamic = "force-dynamic";
 
-const OAUTH_PROXY_URL =
-  process.env.VALYU_OAUTH_PROXY_URL ||
-  `${process.env.VALYU_APP_URL || "https://platform.valyu.ai"}/api/oauth/proxy`;
+const WEBSCRAPPER_URL = process.env.WEBSCRAPPER_URL || "http://localhost:3001";
 
-let valyuInstance: Valyu | null = null;
+// All available regions to search
+const ALL_REGIONS = [
+  "eastern_europe",
+  "western_europe",
+  "middle_east",
+  "east_asia",
+  "southeast_asia",
+  "south_asia",
+  "central_asia",
+  "north_america",
+  "south_america",
+  "africa",
+  "oceania",
+  "business",
+  "technology",
+];
 
-function getValyuClient(): Valyu {
-  if (!valyuInstance) {
-    const apiKey = process.env.VALYU_API_KEY;
-    if (!apiKey) {
-      throw new Error("VALYU_API_KEY environment variable is not set");
-    }
-    valyuInstance = new Valyu(apiKey);
-  }
-  return valyuInstance;
+interface SearchResult {
+  title: string;
+  url: string;
+  content: string;
+  source?: string;
+  sourceCountry?: string;
+  publishedDate?: string;
 }
 
-async function createTaskViaProxy(
-  topic: string,
-  accessToken: string
-): Promise<{ taskId?: string; error?: string }> {
+function parseLLMSettings(body: any): LLMSettings | undefined {
+  if (body.llmSettings) {
+    return {
+      provider: body.llmSettings.provider || "lmstudio",
+      serverUrl: body.llmSettings.serverUrl || "http://localhost:1234/v1",
+      model: body.llmSettings.model || "",
+      apiKey: body.llmSettings.apiKey || "",
+    };
+  }
+  return undefined;
+}
+
+async function searchRegion(
+  region: string,
+  keywords: string,
+  limit: number = 50
+): Promise<SearchResult[]> {
   try {
-    const response = await fetch(OAUTH_PROXY_URL, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        path: "/v1/deepresearch/tasks",
-        method: "POST",
-        body: {
-          query: `Intelligence dossier on ${topic}. Include:
-- Background and overview
-- Key locations and geographic presence (with specific city/country names)
-- Organizational structure and leadership
-- Related entities, allies, and adversaries
-- Recent activities and incidents (2023-2025)
-- Threat assessment and capabilities
-- Timeline of significant events`,
-          mode: "fast",
-          output_formats: ["markdown", "pdf"],
-          deliverables: [
-            {
-              type: "csv",
-              description: `Intelligence data export for ${topic}. Include all locations with coordinates, key figures, related organizations, significant events with dates, and source URLs.`,
-              columns: [
-                "Category",
-                "Name",
-                "Description",
-                "Location",
-                "Latitude",
-                "Longitude",
-                "Date",
-                "Relationship",
-                "Source URL",
-              ],
-              include_headers: true,
-            },
-            {
-              type: "pptx",
-              description: `Executive intelligence briefing on ${topic}. Include: overview slide, threat assessment, key locations map, organizational structure, recent activity timeline, related entities network, and recommendations.`,
-              slides: 8,
-            },
-          ],
-        },
-      }),
+    const params = new URLSearchParams({
+      region,
+      keywords,
+      limit: String(limit),
     });
 
-    if (!response.ok) {
-      if (response.status === 401 || response.status === 403) {
-        return { error: "Session expired. Please sign in again." };
+    const response = await fetch(
+      `${WEBSCRAPPER_URL}/api/local-sources?${params}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        signal: AbortSignal.timeout(30000),
       }
-      return { error: `API call failed: ${response.status}` };
-    }
+    );
+
+    if (!response.ok) return [];
 
     const data = await response.json();
-    return { taskId: data.deepresearch_id };
-  } catch (error) {
-    return { error: error instanceof Error ? error.message : "Unknown error" };
+    return (data.articles || []).map((article: any) => ({
+      title: article.title || "Untitled",
+      url: article.url || "",
+      content: article.description || article.content || "",
+      source: article.source?.name || "Local Source",
+      sourceCountry: article.source?.country || region,
+      publishedDate: article.publishedAt || article.pubDate,
+    }));
+  } catch {
+    return [];
   }
 }
 
-// POST - Create a new deep research task
+async function searchGlobalNews(
+  query: string,
+  limit: number = 30
+): Promise<SearchResult[]> {
+  try {
+    const params = new URLSearchParams({
+      keyword: query,
+      lang: "en",
+      max: String(limit),
+    });
+
+    const response = await fetch(`${WEBSCRAPPER_URL}/api/news?${params}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      signal: AbortSignal.timeout(15000),
+    });
+
+    if (!response.ok) return [];
+
+    const data = await response.json();
+    return (data.articles || []).map((article: any) => ({
+      title: article.title || "Untitled",
+      url: article.url || "",
+      content: article.description || article.content || "",
+      source: article.source?.name || "News",
+      publishedDate: article.publishedAt,
+    }));
+  } catch {
+    return [];
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { topic, accessToken } = body;
+    const { topic } = body;
 
     if (!topic) {
       return NextResponse.json(
@@ -100,80 +132,132 @@ export async function POST(request: Request) {
       );
     }
 
-    const selfHosted = isSelfHostedMode();
+    const llmSettings = parseLLMSettings(body);
 
-    // Valyu mode requires auth
-    if (!selfHosted && !accessToken) {
-      return NextResponse.json(
-        { error: "Authentication required", requiresReauth: true },
-        { status: 401 }
-      );
-    }
+    // Search ALL regions in parallel + global news
+    console.log(`[DeepResearch] Starting comprehensive search for: "${topic}"`);
 
-    // Use OAuth proxy in valyu mode
-    if (!selfHosted && accessToken) {
-      const result = await createTaskViaProxy(topic, accessToken);
-      if (result.error) {
-        return NextResponse.json({ error: result.error }, { status: 500 });
+    const regionPromises = ALL_REGIONS.map((region) =>
+      searchRegion(region, topic, 50)
+    );
+    const globalPromise = searchGlobalNews(topic, 50);
+
+    const [globalResults, ...regionResults] = await Promise.all([
+      globalPromise,
+      ...regionPromises,
+    ]);
+
+    // Combine and deduplicate
+    const seenUrls = new Set<string>();
+    const allResults: SearchResult[] = [];
+
+    for (const result of globalResults) {
+      if (result.url && !seenUrls.has(result.url)) {
+        seenUrls.add(result.url);
+        allResults.push(result);
       }
-      return NextResponse.json({ taskId: result.taskId, status: "queued" });
     }
 
-    // Self-hosted mode: use API key directly
-    const valyu = getValyuClient();
+    for (let i = 0; i < regionResults.length; i++) {
+      const regionArticles = regionResults[i];
+      const region = ALL_REGIONS[i];
 
-    const task = await valyu.deepresearch.create({
-      query: `Intelligence dossier on ${topic}. Include:
-- Background and overview
-- Key locations and geographic presence (with specific city/country names)
-- Organizational structure and leadership
-- Related entities, allies, and adversaries
-- Recent activities and incidents (2023-2025)
-- Threat assessment and capabilities
-- Timeline of significant events`,
-      mode: "fast",
-      outputFormats: ["markdown", "pdf"],
-      deliverables: [
-        {
-          type: "csv",
-          description: `Intelligence data export for ${topic}. Include all locations with coordinates, key figures, related organizations, significant events with dates, and source URLs.`,
-          columns: [
-            "Category",
-            "Name",
-            "Description",
-            "Location",
-            "Latitude",
-            "Longitude",
-            "Date",
-            "Relationship",
-            "Source URL",
-          ],
-          includeHeaders: true,
-        },
-        {
-          type: "pptx",
-          description: `Executive intelligence briefing on ${topic}. Include: overview slide, threat assessment, key locations map, organizational structure, recent activity timeline, related entities network, and recommendations.`,
-          slides: 8,
-        },
-      ],
+      for (const result of regionArticles) {
+        if (result.url && !seenUrls.has(result.url)) {
+          seenUrls.add(result.url);
+          allResults.push({
+            ...result,
+            sourceCountry: result.sourceCountry || region,
+          });
+        }
+      }
+    }
+
+    // Sort by date
+    allResults.sort((a, b) => {
+      const dateA = a.publishedDate ? new Date(a.publishedDate).getTime() : 0;
+      const dateB = b.publishedDate ? new Date(b.publishedDate).getTime() : 0;
+      return dateB - dateA;
     });
 
-    if (!task.success || !task.deepresearch_id) {
-      console.error("Failed to create deep research task:", task.error);
-      return NextResponse.json(
-        { error: task.error || "Failed to create research task" },
-        { status: 500 }
-      );
+    console.log(`[DeepResearch] Found ${allResults.length} unique articles`);
+
+    const sources = allResults.map((r) => ({
+      title: r.title,
+      url: r.url,
+      source: r.source,
+      sourceCountry: r.sourceCountry,
+    }));
+
+    // Group articles by region
+    const articlesByRegion: Record<string, SearchResult[]> = {};
+    for (const result of allResults) {
+      const region = result.sourceCountry || "global";
+      if (!articlesByRegion[region]) {
+        articlesByRegion[region] = [];
+      }
+      articlesByRegion[region].push(result);
     }
+
+    // Build source content
+    let sourceContent = "";
+    for (const [region, articles] of Object.entries(articlesByRegion)) {
+      if (articles.length > 0) {
+        sourceContent += `\n\n=== ${region.toUpperCase()} (${articles.length} articles) ===\n`;
+        for (const article of articles.slice(0, 30)) {
+          sourceContent += `\n[${article.source}] ${article.title}\n${article.content}\n`;
+        }
+      }
+    }
+
+    // Get current date context
+    const now = new Date();
+    const dateString = now.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    const year = now.getFullYear();
+
+    const systemPrompt = `You are a senior intelligence analyst creating a comprehensive, authoritative dossier. Today is ${dateString}. The current year is ${year}.
+
+Your analysis must be exhaustive, well-structured, factual, and geographically comprehensive.
+You have access to ${allResults.length} articles from ${Object.keys(articlesByRegion).length} regions.`;
+
+    const prompt = `Create an exhaustive intelligence dossier on "${topic}".
+
+Include these sections:
+1. Executive Summary
+2. Background & History
+3. Organizational Analysis
+4. Geographic Presence & Operations
+5. Current Activities & Recent Developments (${year})
+6. Relationships & Alliances
+7. Capabilities Assessment
+8. Threat Assessment
+9. Detailed Timeline
+10. Source Analysis
+
+SOURCE MATERIAL (${allResults.length} articles):
+${sourceContent}`;
+
+    const output = await generateLLMResponse(prompt, systemPrompt, {
+      temperature: 0.3,
+      maxTokens: 8000,
+      timeout: 600000, // 10 minutes
+      llmSettings,
+    });
 
     return NextResponse.json({
-      taskId: task.deepresearch_id,
-      status: "queued",
+      status: "completed",
+      output: output || "Research could not be completed.",
+      sources,
     });
   } catch (error) {
-    console.error("Error creating deep research task:", error);
+    console.error("Deep research error:", error);
     return NextResponse.json(
-      { error: "Failed to create research task" },
+      { error: "Failed to complete research" },
       { status: 500 }
     );
   }

@@ -20,22 +20,14 @@ import {
   Globe,
   Users,
   FileText,
-  MapPin,
-  Navigation,
-  Lock,
-  FileSpreadsheet,
-  Presentation,
-  File,
   Maximize2,
+  AlertCircle,
 } from "lucide-react";
 import { Favicon } from "@/components/ui/favicon";
 import { useMapStore } from "@/stores/map-store";
-import { useAuthStore } from "@/stores/auth-store";
+import { useLLMStore } from "@/stores/llm-store";
 import { Markdown } from "@/components/ui/markdown";
-import { SignInModal } from "@/components/auth/sign-in-modal";
 import type { EntityProfile } from "@/types";
-
-const APP_MODE = process.env.NEXT_PUBLIC_APP_MODE || "self-hosted";
 
 const typeIcons = {
   organization: Building2,
@@ -44,118 +36,61 @@ const typeIcons = {
   group: Users,
 };
 
-interface DeepResearchProgress {
-  currentStep: number;
-  totalSteps: number;
+interface Source {
+  title: string;
+  url: string;
+  source?: string;
 }
 
-interface DeepResearchResult {
+interface ResearchResult {
   output: string;
-  sources: Array<{ title: string; url: string }>;
-  deliverables?: Array<{
-    type: string;
-    title: string;
-    url: string;
-    status: string;
-  }>;
-  pdfUrl?: string;
+  sources: Source[];
 }
 
 export function EntitySearch() {
   const [query, setQuery] = useState("");
   const [entity, setEntity] = useState<EntityProfile | null>(null);
-  const [showSignInModal, setShowSignInModal] = useState(false);
   const [showFullReport, setShowFullReport] = useState(false);
 
-  // Deep research state
-  const [deepResearchTaskId, setDeepResearchTaskId] = useState<string | null>(null);
-  const [deepResearchProgress, setDeepResearchProgress] = useState<DeepResearchProgress | null>(null);
-  const [deepResearchResult, setDeepResearchResult] = useState<DeepResearchResult | null>(null);
-  const [deepResearchError, setDeepResearchError] = useState<string | null>(null);
-  const pollingRef = useRef<NodeJS.Timeout | null>(null);
+  // Streaming research state
+  const [isLoading, setIsLoading] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [streamedContent, setStreamedContent] = useState("");
+  const [sources, setSources] = useState<Source[]>([]);
+  const [researchResult, setResearchResult] = useState<ResearchResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const { flyTo, setEntityLocations, clearEntityLocations } = useMapStore();
-  const { isAuthenticated, accessToken } = useAuthStore();
-
-  const requiresAuth = APP_MODE === "valyu";
-  const isLoading = !!deepResearchTaskId;
+  const { settings: llmSettings, isConnected } = useLLMStore();
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (pollingRef.current) {
-        clearInterval(pollingRef.current);
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
       }
     };
   }, []);
 
-  // Poll for deep research status
-  useEffect(() => {
-    if (!deepResearchTaskId) return;
-
-    const pollStatus = async () => {
-      try {
-        const url = new URL(`/api/deepresearch/${deepResearchTaskId}`, window.location.origin);
-        if (accessToken) {
-          url.searchParams.set("accessToken", accessToken);
-        }
-        const response = await fetch(url.toString());
-        const data = await response.json();
-
-        if (data.error) {
-          setDeepResearchError(data.error);
-          setDeepResearchTaskId(null);
-          if (pollingRef.current) clearInterval(pollingRef.current);
-          return;
-        }
-
-        if (data.progress) {
-          setDeepResearchProgress(data.progress);
-        }
-
-        if (data.status === "completed") {
-          setDeepResearchResult({
-            output: data.output,
-            sources: data.sources || [],
-            deliverables: data.deliverables,
-            pdfUrl: data.pdfUrl,
-          });
-          setDeepResearchTaskId(null);
-          if (pollingRef.current) clearInterval(pollingRef.current);
-        } else if (data.status === "failed") {
-          setDeepResearchError(data.error || "Research failed");
-          setDeepResearchTaskId(null);
-          if (pollingRef.current) clearInterval(pollingRef.current);
-        }
-      } catch (err) {
-        console.error("Polling error:", err);
-      }
-    };
-
-    // Poll immediately, then every 5 seconds
-    pollStatus();
-    pollingRef.current = setInterval(pollStatus, 5000);
-
-    return () => {
-      if (pollingRef.current) clearInterval(pollingRef.current);
-    };
-  }, [deepResearchTaskId, accessToken]);
-
   const handleSearch = async () => {
     if (!query.trim()) return;
 
-    // Always require sign-in for intel search
-    if (!isAuthenticated) {
-      setShowSignInModal(true);
+    // Check if LLM is configured
+    if (!isConnected) {
+      setError("LLM not connected. Please configure your LLM provider in Settings.");
       return;
     }
 
     // Reset state
     clearEntityLocations();
     setEntity(null);
-    setDeepResearchResult(null);
-    setDeepResearchProgress(null);
-    setDeepResearchError(null);
+    setResearchResult(null);
+    setStreamedContent("");
+    setSources([]);
+    setError(null);
+    setStatusMessage(null);
+    setIsLoading(true);
 
     // Create placeholder entity
     setEntity({
@@ -168,23 +103,94 @@ export function EntitySearch() {
       economicData: {},
     });
 
-    // Start deep research
-    fetch("/api/deepresearch", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ topic: query, accessToken }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) {
-          setDeepResearchError(data.error);
-        } else if (data.taskId) {
-          setDeepResearchTaskId(data.taskId);
-        }
-      })
-      .catch(() => {
-        setDeepResearchError("Failed to start research");
+    // Abort any previous request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    abortControllerRef.current = new AbortController();
+
+    try {
+      const response = await fetch("/api/deepresearch/stream", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          topic: query,
+          llmSettings: {
+            provider: llmSettings.provider,
+            serverUrl: llmSettings.serverUrl,
+            model: llmSettings.model,
+            apiKey: llmSettings.apiKey,
+          },
+        }),
+        signal: abortControllerRef.current.signal,
       });
+
+      if (!response.ok) {
+        throw new Error(`Request failed: ${response.status}`);
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error("No response body");
+      }
+
+      const decoder = new TextDecoder();
+      let fullContent = "";
+      let collectedSources: Source[] = [];
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value);
+        const lines = chunk.split("\n").filter(line => line.startsWith("data: "));
+
+        for (const line of lines) {
+          try {
+            const data = JSON.parse(line.slice(6));
+
+            switch (data.type) {
+              case "status":
+                setStatusMessage(data.message);
+                break;
+
+              case "sources":
+                collectedSources = data.sources || [];
+                setSources(collectedSources);
+                break;
+
+              case "content":
+                fullContent += data.content;
+                setStreamedContent(fullContent);
+                setStatusMessage(null); // Clear status when content starts
+                break;
+
+              case "done":
+                setResearchResult({
+                  output: fullContent,
+                  sources: collectedSources,
+                });
+                setIsLoading(false);
+                break;
+
+              case "error":
+                setError(data.error || "Research failed");
+                setIsLoading(false);
+                break;
+            }
+          } catch {
+            // Skip malformed JSON
+          }
+        }
+      }
+    } catch (err) {
+      if (err instanceof Error && err.name === "AbortError") {
+        // Request was aborted, ignore
+        return;
+      }
+      setError(err instanceof Error ? err.message : "Research failed");
+      setIsLoading(false);
+    }
   };
 
   const handleShowOnMap = () => {
@@ -195,31 +201,32 @@ export function EntitySearch() {
     }
   };
 
-  const handleFlyToLocation = (longitude: number, latitude: number) => {
-    flyTo(longitude, latitude, 8);
-  };
-
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       handleSearch();
     }
   };
 
+  const handleCancel = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    setIsLoading(false);
+    setStatusMessage(null);
+  };
+
   const TypeIcon = entity ? typeIcons[entity.type] : Building2;
 
-  // Get deliverable by type
-  const getDeliverable = (type: string) => {
-    return deepResearchResult?.deliverables?.find(
-      (d) => d.type === type && d.status === "completed"
-    );
-  };
+  // Current display content (streaming or final)
+  const displayContent = researchResult?.output || streamedContent;
+  const displaySources = researchResult?.sources || sources;
 
   return (
     <div className="flex h-full flex-col">
       <div className="border-b border-border p-4">
         <h2 className="text-lg font-semibold text-foreground">Build Dossier</h2>
         <p className="text-sm text-muted-foreground">
-          Deep research on any actor with sourced analysis
+          Deep research on any actor using your local LLM
         </p>
       </div>
 
@@ -235,58 +242,58 @@ export function EntitySearch() {
               className="pl-9"
             />
           </div>
-          <Button onClick={handleSearch} disabled={isLoading || !query.trim()}>
-            {isLoading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              "Research"
-            )}
-          </Button>
+          {isLoading ? (
+            <Button variant="outline" onClick={handleCancel}>
+              Cancel
+            </Button>
+          ) : (
+            <Button onClick={handleSearch} disabled={!query.trim()}>
+              Research
+            </Button>
+          )}
         </div>
 
-        {/* Deep research progress */}
-        {isLoading && (
+        {/* Status message */}
+        {isLoading && statusMessage && (
           <div className="rounded-lg bg-primary/10 border border-primary/20 p-3 text-sm">
-            <div className="flex items-center gap-2 text-foreground font-medium mb-2">
+            <div className="flex items-center gap-2 text-foreground font-medium">
               <Loader2 className="h-4 w-4 animate-spin text-primary" />
-              Generating Intelligence Report
+              {statusMessage}
             </div>
-            {deepResearchProgress ? (
-              <div className="space-y-1">
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>Step {deepResearchProgress.currentStep} of {deepResearchProgress.totalSteps}</span>
-                  <span>{Math.round((deepResearchProgress.currentStep / deepResearchProgress.totalSteps) * 100)}%</span>
-                </div>
-                <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-primary transition-all duration-500"
-                    style={{
-                      width: `${(deepResearchProgress.currentStep / deepResearchProgress.totalSteps) * 100}%`,
-                    }}
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-primary/50 animate-pulse w-1/4" />
-              </div>
-            )}
-            <p className="text-muted-foreground text-xs mt-2">
-              This takes <span className="text-foreground font-medium">5-10 minutes</span> but produces an extremely detailed report with CSV data export and PowerPoint briefing.
-            </p>
           </div>
         )}
 
-        {/* Deep research error */}
-        {deepResearchError && (
-          <div className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">
-            {deepResearchError}
+        {/* Streaming indicator */}
+        {isLoading && !statusMessage && streamedContent && (
+          <div className="rounded-lg bg-primary/10 border border-primary/20 p-3 text-sm">
+            <div className="flex items-center gap-2 text-foreground font-medium">
+              <Loader2 className="h-4 w-4 animate-spin text-primary" />
+              Generating intelligence report...
+            </div>
+          </div>
+        )}
+
+        {/* Error message */}
+        {error && (
+          <div className="rounded-lg bg-destructive/10 border border-destructive/20 p-3 text-sm flex items-start gap-2">
+            <AlertCircle className="h-4 w-4 text-destructive shrink-0 mt-0.5" />
+            <span className="text-destructive">{error}</span>
+          </div>
+        )}
+
+        {/* LLM not connected warning */}
+        {!isConnected && !error && (
+          <div className="rounded-lg bg-yellow-500/10 border border-yellow-500/20 p-3 text-sm flex items-start gap-2">
+            <AlertCircle className="h-4 w-4 text-yellow-500 shrink-0 mt-0.5" />
+            <span className="text-yellow-500">
+              LLM not connected. Configure your provider in Settings (gear icon in header).
+            </span>
           </div>
         )}
       </div>
 
       <ScrollArea className="flex-1 p-4">
-        {entity && deepResearchResult && (
+        {entity && displayContent && (
           <Card>
             <CardHeader className="pb-3">
               <div className="flex items-start gap-3">
@@ -302,82 +309,52 @@ export function EntitySearch() {
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* Deep Research Report Preview */}
+              {/* Report Preview */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <h4 className="flex items-center gap-2 text-sm font-medium text-foreground">
                     <FileText className="h-4 w-4" />
                     Intelligence Report
+                    {isLoading && (
+                      <Loader2 className="h-3 w-3 animate-spin text-primary" />
+                    )}
                   </h4>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setShowFullReport(true)}
-                    className="h-7 text-xs"
-                  >
-                    <Maximize2 className="mr-1 h-3 w-3" />
-                    View Full Report
-                  </Button>
+                  {researchResult && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowFullReport(true)}
+                      className="h-7 text-xs"
+                    >
+                      <Maximize2 className="mr-1 h-3 w-3" />
+                      View Full Report
+                    </Button>
+                  )}
                 </div>
 
-                {/* Preview - first 800 chars */}
+                {/* Preview - first 800 chars or streaming content */}
                 <div className="text-sm text-muted-foreground max-h-40 overflow-hidden relative">
-                  <Markdown content={deepResearchResult.output.slice(0, 800) + "..."} />
-                  <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-card to-transparent" />
-                </div>
-
-                {/* Deliverables Download Buttons */}
-                <div className="flex flex-wrap gap-2 pt-2 border-t border-border">
-                  {getDeliverable("csv") && (
-                    <a
-                      href={getDeliverable("csv")!.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex"
-                    >
-                      <Button variant="outline" size="sm" className="h-8 text-xs">
-                        <FileSpreadsheet className="mr-1.5 h-3.5 w-3.5 text-green-500" />
-                        Download CSV
-                      </Button>
-                    </a>
-                  )}
-                  {getDeliverable("pptx") && (
-                    <a
-                      href={getDeliverable("pptx")!.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex"
-                    >
-                      <Button variant="outline" size="sm" className="h-8 text-xs">
-                        <Presentation className="mr-1.5 h-3.5 w-3.5 text-orange-500" />
-                        Download PPTX
-                      </Button>
-                    </a>
-                  )}
-                  {deepResearchResult.pdfUrl && (
-                    <a
-                      href={deepResearchResult.pdfUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex"
-                    >
-                      <Button variant="outline" size="sm" className="h-8 text-xs">
-                        <File className="mr-1.5 h-3.5 w-3.5 text-red-500" />
-                        Download PDF
-                      </Button>
-                    </a>
+                  <Markdown
+                    content={
+                      researchResult
+                        ? displayContent.slice(0, 800) + "..."
+                        : displayContent
+                    }
+                  />
+                  {researchResult && (
+                    <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-card to-transparent" />
                   )}
                 </div>
               </div>
 
               {/* Sources */}
-              {deepResearchResult.sources.length > 0 && (
+              {displaySources.length > 0 && (
                 <div>
                   <h4 className="mb-2 text-sm font-medium text-foreground">
-                    Sources ({deepResearchResult.sources.length})
+                    Sources ({displaySources.length})
                   </h4>
                   <div className="space-y-1">
-                    {deepResearchResult.sources.slice(0, 10).map((source, i) => (
+                    {displaySources.slice(0, 10).map((source, i) => (
                       <a
                         key={i}
                         href={source.url}
@@ -407,18 +384,15 @@ export function EntitySearch() {
               <p>Nations, militias, PMCs, cartels, political figures</p>
             </div>
             <div className="mt-4 p-3 rounded-lg bg-muted/50 text-xs text-muted-foreground">
-              <p>Reports take <span className="text-foreground font-medium">5-10 minutes</span> to generate but are extremely detailed with downloadable CSV data and PowerPoint briefings.</p>
+              <p>
+                Uses your configured LLM ({llmSettings.provider}) to generate
+                comprehensive intelligence reports.
+              </p>
             </div>
-            {requiresAuth && !isAuthenticated && (
-              <div className="mt-4 flex items-center justify-center gap-2 text-sm text-amber-600 dark:text-amber-400">
-                <Lock className="h-4 w-4" />
-                <span>Sign in required</span>
-              </div>
-            )}
           </div>
         )}
 
-        {entity && isLoading && (
+        {entity && isLoading && !displayContent && (
           <Card>
             <CardHeader className="pb-3">
               <div className="flex items-start gap-3">
@@ -446,7 +420,11 @@ export function EntitySearch() {
       </ScrollArea>
 
       {/* Full Report Dialog */}
-      <Dialog open={showFullReport} onClose={() => setShowFullReport(false)} className="max-w-4xl">
+      <Dialog
+        open={showFullReport}
+        onClose={() => setShowFullReport(false)}
+        className="max-w-4xl"
+      >
         <DialogHeader onClose={() => setShowFullReport(false)}>
           <DialogTitle className="flex items-center gap-2">
             <FileText className="h-5 w-5" />
@@ -454,45 +432,18 @@ export function EntitySearch() {
           </DialogTitle>
         </DialogHeader>
         <DialogContent className="h-[70vh] flex flex-col">
-          {/* Download buttons */}
-          <div className="flex flex-wrap gap-2 pb-3 border-b border-border mb-3">
-            {getDeliverable("csv") && (
-              <a href={getDeliverable("csv")!.url} target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" size="sm">
-                  <FileSpreadsheet className="mr-1.5 h-4 w-4 text-green-500" />
-                  Download CSV
-                </Button>
-              </a>
-            )}
-            {getDeliverable("pptx") && (
-              <a href={getDeliverable("pptx")!.url} target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" size="sm">
-                  <Presentation className="mr-1.5 h-4 w-4 text-orange-500" />
-                  Download PPTX
-                </Button>
-              </a>
-            )}
-            {deepResearchResult?.pdfUrl && (
-              <a href={deepResearchResult.pdfUrl} target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" size="sm">
-                  <File className="mr-1.5 h-4 w-4 text-red-500" />
-                  Download PDF
-                </Button>
-              </a>
-            )}
-          </div>
           <ScrollArea className="flex-1">
             <div className="prose prose-sm dark:prose-invert max-w-none pr-4">
-              {deepResearchResult && (
-                <Markdown content={deepResearchResult.output} />
-              )}
+              {researchResult && <Markdown content={researchResult.output} />}
             </div>
             {/* Sources at bottom */}
-            {deepResearchResult?.sources && deepResearchResult.sources.length > 0 && (
+            {researchResult?.sources && researchResult.sources.length > 0 && (
               <div className="mt-8 pt-4 border-t border-border">
-                <h4 className="text-sm font-medium mb-3">Sources ({deepResearchResult.sources.length})</h4>
+                <h4 className="text-sm font-medium mb-3">
+                  Sources ({researchResult.sources.length})
+                </h4>
                 <div className="grid grid-cols-2 gap-2">
-                  {deepResearchResult.sources.slice(0, 20).map((source, i) => (
+                  {researchResult.sources.slice(0, 20).map((source, i) => (
                     <a
                       key={i}
                       href={source.url}
@@ -510,8 +461,6 @@ export function EntitySearch() {
           </ScrollArea>
         </DialogContent>
       </Dialog>
-
-      <SignInModal open={showSignInModal} onOpenChange={setShowSignInModal} />
     </div>
   );
 }
