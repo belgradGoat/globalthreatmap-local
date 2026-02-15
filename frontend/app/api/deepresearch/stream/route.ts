@@ -313,7 +313,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { topic } = body;
+    const { topic, includeSecurityAnalysis = false } = body;
 
     if (!topic) {
       return new Response(
@@ -324,6 +324,8 @@ export async function POST(request: NextRequest) {
 
     const llmSettings = parseLLMSettings(body);
     const expandedKeywords = expandKeywords(topic);
+
+    console.log(`[DeepResearch] Security analysis: ${includeSecurityAnalysis ? "enabled" : "disabled"}`);
 
     console.log(`[DeepResearch] Topic: "${topic}"`);
     console.log(`[DeepResearch] Expanded keywords: ${expandedKeywords.substring(0, 200)}...`);
@@ -474,7 +476,7 @@ export async function POST(request: NextRequest) {
             encoder.encode(
               `data: ${JSON.stringify({
                 type: "status",
-                message: `Found ${allResults.length} articles. Generating comprehensive dossier...`,
+                message: `Found ${allResults.length} articles. Generating comprehensive research report...`,
               })}\n\n`
             )
           );
@@ -534,7 +536,9 @@ export async function POST(request: NextRequest) {
           });
           const year = now.getFullYear();
 
-          const systemPrompt = `You are a senior intelligence analyst creating an exhaustive, authoritative dossier. Today is ${dateString}. The current year is ${year}.
+          // News-focused system prompt with optional security angle
+          const systemPrompt = includeSecurityAnalysis
+            ? `You are a senior research analyst with expertise in global affairs and security matters, creating a comprehensive research report. Today is ${dateString}. The current year is ${year}.
 
 You have access to ${allResults.length} sources including:
 - Wikipedia background articles
@@ -546,86 +550,98 @@ Your analysis must be:
 - EXHAUSTIVE: Cover every relevant detail from the sources
 - WELL-SOURCED: Reference specific sources when making claims
 - MULTILINGUAL AWARE: The sources are in many languages; synthesize all information
-- GEOGRAPHICALLY COMPREHENSIVE: Note activities and coverage from all regions
+- GEOGRAPHICALLY COMPREHENSIVE: Note coverage from all regions
 - TEMPORALLY PRECISE: Distinguish between historical and current events
-- ANALYTICALLY RIGOROUS: Identify patterns, connections, and implications`;
+- SECURITY-AWARE: Include threat assessments and capability analysis`
+            : `You are a knowledgeable research analyst creating a comprehensive, informative research report. Today is ${dateString}. The current year is ${year}.
 
-          const prompt = `Create an EXHAUSTIVE intelligence dossier on "${topic}".
+You have access to ${allResults.length} sources including:
+- Wikipedia background articles
+- Google News from 20 countries
+- GNews and Guardian API results
+- 600+ regional RSS feeds in multiple languages
 
-This is a COMPREHENSIVE research report using ${allResults.length} sources from across the globe. Be extremely thorough.
+Your analysis must be:
+- EXHAUSTIVE: Cover every relevant detail from the sources
+- WELL-SOURCED: Reference specific sources when making claims
+- MULTILINGUAL AWARE: The sources are in many languages; synthesize all information
+- GEOGRAPHICALLY COMPREHENSIVE: Note coverage from all regions
+- TEMPORALLY PRECISE: Distinguish between historical and current events
+- BALANCED: Present multiple perspectives where they exist`;
+
+          // Build sections based on whether security analysis is enabled
+          const securitySections = includeSecurityAnalysis ? `
+### 6. Capabilities & Resources
+- Operational capabilities and resources
+- Financial backing and funding sources
+- Technological capabilities
+- Key assets and infrastructure
+- Communication and media presence
+
+### 7. Risk & Security Assessment
+- Current risk level (Low/Medium/High/Critical)
+- Primary concerns and implications
+- Potential future developments
+- Key indicators to monitor
+- Regional stability implications` : "";
+
+          const prompt = `Create a COMPREHENSIVE research report on "${topic}".
+
+This report synthesizes ${allResults.length} sources from across the globe. Be thorough and informative.
 
 ## Required Sections:
 
 ### 1. Executive Summary
-- Critical findings and key takeaways
-- Current threat/significance assessment
-- Geographic scope of activities
+- Key findings and main takeaways
+- Current significance and relevance
+- Geographic scope
 - Most important recent developments (${year})
 
-### 2. Background & Origins
-- Historical origins and formation
+### 2. Background & Context
+- Historical background and origins
 - Evolution and key milestones
-- Ideological or strategic foundations
-- Timeline of development
+- Core principles or foundations
+- Important context for understanding
 
-### 3. Organizational Structure
-- Leadership and key figures (with names where available)
-- Hierarchy and command structure
-- Internal factions or divisions
-- Estimated size and composition
-- Recruitment and training
+### 3. Key Players & Structure
+- Major figures and leaders (with names where available)
+- Organizational structure or hierarchy
+- Key stakeholders and participants
+- Relevant demographics or composition
 
-### 4. Geographic Presence & Operations
-- Primary bases and headquarters
-- Regional operations (by continent):
-  * Europe (Eastern & Western)
-  * Middle East & North Africa
-  * Sub-Saharan Africa
+### 4. Geographic Scope
+- Primary locations and centers
+- Regional presence and activities:
+  * Europe
+  * Middle East & Africa
   * Asia-Pacific
   * Americas
-- Territorial control or influence
-- Cross-border networks and logistics
+- International reach and connections
 
-### 5. Current Activities (${year})
-- Latest operations and incidents
-- Recent statements and communications
-- Ongoing campaigns
-- Changes in strategy or tactics
-- Emerging trends
+### 5. Current Developments (${year})
+- Latest news and events
+- Recent announcements and statements
+- Ongoing situations
+- Emerging trends and changes
+${securitySections}
 
-### 6. Capabilities Assessment
-- Military/operational capabilities
-- Weapons and equipment
-- Financial resources and funding sources
-- Technological capabilities
-- Propaganda and information operations
-- Cyber capabilities (if applicable)
+### ${includeSecurityAnalysis ? "8" : "6"}. Relationships & Connections
+- Key partnerships and alliances
+- Related organizations or entities
+- International relations
+- Notable collaborations or conflicts
 
-### 7. Relationships & Networks
-- State sponsors and backers
-- Allied organizations
-- Adversaries and opponents
-- International diplomatic status
-- Criminal or commercial connections
-
-### 8. Threat Assessment
-- Current threat level (Low/Medium/High/Critical)
-- Primary risks and concerns
-- Potential future scenarios
-- Indicators to monitor
-- Recommended actions
-
-### 9. Detailed Event Timeline
-- Chronological list of ALL significant events
+### ${includeSecurityAnalysis ? "9" : "7"}. Timeline of Key Events
+- Chronological list of significant events
 - Include dates, locations, and outcomes
-- Mark ongoing vs completed operations
+- Note ongoing vs. concluded developments
 
-### 10. Source Analysis & Confidence
-- Summary of source coverage by type and region
-- Languages represented in sources
-- Confidence level for each major finding
-- Identified information gaps
-- Recommendations for further research
+### ${includeSecurityAnalysis ? "10" : "8"}. Source Analysis
+- Summary of source coverage by region
+- Languages represented
+- Confidence level for major findings
+- Information gaps identified
+- Suggestions for further research
 
 ---
 

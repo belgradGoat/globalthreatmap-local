@@ -12,15 +12,12 @@ import Map, {
   type MapMouseEvent,
   type LayerProps,
 } from "react-map-gl/mapbox";
-import { useMapStore } from "@/stores/map-store";
+import { useMapStore, MAP_STYLES } from "@/stores/map-store";
+import { MapStyleSelector } from "./map-style-selector";
 import { useEventsStore } from "@/stores/events-store";
-import { useAuthStore } from "@/stores/auth-store";
 import { threatLevelColors } from "@/types";
 import { EventPopup } from "./event-popup";
-import { CountryConflictsModal } from "./country-conflicts-modal";
-import { SignInModal } from "@/components/auth/sign-in-modal";
-
-const APP_MODE = process.env.NEXT_PUBLIC_APP_MODE || "self-hosted";
+import { CountryModal } from "./country-modal";
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
@@ -271,6 +268,7 @@ export function ThreatMap() {
   const {
     viewport,
     setViewport,
+    mapStyle,
     showHeatmap,
     showClusters,
     entityLocations,
@@ -280,16 +278,12 @@ export function ThreatMap() {
     setMilitaryBasesLoading,
   } = useMapStore();
   const { filteredEvents, selectedEvent, selectEvent } = useEventsStore();
-  const { isAuthenticated } = useAuthStore();
   const [selectedEntityLocation, setSelectedEntityLocation] = useState<SelectedEntityLocation | null>(null);
   const [selectedMilitaryBase, setSelectedMilitaryBase] = useState<SelectedMilitaryBase | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedCountryCode, setSelectedCountryCode] = useState<string | null>(null);
   const [isCountryLoading, setIsCountryLoading] = useState(false);
   const [blinkOpacity, setBlinkOpacity] = useState(0.4);
-  const [showSignInModal, setShowSignInModal] = useState(false);
-
-  const requiresAuth = APP_MODE === "valyu";
 
 
   // Fetch military bases on mount
@@ -477,12 +471,6 @@ export function ThreatMap() {
           // Get ISO 3166-1 alpha-2 country code from short_code property
           const countryCode = countryFeature.properties?.short_code?.toUpperCase() || null;
 
-          // Always require sign-in for country clicks (answers about a place)
-          if (requiresAuth && !isAuthenticated) {
-            setShowSignInModal(true);
-            return;
-          }
-
           setSelectedCountry(countryName);
           setSelectedCountryCode(countryCode);
           setIsCountryLoading(true);
@@ -491,7 +479,7 @@ export function ThreatMap() {
         console.error("Error reverse geocoding:", error);
       }
     },
-    [filteredEvents, selectEvent, viewport.zoom, requiresAuth, isAuthenticated]
+    [filteredEvents, selectEvent, viewport.zoom]
   );
 
   const handleMouseEnter = useCallback(() => {
@@ -526,7 +514,7 @@ export function ThreatMap() {
       ref={mapRef}
       {...viewport}
       onMove={(evt) => setViewport(evt.viewState)}
-      mapStyle="mapbox://styles/mapbox/dark-v11"
+      mapStyle={MAP_STYLES[mapStyle].id}
       mapboxAccessToken={MAPBOX_TOKEN}
       interactiveLayerIds={
         showClusters
@@ -559,7 +547,7 @@ export function ThreatMap() {
               ["==", ["get", "worldview"], "all"],
             ]}
             paint={{
-              "fill-color": "#ef4444",
+              "fill-color": "#0d9488", // Eagle Eye teal
               "fill-opacity": blinkOpacity,
             }}
             beforeId="waterway-label"
@@ -574,7 +562,7 @@ export function ThreatMap() {
               ["==", ["get", "worldview"], "all"],
             ]}
             paint={{
-              "line-color": "#ef4444",
+              "line-color": "#0d9488", // Eagle Eye teal
               "line-width": 2,
               "line-opacity": 0.8,
             }}
@@ -781,13 +769,13 @@ export function ThreatMap() {
         </Popup>
       )}
 
-      <CountryConflictsModal
+      <CountryModal
         country={selectedCountry}
         onClose={handleCountryModalClose}
         onLoadingChange={handleCountryLoadingChange}
       />
 
-      <SignInModal open={showSignInModal} onOpenChange={setShowSignInModal} />
+      <MapStyleSelector />
     </Map>
   );
 }

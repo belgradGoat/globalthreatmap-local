@@ -1,7 +1,7 @@
-export function isSelfHostedMode(): boolean {
-  return process.env.NEXT_PUBLIC_APP_MODE !== "valyu";
-}
+/**
+ * App mode detection - always self-hosted mode
+ */
 
-export function isValyuMode(): boolean {
-  return process.env.NEXT_PUBLIC_APP_MODE === "valyu";
+export function isSelfHostedMode(): boolean {
+  return true;
 }

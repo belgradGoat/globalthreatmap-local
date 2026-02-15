@@ -122,7 +122,7 @@
         "bias": "independent"
       }
     ],
-        "czech": [
+    "czech": [
       {
         "name": "iDNES.cz",
         "url": "http://servis.idnes.cz/rss.aspx",
@@ -2224,7 +2224,34 @@
     ]
   },
   "north_america": {
-    "usa": [
+    "mexico": [
+      {
+        "name": "Milenio",
+        "url": "https://www.milenio.com/rss",
+        "language": "es",
+        "bias": "center"
+      },
+      {
+        "name": "La Jornada",
+        "url": "https://www.jornada.com.mx/rss/edicion.xml",
+        "language": "es",
+        "bias": "liberal"
+      },
+      {
+        "name": "Sin Embargo",
+        "url": "https://www.sinembargo.mx/feed/",
+        "language": "es",
+        "bias": "independent"
+      },
+      {
+        "name": "Forbes México",
+        "url": "https://forbes.com.mx/feed/",
+        "language": "es",
+        "bias": "center",
+        "focus": "business"
+      }
+    ],
+    "us": [
       {
         "name": "NPR News",
         "url": "https://feeds.npr.org/1001/rss.xml",
@@ -2266,408 +2293,393 @@
         "url": "https://thehill.com/feed/",
         "language": "en",
         "bias": "center"
-      }
-    ],
-    "mexico": [
-      {
-        "name": "Milenio",
-        "url": "https://www.milenio.com/rss",
-        "language": "es",
-        "bias": "center"
-      },
-      {
-        "name": "La Jornada",
-        "url": "https://www.jornada.com.mx/rss/edicion.xml",
-        "language": "es",
-        "bias": "liberal"
-      },
-      {
-        "name": "Sin Embargo",
-        "url": "https://www.sinembargo.mx/feed/",
-        "language": "es",
-        "bias": "independent"
-      },
-      {
-        "name": "Forbes México",
-        "url": "https://forbes.com.mx/feed/",
-        "language": "es",
-        "bias": "center",
-        "focus": "business"
-      }
-    ],
-    "us": [
-      {
-        "name": "New York Times",
-        "url": "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
-        "language": "en",
-        "bias": "liberal"
       },
       {
         "name": "Washington Post",
         "url": "https://feeds.washingtonpost.com/rss/politics",
         "language": "en",
         "bias": "liberal"
+      }
+    ],
+    "us_liberal_politics": [
+      {
+        "name": "CNN Politics",
+        "url": "http://rss.cnn.com/rss/cnn_allpolitics.rss",
+        "language": "en",
+        "bias": "liberal"
       },
       {
-        "name": "Fox News",
-        "url": "https://moxie.foxnews.com/google-publisher/latest.xml",
+        "name": "MSNBC Politics",
+        "url": "https://feeds.nbcnews.com/nbcnews/public/politics",
+        "language": "en",
+        "bias": "liberal"
+      },
+      {
+        "name": "New York Times Politics",
+        "url": "https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
+        "language": "en",
+        "bias": "liberal"
+      },
+      {
+        "name": "Democracy Now",
+        "url": "https://www.democracynow.org/democracynow.rss",
+        "language": "en",
+        "bias": "liberal"
+      },
+      {
+        "name": "Mother Jones",
+        "url": "https://www.motherjones.com/feed/",
+        "language": "en",
+        "bias": "liberal"
+      }
+    ],
+    "us_conservative_politics": [
+      {
+        "name": "Fox News Politics",
+        "url": "https://moxie.foxnews.com/google-publisher/politics.xml",
+        "language": "en",
+        "bias": "conservative"
+      },
+      {
+        "name": "Ny Post Politics",
+        "url": "https://nypost.com/politics/feed/",
+        "language": "en",
+        "bias": "conservative"
+      },
+      {
+        "name": "The Washington Times Politics",
+        "url": "https://www.washingtontimes.com/rss/headlines/news/politics/",
+        "language": "en",
+        "bias": "conservative"
+      },
+      {
+        "name": "National Review",
+        "url": "https://www.nationalreview.com/feed/",
+        "language": "en",
+        "bias": "conservative"
+      },
+      {
+        "name": "Breitbart News",
+        "url": "http://feeds.feedburner.com/BreitbartFeed",
         "language": "en",
         "bias": "conservative"
       }
     ],
-      "us_liberal_politics": [
-        {
-          "name": "CNN Politics",
-          "url": "http://rss.cnn.com/rss/cnn_allpolitics.rss",
-          "language": "en",
-          "bias": "liberal"
-        },
-        {
-          "name": "MSNBC Politics",
-          "url": "https://feeds.nbcnews.com/nbcnews/public/politics",
-          "language": "en",
-          "bias": "liberal"
-        },
-        {
-          "name": "New York Times Politics",
-          "url": "https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
-          "language": "en",
-          "bias": "liberal"
-        },
-        {
-          "name": "Democracy Now",
-          "url": "https://www.democracynow.org/democracynow.rss",
-          "language": "en",
-          "bias": "liberal"
-        },
-        {
-          "name": "Mother Jones",
-          "url": "https://www.motherjones.com/feed/",
-          "language": "en",
-          "bias": "liberal"
-        }
-      ],
-      "us_conservative_politics": [
-        {
-          "name": "Fox News Politics",
-          "url": "https://moxie.foxnews.com/google-publisher/politics.xml",
-          "language": "en",
-          "bias": "conservative"
-        },
-        {
-          "name": "Ny Post Politics",
-          "url": "https://nypost.com/politics/feed/",
-          "language": "en",
-          "bias": "conservative"
-        },
-        {
-          "name": "The Washington Times Politics",
-          "url": "https://www.washingtontimes.com/rss/headlines/news/politics/",
-          "language": "en",
-          "bias": "conservative"
-        },
-        {
-          "name": "National Review",
-          "url": "https://www.nationalreview.com/feed/",
-          "language": "en",
-          "bias": "conservative"
-        },
-        {
-          "name": "Breitbart News",
-          "url": "http://feeds.feedburner.com/BreitbartFeed",
-          "language": "en",
-          "bias": "conservative"
-        }
-      ],
-      "california": [
-        {
-          "name": "Los Angeles Times",
-          "url": "https://www.latimes.com/local/rss2.0.xml",
-          "language": "en",
-          "bias": "center"
-        },
-        {
-          "name": "Los Angeles Times - California Politics",
-          "url": "https://www.latimes.com/politics/rss2.0.xml",
-          "language": "en",
-          "bias": "center"
-        },
-        {
-          "name": "San Francisco Standard",
-          "url": "https://sfstandard.com/feed",
-          "language": "en",
-          "bias": "center"
-        },
-        {
-          "name": "Sacramento Bee",
-          "url": "https://www.sacbee.com/?widgetName=rssfeed&widgetContentId=6199&getXmlFeed=true",
-          "language": "en",
-          "bias": "center"
-        },
-        {
-          "name": "laopinion.com",
-          "url": "https://laopinion.com/feed/",
-          "language": "es",
-          "bias": "center"
-        },
-        {
-          "name": "El Tecolote",
-          "url": "https://eltecolote.org/content/en/feed/",
-          "language": "es",
-          "bias": "center"
-        }
-      ],
-      "us_judicial": [
-        {
-          "name": "SCOTUSblog",
-          "url": "https://www.scotusblog.com/feed/",
-          "language": "en",
-          "bias": "government"
-        },
-        {
-          "name": "Law360 - Supreme Court",
-          "url": "https://www.law360.com/access-to-justice/rss",
-          "language": "en",
-          "bias": "center"
-        },
-        {
-          "name": "Justice Department News",
-          "url": "https://www.justice.gov/news/rss?m=1",
-          "language": "en",
-          "bias": "government"
-        },
-        {
-          "name": "California DOJ News",
-          "url": "https://oag.ca.gov/news/feed",
-          "language": "en",
-          "bias": "government"
-        }
-      ],
-      "us_democratic_politics": [
-        {
-          "name": "Democratic National Committee",
-          "url": "https://democrats.org/feed/",
-          "language": "en",
-          "bias": "government"
-       },
-       {
-          "name": "Political Wire",
-          "url": "https://politicalwire.com/feed/",
-          "language": "en",
-          "bias": "center"
-        },
-        {
-            "name": "Daily Kos",
-            "url": "https://www.dailykos.com/blogs/main/feed",
-            "language": "en",
-            "bias": "liberal"
-        }
-      ],
-      "us_republican_politics": [
-        {
-          "name": "Republican National Committee",
-          "url": "https://www.gop.com/feed/",
-          "language": "en",
-          "bias": "government"
-        },
-        {
-          "name": "The Federalist",
-          "url": "https://thefederalist.com/feed/",
-          "language": "en",
-          "bias": "conservative"
-        },
-        {
-          "name": "RedState",
-          "url": "https://redstate.com/feed",
-          "language": "en",
-          "bias": "conservative"
-        },
-        {
-          "name": "The Heritage Foundation",
-          "url": "https://www.dailysignal.com/feed/",
-          "language": "en",
-          "bias": "conservative"
-        },
-        {
-          "name": "The Dispatch",
-          "url": "https://thedispatch.com/feed/",
-          "language": "en",
-          "bias": "conservative"
-        }
-      ],
-      "usa_european_relations": [
-        {
-          "name": "European Parliament External Relations",
-          "url": "https://www.europarl.europa.eu/rss/topic/903/en.xml",
-          "language": "en",
-          "bias": "government"
-        },
-        {
-          "name": "US Mission to the EU",
-          "url": "https://useu.usmission.gov/feed/",
-          "language": "en",
-          "bias": "government"
-        },
-        {
-          "name": "Bureau of European and Eurasian Affairs - US State Department",
-          "url": "https://www.state.gov/bureaus-offices/under-secretary-for-political-affairs/bureau-of-european-and-eurasian-affairs/feed/",
-          "language": "en",
-          "bias": "government"
-        },
-        {
-          "name": "Atlantic Council - European Union",
-          "url": "https://www.atlanticcouncil.org/region/european-union/feed/",
-          "language": "en",
-          "bias": "conservative"
-        },
-        {
-          "name": "Politico Europe",
-          "url": "https://www.politico.eu/feed/",
-          "language": "en",
-          "bias": "center"
-        },
-        {
-          "name": "Department of state - Europe and Eurasia",
-          "url": "https://www.state.gov/rss-feed/europe-and-eurasia/feed/",
-          "language": "en",
-          "bias": "government"
-        },
-        {
-          "name": "Google News - US EU Relations",
-          "url": "https://news.google.com/rss/search?q=US+EU+relations+OR+%22transatlantic+trade%22+OR+%22US+EU+tariffs%22+when:2d&hl=en-US&gl=US&ceid=US:en",
-          "language": "en",
-          "bias": "center"
-        }
-      ],
-      "us_russia_relations": [
-        {
-          "name": "Meduza - Russia News in English",
-          "url": "https://meduza.io/rss/en/all",
-          "language": "en",
-          "bias": "center"
-        },
-        {
-          "name": "The Moscow Times- Amsterdam",
-          "url": "https://www.themoscowtimes.com/rss/news",
-          "language": "en",
-          "bias": "center"
-        },
-        {
-          "name": "Russia Matters- US keyword",
-          "url": "https://news.google.com/rss/search?q=site:russiamatters.org+US+ukraine+when:7d&hl=en-US&gl=US&ceid=US:en",
-          "language": "en",
-          "bias": "center"
-        },
-        {
-          "name": "Radio Free Europe/Radio Liberty - Ukraine News",
-          "url": "https://news.google.com/rss/search?q=site:rferl.org+US+Ukraine+when:7d&hl=en-US&gl=US&ceid=US:en",
-          "language": "en",
-          "bias": "center"
-        },
-        {
-          "name": "US Department of State - Russia",
-          "url": "https://news.google.com/rss/search?q=site:www.csis.org+US+Ukraine+when:7d&hl=en-US&gl=US&ceid=US:en",
-          "language": "en",
-          "bias": "government"
-        },
-        {
-          "name": "Google News - US Russia Relations",
-          "url": "https://news.google.com/rss/search?q=US+Russia+when:7d&hl=en-US&gl=US&ceid=US:en",
-          "language": "en",
-          "bias": "center"
-        },
-        {
-          "name": "Google News- American Envoys to Russia",
-          "url": "https://news.google.com/rss/search?q=Witkoff+Driscoll+Kelogg+when:7d&hl=en-US&gl=US&ceid=US:en",
-          "language": "en",
-          "bias": "center"
-        },
-        {
-          "name": "Google News - Sanctions on Russia",
-          "url": "https://news.google.com/rss/search?q=site:https://ofac.treasury.gov/recent-actions+Russia+when:7d&hl=en-US&gl=US&ceid=US:en",
-          "language": "en",
-          "bias": "center"
-        }
-      ],
-      "us_china_relations": [
-        {
-          "name": "South China Morning Post - US China Relations",
-          "url": "https://www.scmp.com/rss/91/feed",
-          "language": "en",
-          "bias": "center"
-        },
-        {
-          "name": "China US Focus",
-          "url": "https://news.google.com/rss/search?q=site:chinausfocus.com+US+China+when:7d&hl=en-US&gl=US&ceid=US:en",
-          "language": "en",
-          "bias": "government"
-        },
-        {
-          "name": "Center for Strategic and International Studies - China US Relations",
-          "url": "https://news.google.com/rss/search?q=site:www.csis.org+US+China+when:7d&hl=en-US&gl=US&ceid=US:en",
-          "language": "en",
-          "bias": "center"
-        },
-        {
-          "name": "Sinocism China Newsletter",
-          "url": "https://sinocism.com/feed",
-          "language": "en",
-          "bias": "government"
-        },
-        {
-          "name": "Google News - US China Relations",
-          "url": "https://news.google.com/rss/search?q=site:thewirechina.com+China+US+when:7d&hl=en-US&gl=US&ceid=US:en",
-          "language": "en",
-          "bias": "center"
-        },
-        {
-          "name": "Google News- Select Committee on the CCP",
-          "url": "https://news.google.com/rss/search?q=site:selectcommitteeontheccp.house.gov+China+when:7d&hl=en-US&gl=US&ceid=US:en",
-          "language": "en",
-          "bias": "government"
-        },
-        {
-          "name": "Google News - China Foreign Ministry Readouts",
-          "url": "https://news.google.com/rss/search?q=%22Ministry+of+Foreign+Affairs%22+China+OR+%22Wang+Yi%22+readout&hl=en-US&gl=US&ceid=US:en",
-          "language": "en",
-          "bias": "center"
-        }
-      ],
-      "us_indopacific_relations": [
-        {
-          "name": "US Indo-Pacific Command News",
-          "url": "https://news.google.com/rss/search?q=site:pacom.mil+China+US+when:7d&hl=en-US&gl=US&ceid=US:en",
-          "language": "en",
-          "bias": "government"
-        },
-        {
-          "name": "Japan Times - China US Relations",
-          "url": "https://news.google.com/rss/search?q=site:japantimes.co.jp+China+US+when:7d&hl=en-US&gl=US&ceid=US:en",
-          "language": "en",
-          "bias": "center"
-        },
-        {
-          "name": "Focus Taiwan - China US Relations",
-          "url": "https://news.google.com/rss/search?q=site:focustaiwan.tw+china+us+when:7d&hl=en-US&gl=US&ceid=US:en",
-          "language": "en",
-          "bias": "center"
-        },
-        {
-          "name": "Google News - US Indo-Pacific Relations",
-          "url": "https://news.google.com/rss/search?q=US+Indo-Pacific+when:7d&hl=en-US&gl=US&ceid=US:en",
-          "language": "en",
-          "bias": "center"
-        },
-        {
-          "name": "Google News - Philippines Taiwan",
-          "url": "https://news.google.com/rss/search?q=site:www.csis.org+philippines+taiwan+when:7d&hl=en-US&gl=US&ceid=US:en",
-          "language": "en",
-          "bias": "center"
-        }
-      ]
-    },
+    "california": [
+      {
+        "name": "Los Angeles Times",
+        "url": "https://www.latimes.com/local/rss2.0.xml",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Los Angeles Times - California Politics",
+        "url": "https://www.latimes.com/politics/rss2.0.xml",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "San Francisco Standard",
+        "url": "https://sfstandard.com/feed",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Sacramento Bee",
+        "url": "https://www.sacbee.com/?widgetName=rssfeed&widgetContentId=6199&getXmlFeed=true",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "laopinion.com",
+        "url": "https://laopinion.com/feed/",
+        "language": "es",
+        "bias": "center"
+      },
+      {
+        "name": "El Tecolote",
+        "url": "https://eltecolote.org/content/en/feed/",
+        "language": "es",
+        "bias": "center"
+      }
+    ],
+    "us_judicial": [
+      {
+        "name": "SCOTUSblog",
+        "url": "https://www.scotusblog.com/feed/",
+        "language": "en",
+        "bias": "government"
+      },
+      {
+        "name": "Law360 - Supreme Court",
+        "url": "https://www.law360.com/access-to-justice/rss",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Justice Department News",
+        "url": "https://www.justice.gov/news/rss?m=1",
+        "language": "en",
+        "bias": "government"
+      },
+      {
+        "name": "California DOJ News",
+        "url": "https://oag.ca.gov/news/feed",
+        "language": "en",
+        "bias": "government"
+      }
+    ],
+    "us_democratic_politics": [
+      {
+        "name": "Democratic National Committee",
+        "url": "https://democrats.org/feed/",
+        "language": "en",
+        "bias": "government"
+      },
+      {
+        "name": "Political Wire",
+        "url": "https://politicalwire.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Daily Kos",
+        "url": "https://www.dailykos.com/blogs/main/feed",
+        "language": "en",
+        "bias": "liberal"
+      }
+    ],
+    "us_republican_politics": [
+      {
+        "name": "Republican National Committee",
+        "url": "https://www.gop.com/feed/",
+        "language": "en",
+        "bias": "government"
+      },
+      {
+        "name": "The Federalist",
+        "url": "https://thefederalist.com/feed/",
+        "language": "en",
+        "bias": "conservative"
+      },
+      {
+        "name": "RedState",
+        "url": "https://redstate.com/feed",
+        "language": "en",
+        "bias": "conservative"
+      },
+      {
+        "name": "The Heritage Foundation",
+        "url": "https://www.dailysignal.com/feed/",
+        "language": "en",
+        "bias": "conservative"
+      },
+      {
+        "name": "The Dispatch",
+        "url": "https://thedispatch.com/feed/",
+        "language": "en",
+        "bias": "conservative"
+      }
+    ],
+    "usa_european_relations": [
+      {
+        "name": "European Parliament External Relations",
+        "url": "https://www.europarl.europa.eu/rss/topic/903/en.xml",
+        "language": "en",
+        "bias": "government"
+      },
+      {
+        "name": "US Mission to the EU",
+        "url": "https://useu.usmission.gov/feed/",
+        "language": "en",
+        "bias": "government"
+      },
+      {
+        "name": "Bureau of European and Eurasian Affairs - US State Department",
+        "url": "https://www.state.gov/bureaus-offices/under-secretary-for-political-affairs/bureau-of-european-and-eurasian-affairs/feed/",
+        "language": "en",
+        "bias": "government"
+      },
+      {
+        "name": "Atlantic Council - European Union",
+        "url": "https://www.atlanticcouncil.org/region/european-union/feed/",
+        "language": "en",
+        "bias": "conservative"
+      },
+      {
+        "name": "Politico Europe",
+        "url": "https://www.politico.eu/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Department of state - Europe and Eurasia",
+        "url": "https://www.state.gov/rss-feed/europe-and-eurasia/feed/",
+        "language": "en",
+        "bias": "government"
+      },
+      {
+        "name": "Google News - US EU Relations",
+        "url": "https://news.google.com/rss/search?q=US+EU+relations+OR+%22transatlantic+trade%22+OR+%22US+EU+tariffs%22+when:2d&hl=en-US&gl=US&ceid=US:en",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "us_russia_relations": [
+      {
+        "name": "Meduza - Russia News in English",
+        "url": "https://meduza.io/rss/en/all",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "The Moscow Times- Amsterdam",
+        "url": "https://www.themoscowtimes.com/rss/news",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Russia Matters- US keyword",
+        "url": "https://news.google.com/rss/search?q=site:russiamatters.org+US+ukraine+when:7d&hl=en-US&gl=US&ceid=US:en",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Radio Free Europe/Radio Liberty - Ukraine News",
+        "url": "https://news.google.com/rss/search?q=site:rferl.org+US+Ukraine+when:7d&hl=en-US&gl=US&ceid=US:en",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "US Department of State - Russia",
+        "url": "https://news.google.com/rss/search?q=site:www.csis.org+US+Ukraine+when:7d&hl=en-US&gl=US&ceid=US:en",
+        "language": "en",
+        "bias": "government"
+      },
+      {
+        "name": "Google News - US Russia Relations",
+        "url": "https://news.google.com/rss/search?q=US+Russia+when:7d&hl=en-US&gl=US&ceid=US:en",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Google News- American Envoys to Russia",
+        "url": "https://news.google.com/rss/search?q=Witkoff+Driscoll+Kelogg+when:7d&hl=en-US&gl=US&ceid=US:en",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Google News - Sanctions on Russia",
+        "url": "https://news.google.com/rss/search?q=site:https://ofac.treasury.gov/recent-actions+Russia+when:7d&hl=en-US&gl=US&ceid=US:en",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "us_china_relations": [
+      {
+        "name": "South China Morning Post - US China Relations",
+        "url": "https://www.scmp.com/rss/91/feed",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "China US Focus",
+        "url": "https://news.google.com/rss/search?q=site:chinausfocus.com+US+China+when:7d&hl=en-US&gl=US&ceid=US:en",
+        "language": "en",
+        "bias": "government"
+      },
+      {
+        "name": "Center for Strategic and International Studies - China US Relations",
+        "url": "https://news.google.com/rss/search?q=site:www.csis.org+US+China+when:7d&hl=en-US&gl=US&ceid=US:en",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Sinocism China Newsletter",
+        "url": "https://sinocism.com/feed",
+        "language": "en",
+        "bias": "government"
+      },
+      {
+        "name": "Google News - US China Relations",
+        "url": "https://news.google.com/rss/search?q=site:thewirechina.com+China+US+when:7d&hl=en-US&gl=US&ceid=US:en",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Google News- Select Committee on the CCP",
+        "url": "https://news.google.com/rss/search?q=site:selectcommitteeontheccp.house.gov+China+when:7d&hl=en-US&gl=US&ceid=US:en",
+        "language": "en",
+        "bias": "government"
+      },
+      {
+        "name": "Google News - China Foreign Ministry Readouts",
+        "url": "https://news.google.com/rss/search?q=%22Ministry+of+Foreign+Affairs%22+China+OR+%22Wang+Yi%22+readout&hl=en-US&gl=US&ceid=US:en",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "us_indopacific_relations": [
+      {
+        "name": "US Indo-Pacific Command News",
+        "url": "https://news.google.com/rss/search?q=site:pacom.mil+China+US+when:7d&hl=en-US&gl=US&ceid=US:en",
+        "language": "en",
+        "bias": "government"
+      },
+      {
+        "name": "Japan Times - China US Relations",
+        "url": "https://news.google.com/rss/search?q=site:japantimes.co.jp+China+US+when:7d&hl=en-US&gl=US&ceid=US:en",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Focus Taiwan - China US Relations",
+        "url": "https://news.google.com/rss/search?q=site:focustaiwan.tw+china+us+when:7d&hl=en-US&gl=US&ceid=US:en",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Google News - US Indo-Pacific Relations",
+        "url": "https://news.google.com/rss/search?q=US+Indo-Pacific+when:7d&hl=en-US&gl=US&ceid=US:en",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Google News - Philippines Taiwan",
+        "url": "https://news.google.com/rss/search?q=site:www.csis.org+philippines+taiwan+when:7d&hl=en-US&gl=US&ceid=US:en",
+        "language": "en",
+        "bias": "center"
+      }
+    ],
+    "canada": [
+      {
+        "name": "CBC News",
+        "url": "https://www.cbc.ca/webfeed/rss/rss-topstories",
+        "language": "en",
+        "bias": "Center"
+      },
+      {
+        "name": "Globe and Mail",
+        "url": "https://www.theglobeandmail.com/arc/outboundfeeds/rss/category/canada/",
+        "language": "en",
+        "bias": "Center"
+      },
+      {
+        "name": "Toronto Star",
+        "url": "https://www.thestar.com/content/thestar/feed.RSSManagerServlet.articles.topstories.rss",
+        "language": "en",
+        "bias": "Center-Left"
+      },
+      {
+        "name": "National Post",
+        "url": "https://nationalpost.com/feed",
+        "language": "en",
+        "bias": "Center-Right"
+      }
+    ]
+  },
   "oceania": {
-      "australia": [
+    "australia": [
       {
         "name": "ABC News Australia",
         "url": "https://www.abc.net.au/news/feed/51120/rss.xml",
@@ -3486,29 +3498,22 @@
     ],
     "kenya": [
       {
-        "name": "NTV Kenya",
-        "url": "https://ntvkenya.co.ke/feed/",
+        "name": "Kenyans.co.ke",
+        "url": "https://www.kenyans.co.ke/feeds/news?_wrapper_format=html",
         "language": "en",
         "bias": "center"
       },
       {
-        "name": "KBC Digital",
-        "url": "https://www.kbc.co.ke/feed/",
+        "name": "Nairobi Wire",
+        "url": "https://nairobiwire.com/feed",
         "language": "en",
-        "bias": "state"
+        "bias": "center"
       },
       {
-        "name": "Kenya News Agency",
-        "url": "https://www.kenyanews.go.ke/feed/",
+        "name": "Capital FM News Kenya",
+        "url": "https://www.capitalfm.co.ke/news/feed/",
         "language": "en",
-        "bias": "state"
-      },
-      {
-        "name": "Business Today Kenya",
-        "url": "https://businesstoday.co.ke/feed/",
-        "language": "en",
-        "bias": "center",
-        "focus": "business"
+        "bias": "center"
       }
     ],
     "ethiopia": [
@@ -3535,6 +3540,30 @@
         "url": "https://www.fanamc.com/english/feed/",
         "language": "en",
         "bias": "state"
+      },
+      {
+        "name": "Ethiopia Insight",
+        "url": "https://www.ethiopia-insight.com/feed/",
+        "language": "en",
+        "bias": "independent"
+      },
+      {
+        "name": "EthSat News",
+        "url": "https://ethsat.com/feed/",
+        "language": "am",
+        "bias": "center"
+      },
+      {
+        "name": "VOA Amharic",
+        "url": "https://amharic.voanews.com/api/zt%24gteitjt",
+        "language": "am",
+        "bias": "center"
+      },
+      {
+        "name": "Global Voices - Eritrea",
+        "url": "https://globalvoices.org/-/world/sub-saharan-africa/eritrea/",
+        "language": "en",
+        "bias": "independent"
       }
     ],
     "nigeria": [
@@ -3612,9 +3641,27 @@
         "url": "https://www.thesouthafrican.com/feed/",
         "language": "en",
         "bias": "center"
+      },
+      {
+        "name": "Mail & Guardian",
+        "url": "https://mg.co.za/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Sowetan Live",
+        "url": "https://www.sowetan.co.za/arc/outboundfeeds/rss/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "IOL News",
+        "url": "https://rss.iol.io/iol/news",
+        "language": "en",
+        "bias": "center"
       }
     ],
-    "Western_Coast_Africa": [
+    "western_coast_africa": [
       {
         "name": "Shafaqna Senegal",
         "url": "https://senegal.shafaqna.com/rss.xml",
@@ -3704,27 +3751,7 @@
         "bias": "center"
       }
     ],
-    "kenya": [
-      {
-        "name": "Kenyans.co.ke",
-        "url": "https://www.kenyans.co.ke/feeds/news?_wrapper_format=html",
-        "language": "en",
-        "bias": "center"
-      },
-      {
-        "name": "Nairobi Wire",
-        "url": "https://nairobiwire.com/feed",
-        "language": "en",
-        "bias": "center"
-      },
-      {
-        "name": "Capital FM News Kenya",
-        "url": "https://www.capitalfm.co.ke/news/feed/",
-        "language": "en",
-        "bias": "center"
-      }
-    ],
-    "Somalia": [
+    "somalia": [
       {
         "name": "Shabelle Media Network",
         "url": "https://shabellemedia.com/feed/",
@@ -3742,32 +3769,42 @@
         "url": "https://puntlandpost.net/feed/",
         "language": "en",
         "bias": "center"
-      }
-    ],
-    "Ethiopia": [
-      {
-        "name": "Ethiopia Insight",
-        "url": "https://www.ethiopia-insight.com/feed/",
-        "language": "en",
-        "bias": "independent"
       },
       {
-        "name": "EthSat News",
-        "url": "https://ethsat.com/feed/",
-        "language": "am",
+        "name": "Goobjoog News",
+        "url": "https://goobjoog.com/feed/",
+        "language": "so",
         "bias": "center"
       },
       {
-        "name": "VOA Amharic",
-        "url": "https://amharic.voanews.com/api/zt%24gteitjt",
-        "language": "am",
+        "name": "Somali Guardian",
+        "url": "https://www.somaliguardian.com/feed/",
+        "language": "en",
         "bias": "center"
       },
       {
-        "name": "Global Voices - Eritrea",
-        "url": "https://globalvoices.org/-/world/sub-saharan-africa/eritrea/",
+        "name": "Horseed Media",
+        "url": "https://horseedmedia.net/feed/",
         "language": "en",
-        "bias": "independent"
+        "bias": "center"
+      },
+      {
+        "name": "Mareeg Media",
+        "url": "https://mareeg.com/feed/",
+        "language": "en",
+        "bias": "center"
+      },
+      {
+        "name": "Caasimada Online",
+        "url": "https://www.caasimada.net/feed/",
+        "language": "so",
+        "bias": "center"
+      },
+      {
+        "name": "WardheerNews",
+        "url": "https://wardheernews.com/feed/",
+        "language": "en",
+        "bias": "center"
       }
     ],
     "sudan": [
@@ -3847,7 +3884,7 @@
         "bias": "center"
       }
     ],
-    "Chad": [
+    "chad": [
       {
         "name": "AllAfrica - Chad",
         "url": "https://allafrica.com/tools/headlines/rdf/chad/headlines.rdf",
@@ -3861,7 +3898,7 @@
         "bias": "center"
       }
     ],
-    "East_Africa": [
+    "east_africa": [
       {
         "name": "O País Mozambique",
         "url": "https://opais.co.mz/feed/",
@@ -3929,50 +3966,6 @@
         "url": "https://libyaalahrar.tv/feed/",
         "language": "ar",
         "bias": "conservative"
-      }
-    ],
-    "somalia": [
-      {
-        "name": "Goobjoog News",
-        "url": "https://goobjoog.com/feed/",
-        "language": "so",
-        "bias": "center"
-      },
-      {
-        "name": "Somali Guardian",
-        "url": "https://www.somaliguardian.com/feed/",
-        "language": "en",
-        "bias": "center"
-      },
-      {
-        "name": "Puntland Post",
-        "url": "https://puntlandpost.net/feed/",
-        "language": "en",
-        "bias": "center"
-      },
-      {
-        "name": "Horseed Media",
-        "url": "https://horseedmedia.net/feed/",
-        "language": "en",
-        "bias": "center"
-      },
-      {
-        "name": "Mareeg Media",
-        "url": "https://mareeg.com/feed/",
-        "language": "en",
-        "bias": "center"
-      },
-      {
-        "name": "Caasimada Online",
-        "url": "https://www.caasimada.net/feed/",
-        "language": "so",
-        "bias": "center"
-      },
-      {
-        "name": "WardheerNews",
-        "url": "https://wardheernews.com/feed/",
-        "language": "en",
-        "bias": "center"
       }
     ],
     "morocco": [
@@ -4106,38 +4099,6 @@
         "name": "Turess",
         "url": "https://www.turess.com/rss",
         "language": "ar",
-        "bias": "center"
-      }
-    ],
-    "South_africa": [
-      {
-        "name": "Mail & Guardian",
-        "url": "https://mg.co.za/feed/",
-        "language": "en",
-        "bias": "center"
-      },
-      {
-        "name": "Daily Maverick",
-        "url": "https://www.dailymaverick.co.za/dmrss/",
-        "language": "en",
-        "bias": "liberal"
-      },
-      {
-        "name": "Sowetan Live",
-        "url": "https://www.sowetan.co.za/arc/outboundfeeds/rss/",
-        "language": "en",
-        "bias": "center"
-      },
-      {
-        "name": "IOL News",
-        "url": "https://rss.iol.io/iol/news",
-        "language": "en",
-        "bias": "center"
-      },
-      {
-        "name": "The Citizen",
-        "url": "https://www.citizen.co.za/feed/",
-        "language": "en",
         "bias": "center"
       }
     ]

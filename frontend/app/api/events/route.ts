@@ -1,30 +1,22 @@
 import { NextResponse } from "next/server";
-import { searchEvents as valyuSearchEvents } from "@/lib/valyu";
-import { searchEvents as localSearchEvents, isLocalIntelEnabled } from "@/lib/local-intel";
-import { isSelfHostedMode } from "@/lib/app-mode";
+import { searchEvents } from "@/lib/local-intel";
 import { classifyEvent, isAIClassificationEnabled } from "@/lib/ai-classifier";
 import { generateEventId } from "@/lib/utils";
 import { extractKeywords, extractEntities } from "@/lib/event-classifier";
 import type { ThreatEvent } from "@/types";
 
-// Use local intel or Valyu based on configuration
-const searchEvents = isLocalIntelEnabled() ? localSearchEvents : valyuSearchEvents;
-
 export const dynamic = "force-dynamic";
 
-const THREAT_QUERIES = [
-  "breaking news conflict military",
-  "geopolitical crisis tensions",
-  "protest demonstration unrest",
-  "natural disaster emergency",
-  "terrorism attack security",
-  "cyber attack breach",
-  "diplomatic summit sanctions",
-  "shipping attack piracy maritime",
-  "kidnapping cartel violence crime",
-  "infrastructure dam power grid failure",
-  "food shortage commodity crisis",
-  "missile strike airstrike bombing",
+// Minimum number of articles before triggering fallback
+const MIN_ARTICLES_THRESHOLD = 5;
+
+// General news search queries (not threat-focused)
+const GENERAL_NEWS_QUERIES = [
+  "breaking news today headlines",
+  "politics government policy",
+  "economy business markets",
+  "technology innovation",
+  "society culture events",
 ];
 
 // Clean boilerplate from content
@@ -165,32 +157,32 @@ async function processSearchResults(
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get("q");
-  const accessToken = searchParams.get("accessToken");
-
-  // In valyu mode, require authentication
-  const selfHosted = isSelfHostedMode();
-  if (!selfHosted && !accessToken) {
-    return NextResponse.json(
-      { error: "Authentication required", requiresReauth: true },
-      { status: 401 }
-    );
-  }
+  const country = searchParams.get("country");
 
   try {
-    const searchQueries = query ? [query] : THREAT_QUERIES;
-    const tokenToUse = selfHosted ? undefined : accessToken;
-
-    const searchResultsArrays = await Promise.all(
-      searchQueries.map((q) => searchEvents(q, { maxResults: 20, accessToken: tokenToUse || undefined }))
-    );
-
-    const requiresReauth = searchResultsArrays.some((r) => r.requiresReauth);
-    if (requiresReauth) {
-      return NextResponse.json(
-        { error: "auth_error", message: "Session expired. Please sign in again.", requiresReauth: true },
-        { status: 401 }
+    // If country is specified, use strictCountry mode
+    if (country) {
+      const searchResultsArrays = await Promise.all(
+        GENERAL_NEWS_QUERIES.map((q) =>
+          searchEvents(q, { maxResults: 10, strictCountry: country })
+        )
       );
+      const allResults = searchResultsArrays.flatMap((r) => r.results);
+      const sortedEvents = await processSearchResults(allResults);
+
+      return NextResponse.json({
+        events: sortedEvents,
+        count: sortedEvents.length,
+        region: country,
+        timestamp: new Date().toISOString(),
+      });
     }
+
+    // Fallback to query-based search
+    const searchQueries = query ? [query] : GENERAL_NEWS_QUERIES;
+    const searchResultsArrays = await Promise.all(
+      searchQueries.map((q) => searchEvents(q, { maxResults: 20 }))
+    );
 
     const allResults = searchResultsArrays.flatMap((r) => r.results);
     const sortedEvents = await processSearchResults(allResults);
@@ -209,40 +201,53 @@ export async function GET(request: Request) {
   }
 }
 
+/**
+ * POST handler for "Follow the Sun" regional news fetching
+ * Accepts { countries: string[], region?: string, includeFallback?: boolean }
+ */
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { queries, accessToken } = body;
+    const { countries, region, includeFallback = true } = body;
 
-    const selfHosted = isSelfHostedMode();
+    // If countries provided, fetch from those countries
+    if (countries && Array.isArray(countries) && countries.length > 0) {
+      console.log(`[events/POST] Fetching news for countries: ${countries.join(", ")}`);
 
-    // In valyu mode, require authentication
-    if (!selfHosted && !accessToken) {
-      return NextResponse.json(
-        { error: "Authentication required", requiresReauth: true },
-        { status: 401 }
+      // Fetch news from each country in parallel
+      const countryResults = await Promise.all(
+        countries.map(async (country: string) => {
+          // Use multiple general queries per country to get diverse headlines
+          const queries = GENERAL_NEWS_QUERIES.slice(0, 3);
+          const results = await Promise.all(
+            queries.map((q) =>
+              searchEvents(q, { maxResults: 8, strictCountry: country })
+            )
+          );
+          return results.flatMap((r) => r.results);
+        })
       );
+
+      let allResults = countryResults.flat();
+      console.log(`[events/POST] Got ${allResults.length} articles from primary countries`);
+
+      // If not enough results and fallback enabled, the hook will handle requesting more
+      const sortedEvents = await processSearchResults(allResults);
+
+      return NextResponse.json({
+        events: sortedEvents,
+        count: sortedEvents.length,
+        region: region || countries.join(", "),
+        needsFallback: sortedEvents.length < MIN_ARTICLES_THRESHOLD && includeFallback,
+        timestamp: new Date().toISOString(),
+      });
     }
 
-    const tokenToUse = selfHosted ? undefined : accessToken;
-
-    const searchQueries = queries && Array.isArray(queries) && queries.length > 0
-      ? queries.slice(0, 12)
-      : THREAT_QUERIES;
-
+    // Fallback: no countries specified, use general search
+    console.log("[events/POST] No countries specified, using general search");
     const searchResultsArrays = await Promise.all(
-      searchQueries.map((query: string) =>
-        searchEvents(query, { maxResults: 20, accessToken: tokenToUse })
-      )
+      GENERAL_NEWS_QUERIES.map((q) => searchEvents(q, { maxResults: 20 }))
     );
-
-    const requiresReauth = searchResultsArrays.some((r) => r.requiresReauth);
-    if (requiresReauth) {
-      return NextResponse.json(
-        { error: "auth_error", message: "Session expired. Please sign in again.", requiresReauth: true },
-        { status: 401 }
-      );
-    }
 
     const allResults = searchResultsArrays.flatMap((r) => r.results);
     const sortedEvents = await processSearchResults(allResults);

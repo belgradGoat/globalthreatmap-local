@@ -105,3 +105,74 @@ export const categoryIcons: Record<EventCategory, string> = {
   commodities: "ShoppingCart",
   politics: "Vote",
 };
+
+// News-focused category display names and colors
+export const NewsCategory = z.enum([
+  "politics",
+  "economy",
+  "technology",
+  "culture",
+  "sports",
+  "environment",
+  "health",
+  "science",
+  "security",
+  "military",
+  "world",
+]);
+export type NewsCategory = z.infer<typeof NewsCategory>;
+
+// Map event categories to news categories for display
+export const eventToNewsCategory: Record<EventCategory, NewsCategory> = {
+  conflict: "security",
+  protest: "politics",
+  disaster: "world",
+  diplomatic: "politics",
+  economic: "economy",
+  terrorism: "security",
+  cyber: "technology",
+  health: "health",
+  environmental: "environment",
+  military: "military",
+  crime: "security",
+  piracy: "security",
+  infrastructure: "world",
+  commodities: "economy",
+  politics: "politics",
+};
+
+// News category display configuration
+export const newsCategoryConfig: Record<NewsCategory, { label: string; icon: string; color: string }> = {
+  politics: { label: "Politics", icon: "Building2", color: "blue" },
+  economy: { label: "Economy", icon: "TrendingUp", color: "green" },
+  technology: { label: "Technology", icon: "Cpu", color: "purple" },
+  culture: { label: "Culture", icon: "Palette", color: "pink" },
+  sports: { label: "Sports", icon: "Trophy", color: "orange" },
+  environment: { label: "Environment", icon: "Leaf", color: "emerald" },
+  health: { label: "Health", icon: "Heart", color: "red" },
+  science: { label: "Science", icon: "FlaskConical", color: "indigo" },
+  security: { label: "Security", icon: "Shield", color: "slate" },
+  military: { label: "Military", icon: "Target", color: "gray" },
+  world: { label: "World", icon: "Globe", color: "cyan" },
+};
+
+// Priority levels (replaces threat levels in UI)
+export const PriorityLevel = z.enum(["breaking", "important", "notable", "standard", "background"]);
+export type PriorityLevel = z.infer<typeof PriorityLevel>;
+
+// Map threat levels to priority levels for display
+export const threatToPriority: Record<ThreatLevel, PriorityLevel> = {
+  critical: "breaking",
+  high: "important",
+  medium: "notable",
+  low: "standard",
+  info: "background",
+};
+
+export const priorityConfig: Record<PriorityLevel, { label: string; color: string }> = {
+  breaking: { label: "Breaking", color: "red" },
+  important: { label: "Important", color: "orange" },
+  notable: { label: "Notable", color: "amber" },
+  standard: { label: "News", color: "blue" },
+  background: { label: "Update", color: "slate" },
+};

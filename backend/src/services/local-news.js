@@ -25,6 +25,20 @@ const GOOGLE_NEWS_LOCALES = {
     bulgaria: { lang: 'bg', country: 'BG', name: 'Bulgaria' },
     russia: { lang: 'ru', country: 'RU', name: 'Russia' },
     belarus: { lang: 'ru', country: 'BY', name: 'Belarus' },
+    estonia: { lang: 'et', country: 'EE', name: 'Estonia' },
+    latvia: { lang: 'lv', country: 'LV', name: 'Latvia' },
+    lithuania: { lang: 'lt', country: 'LT', name: 'Lithuania' },
+    slovakia: { lang: 'sk', country: 'SK', name: 'Slovakia' },
+    slovenia: { lang: 'sl', country: 'SI', name: 'Slovenia' },
+    croatia: { lang: 'hr', country: 'HR', name: 'Croatia' },
+    serbia: { lang: 'sr', country: 'RS', name: 'Serbia' },
+    bosnia: { lang: 'bs', country: 'BA', name: 'Bosnia and Herzegovina' },
+    albania: { lang: 'sq', country: 'AL', name: 'Albania' },
+    north_macedonia: { lang: 'mk', country: 'MK', name: 'North Macedonia' },
+    montenegro: { lang: 'sr', country: 'ME', name: 'Montenegro' },
+    moldova: { lang: 'ro', country: 'MD', name: 'Moldova' },
+    georgia: { lang: 'ka', country: 'GE', name: 'Georgia' },
+    kosovo: { lang: 'sq', country: 'XK', name: 'Kosovo' },
     // Western Europe
     germany: { lang: 'de', country: 'DE', name: 'Germany' },
     france: { lang: 'fr', country: 'FR', name: 'France' },
@@ -38,47 +52,122 @@ const GOOGLE_NEWS_LOCALES = {
     austria: { lang: 'de', country: 'AT', name: 'Austria' },
     switzerland: { lang: 'de', country: 'CH', name: 'Switzerland' },
     belgium: { lang: 'nl', country: 'BE', name: 'Belgium' },
+    sweden: { lang: 'sv', country: 'SE', name: 'Sweden' },
+    norway: { lang: 'no', country: 'NO', name: 'Norway' },
+    denmark: { lang: 'da', country: 'DK', name: 'Denmark' },
+    finland: { lang: 'fi', country: 'FI', name: 'Finland' },
+    iceland: { lang: 'is', country: 'IS', name: 'Iceland' },
     // Americas
     us: { lang: 'en', country: 'US', name: 'United States' },
+    usa: { lang: 'en', country: 'US', name: 'United States' },
+    united_states: { lang: 'en', country: 'US', name: 'United States' },
     brazil: { lang: 'pt', country: 'BR', name: 'Brazil' },
     mexico: { lang: 'es', country: 'MX', name: 'Mexico' },
     argentina: { lang: 'es', country: 'AR', name: 'Argentina' },
     canada: { lang: 'en', country: 'CA', name: 'Canada' },
+    chile: { lang: 'es', country: 'CL', name: 'Chile' },
+    colombia: { lang: 'es', country: 'CO', name: 'Colombia' },
+    peru: { lang: 'es', country: 'PE', name: 'Peru' },
+    venezuela: { lang: 'es', country: 'VE', name: 'Venezuela' },
+    cuba: { lang: 'es', country: 'CU', name: 'Cuba' },
     // Asia-Pacific
     japan: { lang: 'ja', country: 'JP', name: 'Japan' },
     south_korea: { lang: 'ko', country: 'KR', name: 'South Korea' },
     taiwan: { lang: 'zh-TW', country: 'TW', name: 'Taiwan' },
+    china: { lang: 'zh-CN', country: 'CN', name: 'China' },
     india: { lang: 'en', country: 'IN', name: 'India' },
     australia: { lang: 'en', country: 'AU', name: 'Australia' },
+    new_zealand: { lang: 'en', country: 'NZ', name: 'New Zealand' },
     singapore: { lang: 'en', country: 'SG', name: 'Singapore' },
+    indonesia: { lang: 'id', country: 'ID', name: 'Indonesia' },
+    malaysia: { lang: 'ms', country: 'MY', name: 'Malaysia' },
+    thailand: { lang: 'th', country: 'TH', name: 'Thailand' },
+    vietnam: { lang: 'vi', country: 'VN', name: 'Vietnam' },
+    philippines: { lang: 'en', country: 'PH', name: 'Philippines' },
+    pakistan: { lang: 'en', country: 'PK', name: 'Pakistan' },
+    bangladesh: { lang: 'bn', country: 'BD', name: 'Bangladesh' },
+    // Central Asia
+    kazakhstan: { lang: 'ru', country: 'KZ', name: 'Kazakhstan' },
+    uzbekistan: { lang: 'uz', country: 'UZ', name: 'Uzbekistan' },
+    afghanistan: { lang: 'ps', country: 'AF', name: 'Afghanistan' },
     // Middle East
     israel: { lang: 'he', country: 'IL', name: 'Israel' },
     turkey: { lang: 'tr', country: 'TR', name: 'Turkey' },
     uae: { lang: 'ar', country: 'AE', name: 'UAE' },
     saudi_arabia: { lang: 'ar', country: 'SA', name: 'Saudi Arabia' },
     egypt: { lang: 'ar', country: 'EG', name: 'Egypt' },
+    iran: { lang: 'fa', country: 'IR', name: 'Iran' },
+    iraq: { lang: 'ar', country: 'IQ', name: 'Iraq' },
+    syria: { lang: 'ar', country: 'SY', name: 'Syria' },
+    lebanon: { lang: 'ar', country: 'LB', name: 'Lebanon' },
+    jordan: { lang: 'ar', country: 'JO', name: 'Jordan' },
+    qatar: { lang: 'ar', country: 'QA', name: 'Qatar' },
+    kuwait: { lang: 'ar', country: 'KW', name: 'Kuwait' },
+    bahrain: { lang: 'ar', country: 'BH', name: 'Bahrain' },
+    oman: { lang: 'ar', country: 'OM', name: 'Oman' },
+    yemen: { lang: 'ar', country: 'YE', name: 'Yemen' },
     // Africa
     south_africa: { lang: 'en', country: 'ZA', name: 'South Africa' },
     nigeria: { lang: 'en', country: 'NG', name: 'Nigeria' },
-    kenya: { lang: 'en', country: 'KE', name: 'Kenya' }
+    kenya: { lang: 'en', country: 'KE', name: 'Kenya' },
+    ethiopia: { lang: 'am', country: 'ET', name: 'Ethiopia' },
+    morocco: { lang: 'ar', country: 'MA', name: 'Morocco' },
+    algeria: { lang: 'ar', country: 'DZ', name: 'Algeria' },
+    tunisia: { lang: 'ar', country: 'TN', name: 'Tunisia' },
+    libya: { lang: 'ar', country: 'LY', name: 'Libya' },
+    sudan: { lang: 'ar', country: 'SD', name: 'Sudan' },
+    ghana: { lang: 'en', country: 'GH', name: 'Ghana' }
 };
 
-// Country name aliases
+// Country name aliases (map names → backend keys)
 const COUNTRY_ALIASES = {
+    // United States
     'united_states': 'us',
     'united states': 'us',
     'america': 'us',
     'usa': 'us',
+    // United Kingdom
     'united_kingdom': 'uk',
     'united kingdom': 'uk',
     'britain': 'uk',
     'england': 'uk',
+    'great britain': 'uk',
+    'great_britain': 'uk',
+    // Korea
     'south_korea': 'south_korea',
     'korea': 'south_korea',
+    'republic of korea': 'south_korea',
+    'republic_of_korea': 'south_korea',
+    'north_korea': 'north_korea',
+    'democratic peoples republic of korea': 'north_korea',
+    'dprk': 'north_korea',
+    // Czech
     'czechia': 'czech',
     'czech_republic': 'czech',
+    'czech republic': 'czech',
+    // Turkey
     'turkiye': 'turkey',
-    'türkiye': 'turkey'
+    'türkiye': 'turkey',
+    // UAE
+    'united_arab_emirates': 'uae',
+    'united arab emirates': 'uae',
+    // Bosnia
+    'bosnia_and_herzegovina': 'bosnia',
+    'bosnia and herzegovina': 'bosnia',
+    'bosnia-herzegovina': 'bosnia',
+    // North Macedonia
+    'macedonia': 'north_macedonia',
+    // DR Congo
+    'democratic_republic_of_the_congo': 'dr_congo',
+    'democratic republic of the congo': 'dr_congo',
+    'drc': 'dr_congo',
+    'congo': 'dr_congo',
+    // New Zealand
+    'new_zealand': 'new_zealand',
+    // South Africa
+    'south_africa': 'south_africa',
+    // Saudi Arabia
+    'saudi_arabia': 'saudi_arabia'
 };
 
 // Load local news sources
@@ -148,7 +237,9 @@ function findSourcesForRegion(region) {
         // Check if needle matches a country within this region
         if (typeof countries === 'object' && !Array.isArray(countries)) {
             for (const [countryKey, feeds] of Object.entries(countries)) {
-                if (countryKey.toLowerCase() === needle) {
+                const keyLower = countryKey.toLowerCase();
+                // Match exact country key OR sub-category keys (e.g., "us" matches "us", "us_liberal_politics", "us_conservative_politics")
+                if (keyLower === needle || keyLower.startsWith(needle + '_')) {
                     if (Array.isArray(feeds)) {
                         feeds.forEach(src => results.push({
                             source: src,

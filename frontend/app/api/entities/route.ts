@@ -1,36 +1,20 @@
 import { NextResponse } from "next/server";
 import {
-  getEntityResearch as valyuGetEntity,
-  deepResearch as valyuDeepResearch,
-  searchEntityLocations as valyuSearchLocations,
-  streamEntityResearch as valyuStreamEntity
-} from "@/lib/valyu";
-import {
-  getEntityResearch as localGetEntity,
-  deepResearch as localDeepResearch,
-  searchEntityLocations as localSearchLocations,
-  streamEntityResearch as localStreamEntity,
-  isLocalIntelEnabled,
+  getEntityResearch,
+  deepResearch,
+  searchEntityLocations,
+  streamEntityResearch,
   type LLMSettings
 } from "@/lib/local-intel";
-import { isSelfHostedMode } from "@/lib/app-mode";
 
 export const dynamic = "force-dynamic";
 import { geocodeLocationsFromText } from "@/lib/geocoding";
 import type { EntityProfile, GeoLocation } from "@/types";
 
-// Use local intel or Valyu based on configuration
-const useLocal = isLocalIntelEnabled();
-const getEntityResearch = useLocal ? localGetEntity : valyuGetEntity;
-const deepResearch = useLocal ? localDeepResearch : valyuDeepResearch;
-const searchEntityLocations = useLocal ? localSearchLocations : valyuSearchLocations;
-const streamEntityResearch = useLocal ? localStreamEntity : valyuStreamEntity;
-
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const name = searchParams.get("name");
   const stream = searchParams.get("stream") === "true";
-  const accessToken = searchParams.get("accessToken");
 
   // Parse LLM settings from query params
   let llmSettings: LLMSettings | undefined;
@@ -50,15 +34,6 @@ export async function GET(request: Request) {
     );
   }
 
-  // In valyu mode, require authentication
-  const selfHosted = isSelfHostedMode();
-  if (!selfHosted && !accessToken) {
-    return NextResponse.json(
-      { error: "Authentication required", requiresReauth: true },
-      { status: 401 }
-    );
-  }
-
   // Streaming mode - use Server-Sent Events
   if (stream) {
     const encoder = new TextEncoder();
@@ -67,7 +42,6 @@ export async function GET(request: Request) {
       async start(controller) {
         try {
           for await (const chunk of streamEntityResearch(name, {
-            accessToken: accessToken || undefined,
             llmSettings,
           })) {
             const data = `data: ${JSON.stringify(chunk)}\n\n`;
@@ -99,7 +73,6 @@ export async function GET(request: Request) {
 
   try {
     const entityData = await getEntityResearch(name, {
-      accessToken: accessToken || undefined,
       llmSettings,
     });
 
@@ -122,7 +95,6 @@ export async function GET(request: Request) {
 
     if (deep) {
       const research = await deepResearch(name, {
-        accessToken: accessToken || undefined,
         llmSettings,
       });
       profile.researchSummary = research.summary;
@@ -141,7 +113,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, includeDeepResearch, accessToken, llmSettings } = body;
+    const { name, includeDeepResearch, llmSettings } = body;
 
     if (!name) {
       return NextResponse.json(
@@ -150,18 +122,9 @@ export async function POST(request: Request) {
       );
     }
 
-    // In valyu mode, require authentication
-    const selfHosted = isSelfHostedMode();
-    if (!selfHosted && !accessToken) {
-      return NextResponse.json(
-        { error: "Authentication required", requiresReauth: true },
-        { status: 401 }
-      );
-    }
-
     const [entityData, locationContent] = await Promise.all([
-      getEntityResearch(name, { accessToken: accessToken || undefined, llmSettings }),
-      searchEntityLocations(name, { accessToken: accessToken || undefined, llmSettings }),
+      getEntityResearch(name, { llmSettings }),
+      searchEntityLocations(name, { llmSettings }),
     ]);
 
     if (!entityData) {
@@ -197,7 +160,7 @@ export async function POST(request: Request) {
     let pdfUrl = undefined;
 
     if (includeDeepResearch) {
-      const research = await deepResearch(name, { accessToken: accessToken || undefined, llmSettings });
+      const research = await deepResearch(name, { llmSettings });
       profile.researchSummary = research.summary;
       deliverables = research.deliverables;
       pdfUrl = research.pdfUrl;

@@ -1,24 +1,25 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useEventsStore } from "@/stores/events-store";
-import { useAuthStore } from "@/stores/auth-store";
+import { useSunStore } from "@/stores/sun-store";
+import {
+  getCurrentNoonBand,
+  getMsUntilNextHour,
+  getCountriesForFetching,
+  getFallbackBands,
+} from "@/lib/follow-the-sun";
 import type { ThreatEvent } from "@/types";
-
-const APP_MODE = process.env.NEXT_PUBLIC_APP_MODE || "self-hosted";
 
 interface UseEventsOptions {
   autoRefresh?: boolean;
-  refreshInterval?: number;
-  queries?: string[];
 }
 
+// Minimum articles before requesting fallback
+const MIN_ARTICLES_THRESHOLD = 5;
+
 export function useEvents(options: UseEventsOptions = {}) {
-  const {
-    autoRefresh = true,
-    refreshInterval = 60000,
-    queries,
-  } = options;
+  const { autoRefresh = true } = options;
 
   const {
     events,
@@ -30,90 +31,165 @@ export function useEvents(options: UseEventsOptions = {}) {
     setError,
   } = useEventsStore();
 
-  const { getAccessToken, signOut, isAuthenticated } = useAuthStore();
-  const [requiresSignIn, setRequiresSignIn] = useState(false);
+  const {
+    currentBand,
+    updateCurrentBand,
+    setLastRefresh,
+    updateCountdown,
+  } = useSunStore();
 
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const hourlyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const requiresAuth = APP_MODE === "valyu";
-
-  // Fetch events from API
-  const fetchEvents = useCallback(async () => {
-    // In valyu mode, require sign-in for all event fetches
-    if (requiresAuth && !isAuthenticated) {
-      setRequiresSignIn(true);
-      setLoading(false);
-      return;
-    }
-
+  // Fetch events from API using current timezone band
+  const fetchEvents = useCallback(async (withFallback: boolean = false) => {
     setLoading(true);
     setError(null);
 
     try {
-      const accessToken = getAccessToken();
+      // Get countries for the current band
+      const band = getCurrentNoonBand();
+      const countries = getCountriesForFetching(band, withFallback);
+
+      console.log(`[useEvents] Fetching news for ${band.displayName}:`, countries);
 
       const response = await fetch("/api/events", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ queries: queries || [], accessToken }),
+        body: JSON.stringify({
+          countries,
+          region: band.displayName,
+          includeFallback: !withFallback, // Only request fallback info on first try
+        }),
       });
 
       const data = await response.json();
-
-      // Handle auth errors
-      if (response.status === 401 || data.requiresReauth) {
-        signOut();
-        setRequiresSignIn(true);
-        setError("Session expired. Please sign in again.");
-        return;
-      }
 
       if (!response.ok) {
         throw new Error(data.error || "Failed to fetch events");
       }
 
-      const newEvents: ThreatEvent[] = data.events || [];
+      let newEvents: ThreatEvent[] = data.events || [];
+
+      // If we got too few results and not already using fallback, try with fallback countries
+      if (newEvents.length < MIN_ARTICLES_THRESHOLD && !withFallback) {
+        console.log(`[useEvents] Only ${newEvents.length} articles, fetching with fallback`);
+
+        // Fetch from fallback bands
+        const fallbackBands = getFallbackBands(band);
+        const fallbackCountries: string[] = [];
+
+        for (const fb of fallbackBands.slice(0, 2)) {
+          for (const country of fb.countries) {
+            if (!countries.includes(country) && !fallbackCountries.includes(country)) {
+              fallbackCountries.push(country);
+            }
+          }
+        }
+
+        if (fallbackCountries.length > 0) {
+          console.log(`[useEvents] Fetching fallback countries:`, fallbackCountries);
+
+          const fallbackResponse = await fetch("/api/events", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              countries: fallbackCountries,
+              region: "Nearby Regions",
+              includeFallback: false,
+            }),
+          });
+
+          if (fallbackResponse.ok) {
+            const fallbackData = await fallbackResponse.json();
+            const fallbackEvents: ThreatEvent[] = fallbackData.events || [];
+
+            // Merge and deduplicate
+            const seenIds = new Set(newEvents.map((e) => e.id));
+            const seenUrls = new Set(newEvents.map((e) => e.sourceUrl));
+
+            for (const event of fallbackEvents) {
+              if (!seenIds.has(event.id) && !seenUrls.has(event.sourceUrl)) {
+                newEvents.push(event);
+              }
+            }
+
+            console.log(`[useEvents] After fallback: ${newEvents.length} total articles`);
+          }
+        }
+      }
+
       setEvents(newEvents);
+      setLastRefresh(new Date());
+      updateCurrentBand();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unknown error occurred");
     } finally {
       setLoading(false);
     }
-  }, [queries, setEvents, setLoading, setError, getAccessToken, signOut, requiresAuth, isAuthenticated]);
+  }, [setEvents, setLoading, setError, setLastRefresh, updateCurrentBand]);
 
   // Manual refresh
   const refresh = useCallback(() => {
     fetchEvents();
   }, [fetchEvents]);
 
-  // Initial fetch on mount (or when auth changes)
+  // Schedule next hourly refresh (aligned to clock)
+  const scheduleHourlyRefresh = useCallback(() => {
+    if (hourlyTimeoutRef.current) {
+      clearTimeout(hourlyTimeoutRef.current);
+    }
+
+    const msUntilNext = getMsUntilNextHour();
+    console.log(`[useEvents] Next refresh in ${Math.round(msUntilNext / 60000)}m`);
+
+    hourlyTimeoutRef.current = setTimeout(() => {
+      console.log("[useEvents] Hourly refresh triggered");
+      fetchEvents();
+      // Schedule the next one
+      scheduleHourlyRefresh();
+    }, msUntilNext);
+  }, [fetchEvents]);
+
+  // Initial fetch on mount
   useEffect(() => {
     fetchEvents();
   }, [fetchEvents]);
 
-  // Auto-refresh - only if authenticated
+  // Set up hourly refresh and countdown
   useEffect(() => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
+    if (!autoRefresh) {
+      if (hourlyTimeoutRef.current) {
+        clearTimeout(hourlyTimeoutRef.current);
+        hourlyTimeoutRef.current = null;
+      }
+      if (countdownIntervalRef.current) {
+        clearInterval(countdownIntervalRef.current);
+        countdownIntervalRef.current = null;
+      }
+      return;
     }
 
-    if (autoRefresh && isAuthenticated) {
-      intervalRef.current = setInterval(fetchEvents, refreshInterval);
-    }
+    // Schedule next hourly refresh
+    scheduleHourlyRefresh();
+
+    // Update countdown every minute
+    countdownIntervalRef.current = setInterval(() => {
+      updateCountdown();
+    }, 60000);
+
+    // Initial countdown update
+    updateCountdown();
 
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
+      if (hourlyTimeoutRef.current) {
+        clearTimeout(hourlyTimeoutRef.current);
+      }
+      if (countdownIntervalRef.current) {
+        clearInterval(countdownIntervalRef.current);
       }
     };
-  }, [autoRefresh, refreshInterval, isAuthenticated, fetchEvents]);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      setRequiresSignIn(false);
-    }
-  }, [isAuthenticated]);
+  }, [autoRefresh, scheduleHourlyRefresh, updateCountdown]);
 
   return {
     events,
@@ -121,6 +197,6 @@ export function useEvents(options: UseEventsOptions = {}) {
     isLoading,
     error,
     refresh,
-    requiresSignIn,
+    currentBand,
   };
 }

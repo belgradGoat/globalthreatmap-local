@@ -1,11 +1,5 @@
 import { NextResponse } from "next/server";
-import { getCountryConflicts as valyuGetConflicts, streamCountryConflicts as valyuStreamConflicts } from "@/lib/valyu";
-import { getCountryConflicts as localGetConflicts, streamCountryConflicts as localStreamConflicts, isLocalIntelEnabled, type LLMSettings } from "@/lib/local-intel";
-import { isSelfHostedMode } from "@/lib/app-mode";
-
-// Use local intel or Valyu based on configuration
-const getCountryConflicts = isLocalIntelEnabled() ? localGetConflicts : valyuGetConflicts;
-const streamCountryConflicts = isLocalIntelEnabled() ? localStreamConflicts : valyuStreamConflicts;
+import { getCountryConflicts, streamCountryConflicts, type LLMSettings } from "@/lib/local-intel";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +7,6 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const country = searchParams.get("country");
   const stream = searchParams.get("stream") === "true";
-  const accessToken = searchParams.get("accessToken");
 
   // Parse LLM settings from query params
   let llmSettings: LLMSettings | undefined;
@@ -33,15 +26,6 @@ export async function GET(request: Request) {
     );
   }
 
-  // In valyu mode, require user token
-  const selfHosted = isSelfHostedMode();
-  if (!selfHosted && !accessToken) {
-    return NextResponse.json(
-      { error: "Authentication required", requiresReauth: true },
-      { status: 401 }
-    );
-  }
-
   // Streaming mode - use Server-Sent Events
   if (stream) {
     const encoder = new TextEncoder();
@@ -50,7 +34,6 @@ export async function GET(request: Request) {
       async start(controller) {
         try {
           for await (const chunk of streamCountryConflicts(country, {
-            accessToken: accessToken || undefined,
             llmSettings,
           })) {
             const data = `data: ${JSON.stringify(chunk)}\n\n`;
@@ -80,7 +63,6 @@ export async function GET(request: Request) {
   // Non-streaming mode - return full response
   try {
     const result = await getCountryConflicts(country, {
-      accessToken: accessToken || undefined,
       llmSettings,
     });
 

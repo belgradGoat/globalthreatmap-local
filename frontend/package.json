@@ -4,16 +4,17 @@
   "description": "Self-hosted global threat intelligence dashboard - local LLMs and RSS feeds",
   "scripts": {
     "dev": "next dev -p 3000",
+    "dev:network": "next dev -p 3000 -H 0.0.0.0",
     "build": "next build",
     "start": "next start -p 3300",
+    "start:network": "next start -p 3300 -H 0.0.0.0",
     "lint": "next lint"
   },
   "keywords": [
     "threat-intelligence",
     "osint",
     "geopolitical",
-    "mapbox",
-    "valyu"
+    "mapbox"
   ],
   "author": "",
   "license": "ISC",
@@ -44,7 +45,6 @@
     "tailwindcss": "^4.1.18",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.9.3",
-    "valyu-js": "^2.5.2",
     "zod": "^4.3.5",
     "zustand": "^5.0.10"
   }

@@ -11,14 +11,14 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   Map,
-  Rss,
+  Newspaper,
   Search,
   Globe,
-  Shield,
-  Layers,
+  Satellite,
+  Eye,
 } from "lucide-react";
 
-const WELCOME_DISMISSED_KEY = "globalthreatmap_welcome_dismissed";
+const WELCOME_DISMISSED_KEY = "eagle_eye_welcome_dismissed";
 
 interface Feature {
   icon: React.ReactNode;
@@ -29,45 +29,45 @@ interface Feature {
 
 const features: Feature[] = [
   {
-    icon: <Map className="h-6 w-6" />,
-    title: "Interactive Threat Map",
+    icon: <Satellite className="h-6 w-6" />,
+    title: "Interactive Globe",
     description:
-      "Explore global events with color-coded markers. Click any event for details, or zoom to see clusters expand.",
-    color: "text-red-500",
+      "Explore the world with satellite imagery. Switch between map styles and click any location to discover news and information.",
+    color: "text-teal-500",
   },
   {
-    icon: <Rss className="h-6 w-6" />,
-    title: "Event Feed",
+    icon: <Newspaper className="h-6 w-6" />,
+    title: "News Feed",
     description:
-      "Browse live events in the sidebar. Filter by threat level, category, or search for specific incidents.",
-    color: "text-orange-500",
-  },
-  {
-    icon: <Globe className="h-6 w-6" />,
-    title: "Country Intelligence",
-    description:
-      "Click any country on the map to view current and historical conflicts with AI-powered analysis.",
+      "Browse live news from around the world. Filter by category, region, or search for specific topics.",
     color: "text-blue-500",
   },
   {
-    icon: <Search className="h-6 w-6" />,
-    title: "Intel Dossiers",
+    icon: <Globe className="h-6 w-6" />,
+    title: "Country Explorer",
     description:
-      "Build intelligence dossiers on any actor. Enable full dossier mode for ~50 page reports with downloadable CSV data exports and PowerPoint briefings.",
+      "Click any country on the map to view latest news, country profile, and historical context with AI-powered analysis.",
+    color: "text-amber-500",
+  },
+  {
+    icon: <Search className="h-6 w-6" />,
+    title: "Deep Research",
+    description:
+      "Research any topic in depth. Generate comprehensive reports from hundreds of global news sources.",
     color: "text-purple-500",
   },
   {
-    icon: <Shield className="h-6 w-6" />,
-    title: "Military Bases",
+    icon: <Map className="h-6 w-6" />,
+    title: "Multiple Map Styles",
     description:
-      "View US and NATO military installations worldwide. Click any base (green marker) on the map for details about the facility.",
+      "Choose your view: Satellite for real imagery, Light for daytime, Dark for night mode, or Streets for traditional maps.",
     color: "text-green-500",
   },
   {
-    icon: <Layers className="h-6 w-6" />,
-    title: "Auto-Pan Mode",
+    icon: <Eye className="h-6 w-6" />,
+    title: "Your Lens on the World",
     description:
-      "Click on the play button by the bottom left to make the map auto-pan.",
+      "Eagle Eye aggregates news from 600+ sources across 94 countries, giving you a comprehensive global perspective.",
     color: "text-cyan-500",
   },
 ];
@@ -91,15 +91,15 @@ export function WelcomeModal({ open, onOpenChange }: WelcomeModalProps) {
     <Dialog open={open} onClose={handleClose} className="max-w-3xl">
       <DialogHeader onClose={handleClose}>
         <DialogTitle className="flex items-center gap-2">
-          <Globe className="h-5 w-5 text-primary" />
-          Welcome to Global Threat Map Local
+          <Eye className="h-5 w-5" style={{ color: "var(--color-eagle-secondary)" }} />
+          Welcome to Eagle Eye
         </DialogTitle>
       </DialogHeader>
 
       <DialogContent className="max-h-[60vh]">
         <p className="mb-6 text-muted-foreground">
-          Your situational awareness platform for tracking global
-          security events, wars, conflicts & threat indicators.
+          Your lens on the world. Explore global news, research countries,
+          and discover what&apos;s happening around the planet.
         </p>
 
         <div className="grid gap-4 sm:grid-cols-2">

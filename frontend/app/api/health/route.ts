@@ -1,19 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { checkLocalServices, isLocalIntelEnabled, type LLMSettings } from "@/lib/local-intel";
+import { checkLocalServices, type LLMSettings } from "@/lib/local-intel";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
-  const useLocalIntel = isLocalIntelEnabled();
-
-  if (!useLocalIntel) {
-    return NextResponse.json({
-      mode: "valyu",
-      message: "Using Valyu cloud services",
-      localServices: null,
-    });
-  }
-
   // Try to get LLM settings from query params (for testing)
   const { searchParams } = new URL(request.url);
   let llmSettings: LLMSettings | undefined;

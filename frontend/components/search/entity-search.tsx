@@ -15,26 +15,20 @@ import {
 import {
   Search,
   Loader2,
-  Building2,
-  User,
   Globe,
-  Users,
   FileText,
   Maximize2,
   AlertCircle,
+  Shield,
+  BookOpen,
 } from "lucide-react";
 import { Favicon } from "@/components/ui/favicon";
 import { useMapStore } from "@/stores/map-store";
 import { useLLMStore } from "@/stores/llm-store";
+import { useSettingsStore } from "@/stores/settings-store";
 import { Markdown } from "@/components/ui/markdown";
+import { cn } from "@/lib/utils";
 import type { EntityProfile } from "@/types";
-
-const typeIcons = {
-  organization: Building2,
-  person: User,
-  country: Globe,
-  group: Users,
-};
 
 interface Source {
   title: string;
@@ -48,9 +42,11 @@ interface ResearchResult {
 }
 
 export function EntitySearch() {
+  const { includeSecurityAnalysisByDefault } = useSettingsStore();
   const [query, setQuery] = useState("");
   const [entity, setEntity] = useState<EntityProfile | null>(null);
   const [showFullReport, setShowFullReport] = useState(false);
+  const [includeSecurityAnalysis, setIncludeSecurityAnalysis] = useState(includeSecurityAnalysisByDefault);
 
   // Streaming research state
   const [isLoading, setIsLoading] = useState(false);
@@ -115,6 +111,7 @@ export function EntitySearch() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           topic: query,
+          includeSecurityAnalysis,
           llmSettings: {
             provider: llmSettings.provider,
             serverUrl: llmSettings.serverUrl,
@@ -162,7 +159,7 @@ export function EntitySearch() {
               case "content":
                 fullContent += data.content;
                 setStreamedContent(fullContent);
-                setStatusMessage(null); // Clear status when content starts
+                setStatusMessage(null);
                 break;
 
               case "done":
@@ -185,7 +182,6 @@ export function EntitySearch() {
       }
     } catch (err) {
       if (err instanceof Error && err.name === "AbortError") {
-        // Request was aborted, ignore
         return;
       }
       setError(err instanceof Error ? err.message : "Research failed");
@@ -215,8 +211,6 @@ export function EntitySearch() {
     setStatusMessage(null);
   };
 
-  const TypeIcon = entity ? typeIcons[entity.type] : Building2;
-
   // Current display content (streaming or final)
   const displayContent = researchResult?.output || streamedContent;
   const displaySources = researchResult?.sources || sources;
@@ -224,9 +218,12 @@ export function EntitySearch() {
   return (
     <div className="flex h-full flex-col">
       <div className="border-b border-border p-4">
-        <h2 className="text-lg font-semibold text-foreground">Build Dossier</h2>
+        <div className="flex items-center gap-2">
+          <Search className="h-5 w-5" style={{ color: "var(--color-eagle-secondary)" }} />
+          <h2 className="text-lg font-semibold text-foreground">Research</h2>
+        </div>
         <p className="text-sm text-muted-foreground">
-          Deep research on any actor using your local LLM
+          Deep research on any topic using your local LLM
         </p>
       </div>
 
@@ -235,7 +232,7 @@ export function EntitySearch() {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="e.g. Wagner Group, Hezbollah, North Korea..."
+              placeholder="e.g. Ukraine history, Climate summit, Olympics 2024..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -247,17 +244,45 @@ export function EntitySearch() {
               Cancel
             </Button>
           ) : (
-            <Button onClick={handleSearch} disabled={!query.trim()}>
+            <Button
+              onClick={handleSearch}
+              disabled={!query.trim()}
+              style={{ backgroundColor: "var(--color-eagle-secondary)" }}
+              className="text-white hover:opacity-90"
+            >
               Research
             </Button>
           )}
         </div>
 
+        {/* Security Analysis Toggle */}
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={includeSecurityAnalysis}
+            onChange={(e) => setIncludeSecurityAnalysis(e.target.checked)}
+            className="h-4 w-4 rounded border-border accent-[var(--color-eagle-secondary)]"
+          />
+          <Shield className="h-4 w-4 text-muted-foreground" />
+          <span className="text-sm text-muted-foreground">
+            Include security & threat analysis
+          </span>
+        </label>
+
         {/* Status message */}
         {isLoading && statusMessage && (
-          <div className="rounded-lg bg-primary/10 border border-primary/20 p-3 text-sm">
+          <div
+            className="rounded-lg border p-3 text-sm"
+            style={{
+              backgroundColor: "rgba(13, 148, 136, 0.1)",
+              borderColor: "rgba(13, 148, 136, 0.2)",
+            }}
+          >
             <div className="flex items-center gap-2 text-foreground font-medium">
-              <Loader2 className="h-4 w-4 animate-spin text-primary" />
+              <Loader2
+                className="h-4 w-4 animate-spin"
+                style={{ color: "var(--color-eagle-secondary)" }}
+              />
               {statusMessage}
             </div>
           </div>
@@ -265,10 +290,19 @@ export function EntitySearch() {
 
         {/* Streaming indicator */}
         {isLoading && !statusMessage && streamedContent && (
-          <div className="rounded-lg bg-primary/10 border border-primary/20 p-3 text-sm">
+          <div
+            className="rounded-lg border p-3 text-sm"
+            style={{
+              backgroundColor: "rgba(13, 148, 136, 0.1)",
+              borderColor: "rgba(13, 148, 136, 0.2)",
+            }}
+          >
             <div className="flex items-center gap-2 text-foreground font-medium">
-              <Loader2 className="h-4 w-4 animate-spin text-primary" />
-              Generating intelligence report...
+              <Loader2
+                className="h-4 w-4 animate-spin"
+                style={{ color: "var(--color-eagle-secondary)" }}
+              />
+              Generating research report...
             </div>
           </div>
         )}
@@ -297,14 +331,32 @@ export function EntitySearch() {
           <Card>
             <CardHeader className="pb-3">
               <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20">
-                  <TypeIcon className="h-5 w-5 text-primary" />
+                <div
+                  className="flex h-10 w-10 items-center justify-center rounded-full"
+                  style={{ backgroundColor: "rgba(13, 148, 136, 0.2)" }}
+                >
+                  <Globe className="h-5 w-5" style={{ color: "var(--color-eagle-secondary)" }} />
                 </div>
                 <div className="flex-1">
                   <CardTitle className="text-lg">{entity.name}</CardTitle>
-                  <Badge variant="outline" className="mt-1 capitalize">
-                    {entity.type}
-                  </Badge>
+                  <div className="mt-1 flex items-center gap-2">
+                    <Badge
+                      variant="outline"
+                      style={{
+                        borderColor: "var(--color-eagle-secondary)",
+                        color: "var(--color-eagle-secondary)",
+                      }}
+                    >
+                      <BookOpen className="mr-1 h-3 w-3" />
+                      Research Report
+                    </Badge>
+                    {includeSecurityAnalysis && (
+                      <Badge variant="outline" className="text-slate-400 border-slate-500">
+                        <Shield className="mr-1 h-3 w-3" />
+                        Security
+                      </Badge>
+                    )}
+                  </div>
                 </div>
               </div>
             </CardHeader>
@@ -314,9 +366,12 @@ export function EntitySearch() {
                 <div className="flex items-center justify-between">
                   <h4 className="flex items-center gap-2 text-sm font-medium text-foreground">
                     <FileText className="h-4 w-4" />
-                    Intelligence Report
+                    Report
                     {isLoading && (
-                      <Loader2 className="h-3 w-3 animate-spin text-primary" />
+                      <Loader2
+                        className="h-3 w-3 animate-spin"
+                        style={{ color: "var(--color-eagle-secondary)" }}
+                      />
                     )}
                   </h4>
                   {researchResult && (
@@ -360,7 +415,7 @@ export function EntitySearch() {
                         href={source.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-sm text-foreground hover:text-primary transition-colors"
+                        className="flex items-center gap-2 text-sm text-foreground hover:text-[var(--color-eagle-secondary)] transition-colors"
                       >
                         <Favicon url={source.url} size={16} />
                         <span className="truncate">{source.title}</span>
@@ -375,18 +430,21 @@ export function EntitySearch() {
 
         {!entity && !isLoading && (
           <div className="py-8 text-center">
-            <FileText className="mx-auto h-12 w-12 text-muted-foreground/50" />
+            <Globe
+              className="mx-auto h-12 w-12"
+              style={{ color: "rgba(13, 148, 136, 0.3)" }}
+            />
             <p className="mt-4 text-sm text-muted-foreground">
-              Enter any actor to compile an intelligence dossier
+              Research any topic in depth
             </p>
             <div className="mt-3 space-y-1 text-xs text-muted-foreground/70">
-              <p>Wagner Group, Houthis, Hezbollah, North Korea</p>
-              <p>Nations, militias, PMCs, cartels, political figures</p>
+              <p>Countries, events, organizations, historical topics</p>
+              <p>Ukraine conflict, Climate change, Olympics, Tech companies</p>
             </div>
             <div className="mt-4 p-3 rounded-lg bg-muted/50 text-xs text-muted-foreground">
               <p>
                 Uses your configured LLM ({llmSettings.provider}) to generate
-                comprehensive intelligence reports.
+                comprehensive research reports from 600+ global news sources.
               </p>
             </div>
           </div>
@@ -396,13 +454,24 @@ export function EntitySearch() {
           <Card>
             <CardHeader className="pb-3">
               <div className="flex items-start gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20">
-                  <TypeIcon className="h-5 w-5 text-primary" />
+                <div
+                  className="flex h-10 w-10 items-center justify-center rounded-full"
+                  style={{ backgroundColor: "rgba(13, 148, 136, 0.2)" }}
+                >
+                  <Globe className="h-5 w-5" style={{ color: "var(--color-eagle-secondary)" }} />
                 </div>
                 <div className="flex-1">
                   <CardTitle className="text-lg">{entity.name}</CardTitle>
-                  <Badge variant="outline" className="mt-1 capitalize">
-                    {entity.type}
+                  <Badge
+                    variant="outline"
+                    className="mt-1"
+                    style={{
+                      borderColor: "var(--color-eagle-secondary)",
+                      color: "var(--color-eagle-secondary)",
+                    }}
+                  >
+                    <BookOpen className="mr-1 h-3 w-3" />
+                    Research Report
                   </Badge>
                 </div>
               </div>
@@ -427,8 +496,8 @@ export function EntitySearch() {
       >
         <DialogHeader onClose={() => setShowFullReport(false)}>
           <DialogTitle className="flex items-center gap-2">
-            <FileText className="h-5 w-5" />
-            Intelligence Report: {entity?.name}
+            <FileText className="h-5 w-5" style={{ color: "var(--color-eagle-secondary)" }} />
+            Research Report: {entity?.name}
           </DialogTitle>
         </DialogHeader>
         <DialogContent className="h-[70vh] flex flex-col">

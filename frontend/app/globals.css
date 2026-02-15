@@ -154,6 +154,26 @@
   --color-threat-medium: #eab308;
   --color-threat-low: #22c55e;
   --color-threat-info: #3b82f6;
+
+  /* Eagle Eye brand colors */
+  --color-eagle-primary: #1a365d;        /* Deep Blue - trust, knowledge */
+  --color-eagle-secondary: #0d9488;      /* Teal - growth, freshness */
+  --color-eagle-accent: #f59e0b;         /* Amber - highlights, attention */
+  --color-eagle-primary-light: #2c5282;  /* Lighter blue for hover states */
+  --color-eagle-secondary-light: #14b8a6; /* Lighter teal */
+
+  /* News category colors */
+  --color-category-politics: #3b82f6;
+  --color-category-economy: #22c55e;
+  --color-category-technology: #a855f7;
+  --color-category-culture: #ec4899;
+  --color-category-sports: #f97316;
+  --color-category-environment: #10b981;
+  --color-category-health: #ef4444;
+  --color-category-science: #6366f1;
+  --color-category-security: #64748b;
+  --color-category-military: #6b7280;
+  --color-category-conflict: #f59e0b;
 }
 
 * {

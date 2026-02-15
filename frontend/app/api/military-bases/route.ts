@@ -1,5 +1,5 @@
-                                                                                                              import { NextResponse } from "next/server";
-import { getMilitaryBases } from "@/lib/valyu";
+import { NextResponse } from "next/server";
+import { getMilitaryBases } from "@/lib/local-intel";
 
 export const dynamic = "force-dynamic";
 

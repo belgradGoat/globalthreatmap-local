@@ -9,16 +9,14 @@ import { TimelineScrubber } from "@/components/map/timeline-scrubber";
 import { MapControls } from "@/components/map/map-controls";
 import { WelcomeModal } from "@/components/welcome-modal";
 import { SettingsModal } from "@/components/settings-modal";
-import { SignInPanel } from "@/components/auth";
 
-const WELCOME_DISMISSED_KEY = "globalthreatmap_welcome_dismissed";
+const WELCOME_DISMISSED_KEY = "eagle_eye_welcome_dismissed";
 
 export default function Home() {
   const [showWelcome, setShowWelcome] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const { isLoading, refresh } = useEvents({
-    autoRefresh: true,
-    refreshInterval: 300000, // 5 minutes
+    autoRefresh: true, // Hourly refresh aligned to clock (Follow the Sun)
   });
 
   useEffect(() => {
@@ -46,7 +44,6 @@ export default function Home() {
       </div>
       <WelcomeModal open={showWelcome} onOpenChange={setShowWelcome} />
       <SettingsModal open={showSettings} onOpenChange={setShowSettings} />
-      <SignInPanel />
     </div>
   );
 }

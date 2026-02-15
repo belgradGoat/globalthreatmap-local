@@ -5,8 +5,8 @@ import "./globals.css";
 import { AuthInitializer } from "@/components/auth/auth-initializer";
 
 export const metadata: Metadata = {
-  title: "Global Threat Map Local | Intelligence Platform",
-  description: "Real-time global situational awareness platform for security events, geopolitical developments, and threat indicators",
+  title: "Eagle Eye | Your Lens on the World",
+  description: "Comprehensive global news research platform for exploring countries, current events, and international developments",
 };
 
 export default function RootLayout({
