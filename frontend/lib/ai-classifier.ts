@@ -1,19 +1,21 @@
-import OpenAI from "openai";
-import { zodResponseFormat } from "openai/helpers/zod";
 import { z } from "zod";
 import type { EventCategory, ThreatLevel, GeoLocation } from "@/types";
+import type { LLMSettings } from "./local-intel";
 import { geocodeLocation, extractLocationsFromText } from "./geocoding";
 import {
   classifyCategory as keywordClassifyCategory,
   classifyThreatLevel as keywordClassifyThreatLevel,
 } from "./event-classifier";
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-4.1-nano";
+// Default LLM settings (from environment or sensible defaults)
+const DEFAULT_LLM_SETTINGS: LLMSettings = {
+  provider: "lmstudio",
+  serverUrl: process.env.LM_STUDIO_URL || "http://localhost:1234/v1",
+  model: process.env.LLM_MODEL || "",
+  apiKey: process.env.OPENAI_API_KEY || "",
+};
 
-const openai = OPENAI_API_KEY ? new OpenAI({ apiKey: OPENAI_API_KEY }) : null;
-
-// Zod schema for structured event classification
+// Zod schema for structured event classification (used for validation)
 const EventClassificationSchema = z.object({
   category: z.enum([
     "conflict",
@@ -30,22 +32,12 @@ const EventClassificationSchema = z.object({
     "piracy",
     "infrastructure",
     "commodities",
-  ]).describe("The primary category of the event"),
-  threatLevel: z.enum(["critical", "high", "medium", "low", "info"]).describe(
-    "Severity level: critical (imminent danger, mass casualties), high (significant threat), medium (developing situation), low (minor/contained), info (routine update)"
-  ),
-  primaryLocation: z.string().describe(
-    "The MOST SPECIFIC geographic location possible. Prioritize: exact address/landmark > neighborhood/district > city > region > country. Examples: 'Kharkiv, Ukraine' not 'Ukraine', 'Gaza City' not 'Gaza Strip', 'Port of Hodeidah, Yemen' not 'Yemen'."
-  ),
-  city: z.string().nullable().describe(
-    "The city or town name if identifiable, null otherwise"
-  ),
-  region: z.string().nullable().describe(
-    "The state, province, or region if identifiable, null otherwise"
-  ),
-  country: z.string().nullable().describe(
-    "The country where the event is occurring, if identifiable"
-  ),
+  ]),
+  threatLevel: z.enum(["critical", "high", "medium", "low", "info"]),
+  primaryLocation: z.string(),
+  city: z.string().nullable(),
+  region: z.string().nullable(),
+  country: z.string().nullable(),
 });
 
 type EventClassification = z.infer<typeof EventClassificationSchema>;
@@ -57,27 +49,94 @@ export interface ClassificationResult {
 }
 
 /**
- * Classify an event using OpenAI structured outputs
- * Extracts category, threat level, and location in a single API call
+ * Get the appropriate endpoint for the LLM provider
  */
-async function classifyWithAI(
-  title: string,
-  content: string
-): Promise<EventClassification | null> {
-  if (!openai) return null;
+function getLLMEndpoint(settings: LLMSettings): string {
+  const baseUrl = settings.serverUrl.replace(/\/$/, "");
 
-  try {
-    const completion = await openai.chat.completions.parse({
-      model: OPENAI_MODEL,
-      messages: [
-        {
-          role: "system",
-          content: `You are an intelligence analyst classifying global events. Analyze the headline and content to determine:
+  switch (settings.provider) {
+    case "ollama":
+      return `${baseUrl}/api/chat`;
+    case "lmstudio":
+    case "openai-compatible":
+    case "openai":
+    default:
+      return `${baseUrl}/chat/completions`;
+  }
+}
+
+/**
+ * Format request body for different LLM providers
+ */
+function formatLLMRequest(
+  settings: LLMSettings,
+  messages: { role: string; content: string }[],
+  options: { temperature?: number; maxTokens?: number }
+): object {
+  const baseRequest = {
+    messages,
+    temperature: options.temperature ?? 0,
+    stream: false,
+  };
+
+  switch (settings.provider) {
+    case "ollama":
+      if (!settings.model) {
+        throw new Error("Model name is required for Ollama");
+      }
+      return {
+        model: settings.model,
+        messages,
+        stream: false,
+        format: "json",
+        options: {
+          temperature: options.temperature ?? 0,
+          num_predict: options.maxTokens ?? 300,
+        },
+      };
+    case "openai":
+      return {
+        ...baseRequest,
+        model: settings.model || "gpt-4o-mini",
+        max_tokens: options.maxTokens ?? 300,
+        response_format: { type: "json_object" },
+      };
+    case "lmstudio":
+    case "openai-compatible":
+    default:
+      // Don't send response_format — many local models don't support it
+      return {
+        ...baseRequest,
+        model: settings.model || undefined,
+        max_tokens: options.maxTokens ?? 300,
+      };
+  }
+}
+
+/**
+ * Parse LLM response based on provider
+ */
+function parseResponse(settings: LLMSettings, data: unknown): string {
+  const response = data as Record<string, unknown>;
+
+  if (settings.provider === "ollama") {
+    const message = response.message as { content?: string } | undefined;
+    return message?.content || "";
+  }
+
+  const choices = response.choices as Array<{ message?: { content?: string } }> | undefined;
+  return choices?.[0]?.message?.content || "";
+}
+
+const SYSTEM_PROMPT = `You are an intelligence analyst classifying global events. Analyze the headline and content to determine:
 1. Category - the type of event
 2. Threat Level - severity based on potential impact and urgency
 3. Location - the primary geographic location where this is happening
 
-Categories:
+You MUST respond with valid JSON only. No other text. Use this exact format:
+{"category": "...", "threatLevel": "...", "primaryLocation": "...", "city": "...", "region": "...", "country": "..."}
+
+Categories (pick one):
 - conflict: armed conflicts, wars, military clashes
 - protest: demonstrations, civil unrest, riots
 - disaster: natural disasters, earthquakes, floods, hurricanes, wildfires
@@ -93,37 +152,85 @@ Categories:
 - infrastructure: water reservoir levels, power grid, utilities, dams
 - commodities: grocery prices, food supply, commodity shortages
 
+Threat levels: critical, high, medium, low, info
+
 LOCATION EXTRACTION IS CRITICAL - be as granular as possible:
 - Always extract the most specific location mentioned (city > region > country)
 - Include the city name even for well-known locations (e.g., "Mariupol, Ukraine" not just "Ukraine")
 - For military/naval events, specify the base, port, or installation name
-- For maritime events, include coordinates or nearby port/coast if mentioned
-- Never use vague terms like "Middle East" or "Europe" when a specific country/city is mentioned
-- Examples of good locations: "Kramatorsk, Donetsk Oblast, Ukraine", "Bab el-Mandeb Strait", "Port of Aden, Yemen"
+- Set city and region to null if not identifiable, country to null if not identifiable`;
 
-For threat level:
-- critical: imminent danger, mass casualties, nuclear/WMD threats
-- high: significant active threats, major incidents, escalating situations
-- medium: developing situations, moderate concern, ongoing tensions
-- low: minor incidents, contained events, localized issues
-- info: routine updates, announcements, analysis pieces`,
-        },
-        {
-          role: "user",
-          content: `Headline: ${title}\n\nContent: ${content.slice(0, 1000)}`,
-        },
-      ],
-      response_format: zodResponseFormat(EventClassificationSchema, "event_classification"),
-      max_tokens: 200,
+/**
+ * Classify an event using the user's configured LLM provider
+ * Extracts category, threat level, and location in a single API call
+ */
+async function classifyWithAI(
+  title: string,
+  content: string,
+  settings: LLMSettings
+): Promise<EventClassification | null> {
+  try {
+    const messages = [
+      { role: "system", content: SYSTEM_PROMPT },
+      { role: "user", content: `Headline: ${title}\n\nContent: ${content.slice(0, 1000)}` },
+    ];
+
+    const endpoint = getLLMEndpoint(settings);
+    const body = formatLLMRequest(settings, messages, {
       temperature: 0,
+      maxTokens: 300,
     });
 
-    const message = completion.choices[0]?.message;
-    if (message?.parsed) {
-      return message.parsed;
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+
+    if (settings.apiKey && (settings.provider === "openai" || settings.provider === "openai-compatible")) {
+      headers["Authorization"] = `Bearer ${settings.apiKey}`;
     }
 
-    return null;
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(30000),
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.text().catch(() => "");
+      console.error(`[AI Classifier] LLM request failed: ${response.status}`, errorBody);
+      return null;
+    }
+
+    const data = await response.json();
+    const responseText = parseResponse(settings, data);
+
+    // Extract JSON from response (handle markdown code blocks)
+    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      console.error("[AI Classifier] No JSON found in response");
+      return null;
+    }
+
+    const parsed = JSON.parse(jsonMatch[0]);
+
+    // Validate with Zod
+    const result = EventClassificationSchema.safeParse(parsed);
+    if (result.success) {
+      return result.data;
+    }
+
+    console.warn("[AI Classifier] Response failed validation:", result.error.issues);
+
+    // Try partial extraction even if validation fails
+    return {
+      category: parsed.category || "economic",
+      threatLevel: parsed.threatLevel || "info",
+      primaryLocation: parsed.primaryLocation || "",
+      city: parsed.city || null,
+      region: parsed.region || null,
+      country: parsed.country || null,
+    };
   } catch (error) {
     console.error("AI classification error:", error);
     return null;
@@ -136,12 +243,14 @@ For threat level:
  */
 export async function classifyEvent(
   title: string,
-  content: string
+  content: string,
+  llmSettings?: LLMSettings
 ): Promise<ClassificationResult> {
   const fullText = `${title} ${content}`;
+  const settings = llmSettings || DEFAULT_LLM_SETTINGS;
 
   // Try AI classification first
-  const aiResult = await classifyWithAI(title, content);
+  const aiResult = await classifyWithAI(title, content, settings);
 
   if (aiResult) {
     // AI classification succeeded - geocode the location with cascading specificity
@@ -200,6 +309,8 @@ export async function classifyEvent(
 /**
  * Check if AI classification is available
  */
-export function isAIClassificationEnabled(): boolean {
-  return !!openai;
+export function isAIClassificationEnabled(llmSettings?: LLMSettings): boolean {
+  const settings = llmSettings || DEFAULT_LLM_SETTINGS;
+  // Available if we have a server URL configured (local providers don't need an API key)
+  return !!settings.serverUrl;
 }

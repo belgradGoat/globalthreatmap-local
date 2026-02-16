@@ -251,6 +251,7 @@ export async function* streamResponse(
 
 /**
  * Test connection to the LLM provider
+ * Proxied through our API route to avoid CORS issues with local servers
  */
 export async function testConnection(settings: LLMSettings): Promise<{
   success: boolean;
@@ -258,49 +259,21 @@ export async function testConnection(settings: LLMSettings): Promise<{
   models?: string[];
 }> {
   try {
-    const baseUrl = settings.serverUrl.replace(/\/$/, "");
-    let modelsEndpoint: string;
-
-    switch (settings.provider) {
-      case "ollama":
-        modelsEndpoint = `${baseUrl}/api/tags`;
-        break;
-      case "lmstudio":
-      case "openai-compatible":
-      case "openai":
-      default:
-        modelsEndpoint = `${baseUrl}/models`;
-        break;
-    }
-
-    const headers = getHeaders(settings);
-    const response = await fetch(modelsEndpoint, {
-      method: "GET",
-      headers,
-      signal: AbortSignal.timeout(10000),
+    const response = await fetch("/api/llm/test", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ settings }),
+      signal: AbortSignal.timeout(15000),
     });
 
     if (!response.ok) {
       return {
         success: false,
-        message: `Connection failed: ${response.status} ${response.statusText}`,
+        message: `Proxy error: ${response.status} ${response.statusText}`,
       };
     }
 
-    const data = await response.json();
-    let models: string[] = [];
-
-    if (settings.provider === "ollama") {
-      models = (data.models || []).map((m: any) => m.name);
-    } else {
-      models = (data.data || []).map((m: any) => m.id);
-    }
-
-    return {
-      success: true,
-      message: `Connected! Found ${models.length} model(s)`,
-      models,
-    };
+    return await response.json();
   } catch (error) {
     const message = error instanceof Error ? error.message : "Connection failed";
     return {

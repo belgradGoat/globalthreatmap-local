@@ -17,7 +17,9 @@ import { MapStyleSelector } from "./map-style-selector";
 import { useEventsStore } from "@/stores/events-store";
 import { threatLevelColors } from "@/types";
 import { EventPopup } from "./event-popup";
+import { ClusterPopup } from "./cluster-popup";
 import { CountryModal } from "./country-modal";
+import type { ThreatEvent } from "@/types";
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
@@ -276,14 +278,18 @@ export function ThreatMap() {
     militaryBases,
     setMilitaryBases,
     setMilitaryBasesLoading,
+    isFollowingSun,
+    stopFollowSun,
   } = useMapStore();
-  const { filteredEvents, selectedEvent, selectEvent } = useEventsStore();
+  const { filteredEvents, displayLocations, selectedEvent, selectEvent } = useEventsStore();
   const [selectedEntityLocation, setSelectedEntityLocation] = useState<SelectedEntityLocation | null>(null);
   const [selectedMilitaryBase, setSelectedMilitaryBase] = useState<SelectedMilitaryBase | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedCountryCode, setSelectedCountryCode] = useState<string | null>(null);
   const [isCountryLoading, setIsCountryLoading] = useState(false);
   const [blinkOpacity, setBlinkOpacity] = useState(0.4);
+  const [clusterEvents, setClusterEvents] = useState<ThreatEvent[]>([]);
+  const [clusterPopupPosition, setClusterPopupPosition] = useState<{lng: number, lat: number} | null>(null);
 
 
   // Fetch military bases on mount
@@ -333,23 +339,27 @@ export function ThreatMap() {
   const geojsonData = useMemo(
     () => ({
       type: "FeatureCollection" as const,
-      features: filteredEvents.map((event) => ({
-        type: "Feature" as const,
-        properties: {
-          id: event.id,
-          title: event.title,
-          category: event.category,
-          threatLevel: event.threatLevel,
-          severity: getSeverityValue(event.threatLevel),
-          timestamp: event.timestamp,
-        },
-        geometry: {
-          type: "Point" as const,
-          coordinates: [event.location.longitude, event.location.latitude],
-        },
-      })),
+      features: filteredEvents.map((event) => {
+        // Use jittered display location for map rendering, but original for popup
+        const displayLoc = displayLocations.get(event.id) || event.location;
+        return {
+          type: "Feature" as const,
+          properties: {
+            id: event.id,
+            title: event.title,
+            category: event.category,
+            threatLevel: event.threatLevel,
+            severity: getSeverityValue(event.threatLevel),
+            timestamp: event.timestamp,
+          },
+          geometry: {
+            type: "Point" as const,
+            coordinates: [displayLoc.longitude, displayLoc.latitude],
+          },
+        };
+      }),
     }),
-    [filteredEvents]
+    [filteredEvents, displayLocations]
   );
 
   const entityLocationsData = useMemo(
@@ -401,19 +411,24 @@ export function ThreatMap() {
 
         if (layerId === "clusters" && mapRef.current) {
           const clusterId = feature.properties?.cluster_id;
+          const pointCount = feature.properties?.point_count || 0;
           const source = mapRef.current.getSource("events") as mapboxgl.GeoJSONSource;
+          const coords = (feature.geometry as GeoJSON.Point).coordinates;
 
-          source.getClusterExpansionZoom(clusterId, (err, zoom) => {
-            if (err) return;
+          // Get all events in this cluster (limit to 100 for performance)
+          source.getClusterLeaves(clusterId, Math.min(pointCount, 100), 0, (err, leaves) => {
+            if (err || !leaves) return;
 
-            mapRef.current?.easeTo({
-              center: (feature.geometry as GeoJSON.Point).coordinates as [
-                number,
-                number,
-              ],
-              zoom: zoom || viewport.zoom + 2,
-              duration: 500,
-            });
+            // Map GeoJSON features back to ThreatEvent objects
+            const eventIds = leaves.map((leaf) => leaf.properties?.id);
+            const events = filteredEvents.filter((e) => eventIds.includes(e.id));
+
+            setClusterEvents(events);
+            setClusterPopupPosition({ lng: coords[0], lat: coords[1] });
+            // Clear other selections
+            selectEvent(null);
+            setSelectedEntityLocation(null);
+            setSelectedMilitaryBase(null);
           });
           return;
         } else if (layerId === "unclustered-point") {
@@ -423,6 +438,8 @@ export function ThreatMap() {
             selectEvent(clickedEvent);
             setSelectedEntityLocation(null);
             setSelectedMilitaryBase(null);
+            setClusterEvents([]);
+            setClusterPopupPosition(null);
           }
           return;
         } else if (layerId === "entity-locations") {
@@ -436,6 +453,8 @@ export function ThreatMap() {
           });
           selectEvent(null);
           setSelectedMilitaryBase(null);
+          setClusterEvents([]);
+          setClusterPopupPosition(null);
           return;
         } else if (layerId === "military-bases-circle") {
           const coords = (feature.geometry as GeoJSON.Point).coordinates;
@@ -448,6 +467,8 @@ export function ThreatMap() {
           });
           selectEvent(null);
           setSelectedEntityLocation(null);
+          setClusterEvents([]);
+          setClusterPopupPosition(null);
           return;
         }
       }
@@ -456,6 +477,8 @@ export function ThreatMap() {
       selectEvent(null);
       setSelectedEntityLocation(null);
       setSelectedMilitaryBase(null);
+      setClusterEvents([]);
+      setClusterPopupPosition(null);
 
       const { lng, lat } = event.lngLat;
 
@@ -479,7 +502,7 @@ export function ThreatMap() {
         console.error("Error reverse geocoding:", error);
       }
     },
-    [filteredEvents, selectEvent, viewport.zoom]
+    [filteredEvents, selectEvent]
   );
 
   const handleMouseEnter = useCallback(() => {
@@ -493,6 +516,13 @@ export function ThreatMap() {
       mapRef.current.getCanvas().style.cursor = "";
     }
   }, []);
+
+  // Stop following the sun when user manually drags/pans the map
+  const handleDragStart = useCallback(() => {
+    if (isFollowingSun) {
+      stopFollowSun();
+    }
+  }, [isFollowingSun, stopFollowSun]);
 
   if (!MAPBOX_TOKEN) {
     return (
@@ -514,6 +544,7 @@ export function ThreatMap() {
       ref={mapRef}
       {...viewport}
       onMove={(evt) => setViewport(evt.viewState)}
+      onDragStart={handleDragStart}
       mapStyle={MAP_STYLES[mapStyle].id}
       mapboxAccessToken={MAPBOX_TOKEN}
       interactiveLayerIds={
@@ -611,6 +642,34 @@ export function ThreatMap() {
           className="threat-popup"
         >
           <EventPopup event={selectedEvent} />
+        </Popup>
+      )}
+
+      {clusterPopupPosition && clusterEvents.length > 0 && (
+        <Popup
+          longitude={clusterPopupPosition.lng}
+          latitude={clusterPopupPosition.lat}
+          anchor="bottom"
+          onClose={() => {
+            setClusterEvents([]);
+            setClusterPopupPosition(null);
+          }}
+          closeButton={false}
+          closeOnClick={false}
+          className="threat-popup"
+        >
+          <ClusterPopup
+            events={clusterEvents}
+            onEventClick={(event) => {
+              setClusterEvents([]);
+              setClusterPopupPosition(null);
+              selectEvent(event);
+            }}
+            onClose={() => {
+              setClusterEvents([]);
+              setClusterPopupPosition(null);
+            }}
+          />
         </Popup>
       )}
 

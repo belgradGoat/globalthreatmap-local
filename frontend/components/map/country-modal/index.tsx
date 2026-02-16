@@ -307,7 +307,7 @@ export function CountryModal({
         </div>
 
         {/* Tab Content */}
-        <div className="h-[calc(65vh-140px)]">
+        <div className="h-[calc(65vh-140px)] min-h-0">
           {activeTab === "news" && country && <NewsTab country={country} />}
 
           {activeTab === "profile" && country && <ProfileTab country={country} />}

@@ -120,7 +120,7 @@ export function ProfileTab({ country }: ProfileTabProps) {
 
   if (isLoading) {
     return (
-      <ScrollArea className="h-full pr-2">
+      <ScrollArea className="h-full min-h-0 pr-2">
         <ProfileSkeleton />
       </ScrollArea>
     );
@@ -135,7 +135,7 @@ export function ProfileTab({ country }: ProfileTabProps) {
   }
 
   return (
-    <ScrollArea className="h-full pr-2">
+    <ScrollArea className="h-full min-h-0 pr-2">
       <div className="space-y-6">
         {/* Header with Flag */}
         <div className="flex items-center gap-4">

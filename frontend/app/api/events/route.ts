@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import { searchEvents } from "@/lib/local-intel";
+import { searchEvents, LLMSettings } from "@/lib/local-intel";
 import { classifyEvent, isAIClassificationEnabled } from "@/lib/ai-classifier";
 import { generateEventId } from "@/lib/utils";
 import { extractKeywords, extractEntities } from "@/lib/event-classifier";
+import { translateArticle } from "@/lib/translator";
 import type { ThreatEvent } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -71,7 +72,8 @@ const THREAT_LEVEL_PRIORITY: Record<string, number> = {
 };
 
 async function processSearchResults(
-  results: Array<{ title: string; url: string; content: string; publishedDate?: string; source?: string }>
+  results: Array<{ title: string; url: string; content: string; publishedDate?: string; source?: string }>,
+  options?: { llmSettings?: LLMSettings; enableTranslation?: boolean },
 ): Promise<ThreatEvent[]> {
   // Pre-filter results before processing
   const filteredResults = results.filter((result) => {
@@ -100,12 +102,32 @@ async function processSearchResults(
 
   const eventsWithLocations = await Promise.all(
     uniqueResults.map(async (result) => {
-      const cleanedTitle = cleanContent(result.title);
-      const cleanedContent = cleanContent(result.content);
+      let cleanedTitle = cleanContent(result.title);
+      let cleanedContent = cleanContent(result.content);
+
+      // Translate if enabled and LLM settings provided
+      if (options?.enableTranslation && options?.llmSettings) {
+        try {
+          const translation = await translateArticle(
+            cleanedTitle,
+            cleanedContent,
+            options.llmSettings
+          );
+          if (translation.wasTranslated) {
+            cleanedTitle = translation.translatedTitle;
+            cleanedContent = translation.translatedContent;
+            console.log(`[Translation] Translated from ${translation.originalLanguage}: ${cleanedTitle.slice(0, 50)}...`);
+          }
+        } catch (error) {
+          console.error("[Translation] Error translating article:", error);
+          // Continue with original text if translation fails
+        }
+      }
+
       const fullText = `${cleanedTitle} ${cleanedContent}`;
 
-      // Use AI classification (falls back to keywords if OpenAI not available)
-      const classification = await classifyEvent(cleanedTitle, cleanedContent);
+      // Use AI classification (falls back to keywords if LLM not available)
+      const classification = await classifyEvent(cleanedTitle, cleanedContent, options?.llmSettings);
 
       // Skip events without valid locations
       if (!classification.location || !isValidLocation(classification.location)) {
@@ -208,7 +230,12 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { countries, region, includeFallback = true } = body;
+    const { countries, region, includeFallback = true, llmSettings, enableTranslation = false } = body;
+
+    const processOptions = {
+      llmSettings: llmSettings as LLMSettings | undefined,
+      enableTranslation: enableTranslation as boolean,
+    };
 
     // If countries provided, fetch from those countries
     if (countries && Array.isArray(countries) && countries.length > 0) {
@@ -230,9 +257,12 @@ export async function POST(request: Request) {
 
       let allResults = countryResults.flat();
       console.log(`[events/POST] Got ${allResults.length} articles from primary countries`);
+      if (enableTranslation) {
+        console.log(`[events/POST] Translation enabled with provider: ${llmSettings?.provider || "default"}`);
+      }
 
       // If not enough results and fallback enabled, the hook will handle requesting more
-      const sortedEvents = await processSearchResults(allResults);
+      const sortedEvents = await processSearchResults(allResults, processOptions);
 
       return NextResponse.json({
         events: sortedEvents,
@@ -250,7 +280,7 @@ export async function POST(request: Request) {
     );
 
     const allResults = searchResultsArrays.flatMap((r) => r.results);
-    const sortedEvents = await processSearchResults(allResults);
+    const sortedEvents = await processSearchResults(allResults, processOptions);
 
     return NextResponse.json({
       events: sortedEvents,

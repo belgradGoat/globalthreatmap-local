@@ -21,6 +21,7 @@ import {
   Newspaper,
   Search,
   Cpu,
+  Languages,
 } from "lucide-react";
 import { useLLMStore, type LLMProvider } from "@/stores/llm-store";
 import { useMapStore, MAP_STYLES, type MapStyleId } from "@/stores/map-store";
@@ -80,8 +81,10 @@ export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
   const {
     showSecurityNews,
     includeSecurityAnalysisByDefault,
+    enableTranslation,
     setShowSecurityNews,
     setIncludeSecurityAnalysisByDefault,
+    setEnableTranslation,
   } = useSettingsStore();
 
   const [localSettings, setLocalSettings] = useState(settings);
@@ -435,6 +438,38 @@ export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
 
   const renderNewsTab = () => (
     <div className="space-y-6">
+      {/* Translation Toggle */}
+      <div className="space-y-3">
+        <label className="text-sm font-medium text-foreground flex items-center gap-2">
+          <Languages className="h-4 w-4" />
+          Translation
+        </label>
+        <div className="space-y-2">
+          <label className="flex items-center gap-3 rounded-lg border border-border p-3 cursor-pointer hover:bg-muted/30">
+            <input
+              type="checkbox"
+              checked={enableTranslation}
+              onChange={(e) => setEnableTranslation(e.target.checked)}
+              className="h-4 w-4 rounded border-border accent-[var(--color-eagle-secondary)]"
+            />
+            <div>
+              <div className="font-medium text-foreground text-sm">
+                Translate News to English
+              </div>
+              <div className="text-xs text-muted-foreground">
+                Automatically translate non-English articles using your selected AI model
+              </div>
+            </div>
+          </label>
+        </div>
+        <div className="rounded-lg border border-border bg-muted/30 p-3">
+          <p className="text-xs text-muted-foreground">
+            Translation uses your configured AI model (LM Studio, Ollama, or OpenAI).
+            Make sure your AI model is connected in the AI Model settings.
+          </p>
+        </div>
+      </div>
+
       {/* Security News Toggle */}
       <div className="space-y-3">
         <label className="text-sm font-medium text-foreground">

@@ -1,14 +1,43 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useEventsStore } from "@/stores/events-store";
+import { useSunStore } from "@/stores/sun-store";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { EventCard } from "./event-card";
 import { FeedFilters } from "./feed-filters";
 import { Loader2, Newspaper } from "lucide-react";
 
+function useLocalTime() {
+  const [time, setTime] = useState<string>("");
+
+  useEffect(() => {
+    const formatTime = () => {
+      const now = new Date();
+      return now.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        timeZoneName: "short",
+      });
+    };
+
+    setTime(formatTime());
+
+    const interval = setInterval(() => {
+      setTime(formatTime());
+    }, 60000); // Update every minute
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return time;
+}
+
 export function EventFeed() {
-  const { filteredEvents, isLoading, error, selectedEvent, selectEvent } =
+  const { filteredEvents, isLoading, error } =
     useEventsStore();
+  const { currentBand } = useSunStore();
+  const localTime = useLocalTime();
 
   return (
     <div className="flex h-full flex-col">
@@ -19,6 +48,9 @@ export function EventFeed() {
         </div>
         <p className="text-sm text-muted-foreground">
           {filteredEvents.length} stories
+        </p>
+        <p className="text-xs text-muted-foreground mt-1">
+          {localTime} | 12pm in {currentBand.displayName}
         </p>
       </div>
 
@@ -54,8 +86,6 @@ export function EventFeed() {
             <EventCard
               key={event.id}
               event={event}
-              isSelected={selectedEvent?.id === event.id}
-              onClick={() => selectEvent(event)}
               style={{ animationDelay: `${index * 50}ms` }}
             />
           ))}

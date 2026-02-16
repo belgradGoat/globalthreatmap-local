@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useEventsStore } from "@/stores/events-store";
 import { useSunStore } from "@/stores/sun-store";
+import { useLLMStore } from "@/stores/llm-store";
+import { useSettingsStore } from "@/stores/settings-store";
 import {
   getCurrentNoonBand,
   getMsUntilNextHour,
@@ -38,6 +40,9 @@ export function useEvents(options: UseEventsOptions = {}) {
     updateCountdown,
   } = useSunStore();
 
+  const { settings: llmSettings } = useLLMStore();
+  const { enableTranslation } = useSettingsStore();
+
   const hourlyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -60,6 +65,8 @@ export function useEvents(options: UseEventsOptions = {}) {
           countries,
           region: band.displayName,
           includeFallback: !withFallback, // Only request fallback info on first try
+          llmSettings,
+          enableTranslation,
         }),
       });
 
@@ -97,6 +104,8 @@ export function useEvents(options: UseEventsOptions = {}) {
               countries: fallbackCountries,
               region: "Nearby Regions",
               includeFallback: false,
+              llmSettings,
+              enableTranslation,
             }),
           });
 
@@ -127,7 +136,7 @@ export function useEvents(options: UseEventsOptions = {}) {
     } finally {
       setLoading(false);
     }
-  }, [setEvents, setLoading, setError, setLastRefresh, updateCurrentBand]);
+  }, [setEvents, setLoading, setError, setLastRefresh, updateCurrentBand, llmSettings, enableTranslation]);
 
   // Manual refresh
   const refresh = useCallback(() => {

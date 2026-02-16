@@ -11,6 +11,9 @@ export interface UserSettings {
 
   // Display preferences
   compactFeedView: boolean;
+
+  // Translation preferences
+  enableTranslation: boolean;
 }
 
 interface SettingsState extends UserSettings {
@@ -19,6 +22,7 @@ interface SettingsState extends UserSettings {
   setDefaultNewsCategories: (categories: string[]) => void;
   setIncludeSecurityAnalysisByDefault: (include: boolean) => void;
   setCompactFeedView: (compact: boolean) => void;
+  setEnableTranslation: (enable: boolean) => void;
   resetToDefaults: () => void;
 }
 
@@ -27,6 +31,7 @@ const DEFAULT_SETTINGS: UserSettings = {
   defaultNewsCategories: ["politics", "economy", "technology", "environment", "health", "world"],
   includeSecurityAnalysisByDefault: false,
   compactFeedView: false,
+  enableTranslation: true, // Enable translation by default
 };
 
 export const useSettingsStore = create<SettingsState>()(
@@ -43,6 +48,8 @@ export const useSettingsStore = create<SettingsState>()(
         set({ includeSecurityAnalysisByDefault: include }),
 
       setCompactFeedView: (compact) => set({ compactFeedView: compact }),
+
+      setEnableTranslation: (enable) => set({ enableTranslation: enable }),
 
       resetToDefaults: () => set(DEFAULT_SETTINGS),
     }),

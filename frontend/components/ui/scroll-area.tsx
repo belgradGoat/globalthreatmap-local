@@ -13,7 +13,7 @@ const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
       <div
         ref={ref}
         className={cn(
-          "relative overflow-hidden",
+          "relative",
           orientation === "vertical" ? "overflow-y-auto" : "overflow-x-auto",
           className
         )}

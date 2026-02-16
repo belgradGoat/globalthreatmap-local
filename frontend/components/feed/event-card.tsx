@@ -1,12 +1,12 @@
 "use client";
 
-import { memo, useCallback } from "react";
+import { memo, useCallback, useState } from "react";
 import type { ThreatEvent } from "@/types";
 import { eventToNewsCategory, newsCategoryConfig, threatToPriority, priorityConfig } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatRelativeTime, cn } from "@/lib/utils";
-import { useMapStore } from "@/stores/map-store";
+import { Streamdown } from "streamdown";
 import {
   MapPin,
   Clock,
@@ -22,6 +22,8 @@ import {
   Target,
   Globe,
   ExternalLink,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 
 import type { NewsCategory } from "@/types";
@@ -65,32 +67,27 @@ const priorityColorMap: Record<string, string> = {
 
 interface EventCardProps {
   event: ThreatEvent;
-  isSelected: boolean;
-  onClick: () => void;
   style?: React.CSSProperties;
 }
 
 export const EventCard = memo(function EventCard({
   event,
-  isSelected,
-  onClick,
   style,
 }: EventCardProps) {
-  const flyTo = useMapStore((state) => state.flyTo);
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  // Map to news category
-  const newsCategory = eventToNewsCategory[event.category];
-  const categoryConfig = newsCategoryConfig[newsCategory];
+  // Map to news category (fallback to "world" for unknown categories)
+  const newsCategory = eventToNewsCategory[event.category] || "world";
+  const categoryConfig = newsCategoryConfig[newsCategory] || newsCategoryConfig.world;
   const CategoryIcon = newsCategoryIconMap[newsCategory] || Globe;
 
-  // Map to priority level
-  const priority = threatToPriority[event.threatLevel];
-  const prioConfig = priorityConfig[priority];
+  // Map to priority level (fallback to "background" for unknown levels)
+  const priority = threatToPriority[event.threatLevel] || "background";
+  const prioConfig = priorityConfig[priority] || priorityConfig.background;
 
   const handleClick = useCallback(() => {
-    onClick();
-    flyTo(event.location.longitude, event.location.latitude, 6);
-  }, [onClick, flyTo, event.location.longitude, event.location.latitude]);
+    setIsExpanded((prev) => !prev);
+  }, []);
 
   const handleSourceClick = useCallback((e: React.MouseEvent) => {
     if (event.sourceUrl) {
@@ -103,7 +100,7 @@ export const EventCard = memo(function EventCard({
     <Card
       className={cn(
         "cursor-pointer transition-all duration-200 hover:bg-accent/50 event-card-enter",
-        isSelected && "ring-2 ring-[var(--color-eagle-secondary)] bg-accent/30"
+        isExpanded && "ring-2 ring-[var(--color-eagle-secondary)] bg-accent/30"
       )}
       style={style}
       onClick={handleClick}
@@ -189,6 +186,48 @@ export const EventCard = memo(function EventCard({
                 )}
               </div>
             )}
+
+            {/* Expanded content */}
+            {isExpanded && (
+              <div className="mt-3 border-t border-border pt-3">
+                <div className="max-h-[300px] overflow-y-auto rounded-md bg-muted/30 p-3">
+                  <div className="prose prose-sm prose-invert max-w-none text-xs">
+                    <Streamdown>{event.rawContent || event.summary}</Streamdown>
+                  </div>
+                </div>
+
+                {event.sourceUrl && (
+                  <a
+                    href={event.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Read full article <ExternalLink className="h-3 w-3" />
+                  </a>
+                )}
+
+                {event.keywords && event.keywords.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-1">
+                    {event.keywords.slice(0, 5).map((keyword) => (
+                      <Badge key={keyword} variant="secondary" className="text-[10px]">
+                        {keyword}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Expand/collapse indicator */}
+            <div className="mt-2 flex justify-center">
+              {isExpanded ? (
+                <ChevronUp className="h-4 w-4 text-muted-foreground" />
+              ) : (
+                <ChevronDown className="h-4 w-4 text-muted-foreground" />
+              )}
+            </div>
           </div>
         </div>
       </CardContent>

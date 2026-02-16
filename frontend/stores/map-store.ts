@@ -53,6 +53,7 @@ interface MapState {
   isDrawingWatchbox: boolean;
   activeWatchboxId: string | null;
   isAutoPlaying: boolean;
+  isFollowingSun: boolean;
   entityLocations: EntityLocationMarker[];
   militaryBases: MilitaryBaseMarker[];
   militaryBasesLoading: boolean;
@@ -69,6 +70,8 @@ interface MapState {
   setActiveWatchbox: (id: string | null) => void;
   startAutoPlay: () => void;
   stopAutoPlay: () => void;
+  startFollowSun: () => void;
+  stopFollowSun: () => void;
   setEntityLocations: (entityName: string, locations: GeoLocation[]) => void;
   clearEntityLocations: () => void;
   setMilitaryBases: (bases: MilitaryBaseMarker[]) => void;
@@ -95,6 +98,7 @@ export const useMapStore = create<MapState>()(
       isDrawingWatchbox: false,
       activeWatchboxId: null,
       isAutoPlaying: false,
+      isFollowingSun: false,
       entityLocations: [],
       militaryBases: [],
       militaryBasesLoading: false,
@@ -145,6 +149,10 @@ export const useMapStore = create<MapState>()(
       startAutoPlay: () => set({ isAutoPlaying: true }),
 
       stopAutoPlay: () => set({ isAutoPlaying: false }),
+
+      startFollowSun: () => set({ isFollowingSun: true }),
+
+      stopFollowSun: () => set({ isFollowingSun: false }),
 
       setEntityLocations: (entityName, locations) =>
         set({

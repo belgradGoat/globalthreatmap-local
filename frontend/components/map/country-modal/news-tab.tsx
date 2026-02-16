@@ -304,7 +304,7 @@ export function NewsTab({ country }: NewsTabProps) {
   const hasSummaryContent = summary.general || summary.politics || summary.business;
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full min-h-0 flex-col">
       {/* AI Summary Section */}
       <div className="mb-4 rounded-lg border border-border bg-card/50 overflow-hidden">
         <button
@@ -326,7 +326,7 @@ export function NewsTab({ country }: NewsTabProps) {
         </button>
 
         {summaryExpanded && (
-          <div className="border-t border-border px-4 py-3 space-y-4">
+          <div className="border-t border-border px-4 py-3 space-y-4 max-h-[300px] overflow-y-auto">
             {summaryError ? (
               <p className="text-sm text-destructive">{summaryError}</p>
             ) : !hasSummaryContent && isSummaryLoading ? (
@@ -379,7 +379,7 @@ export function NewsTab({ country }: NewsTabProps) {
       </div>
 
       {/* Articles List */}
-      <ScrollArea className="flex-1 pr-2">
+      <ScrollArea className="flex-1 min-h-0 pr-2">
         {isLoading ? (
           <NewsSkeleton />
         ) : error ? (

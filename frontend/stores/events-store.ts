@@ -1,9 +1,11 @@
 import { create } from "zustand";
-import type { ThreatEvent, TimeRange } from "@/types";
+import type { ThreatEvent, TimeRange, GeoLocation } from "@/types";
+import { calculateDisplayLocations } from "@/lib/geo-jitter";
 
 interface EventsState {
   events: ThreatEvent[];
   filteredEvents: ThreatEvent[];
+  displayLocations: Map<string, GeoLocation>;
   selectedEvent: ThreatEvent | null;
   isLoading: boolean;
   error: string | null;
@@ -29,6 +31,7 @@ interface EventsState {
 export const useEventsStore = create<EventsState>((set, get) => ({
   events: [],
   filteredEvents: [],
+  displayLocations: new Map(),
   selectedEvent: null,
   isLoading: false,
   error: null,
@@ -38,21 +41,22 @@ export const useEventsStore = create<EventsState>((set, get) => ({
   searchQuery: "",
 
   setEvents: (events) => {
-    set({ events });
+    const displayLocations = calculateDisplayLocations(events);
+    set({ events, displayLocations });
     get().applyFilters();
   },
 
   addEvent: (event) => {
-    set((state) => ({
-      events: [event, ...state.events].slice(0, 1000),
-    }));
+    const newEvents = [event, ...get().events].slice(0, 1000);
+    const displayLocations = calculateDisplayLocations(newEvents);
+    set({ events: newEvents, displayLocations });
     get().applyFilters();
   },
 
   addEvents: (events) => {
-    set((state) => ({
-      events: [...events, ...state.events].slice(0, 1000),
-    }));
+    const newEvents = [...events, ...get().events].slice(0, 1000);
+    const displayLocations = calculateDisplayLocations(newEvents);
+    set({ events: newEvents, displayLocations });
     get().applyFilters();
   },
 
